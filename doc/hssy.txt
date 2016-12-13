@@ -50,20 +50,18 @@ CREATE TABLE bns_user(
 -- ----------------------------------------------------------
 CREATE TABLE bns_company(
   id varchar(64) NULL COMMENT '主键',
-  province varchar(64) DEFAULT NULL COMMENT '省份',
   city varchar(64) DEFAULT NULL COMMENT '城市',
-  company varchar(60) DEFAULT NULL COMMENT '机构名称',
+  name varchar(60) DEFAULT NULL COMMENT '机构名称',
   logo varchar(100) DEFAULT NULL COMMENT 'LOGO',
-  license varchar(100) DEFAULT NULL COMMENT '营业执照',
   address varchar(100) DEFAULT NULL COMMENT '联系地址',
   fr_name varchar(30) DEFAULT NULL COMMENT '法人代表',
   fr_mobile varchar(20) DEFAULT NULL COMMENT '法人电话',
-  yw_name varchar(30) DEFAULT NULL COMMENT '业务负责人',
-  yw_mobile varchar(20) DEFAULT NULL COMMENT '负责人电话',
+  linkman varchar(30) DEFAULT NULL COMMENT '业务负责人',
+  mobile varchar(20) DEFAULT NULL COMMENT '负责人电话',
   gos varchar(255) DEFAULT NULL COMMENT '服务范围',
   num int DEFAULT 0 COMMENT '每天接单数',
   state int(1) DEFAULT 0 COMMENT '状态[0：启用；1：禁用]',
-  flag int(1) DEFAULT 0 COMMENT '是否审核[0：待审核；1：通过；2：不通过]',
+  rank int(1) DEFAULT 0 COMMENT '级别[0：普通服务商；1：升级中；2：高级服务商]',
   created_time timestamp DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -77,7 +75,7 @@ CREATE TABLE bns_wallet(
   history int DEFAULT 0 COMMENT '历史接单数',
   total decimal(6,2) DEFAULT 0 COMMENT '历史金额',
   money decimal(6,2) DEFAULT 0 COMMENT '可用金额',
-  state int(1) DEFAULT 0 COMMENT '状态[0：启用；1：禁用]',
+  vice decimal(6,2) DEFAULT 0 COMMENT '赠送金额',
   created_time timestamp DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -104,11 +102,9 @@ CREATE TABLE bns_recharge(
 -- ----------------------------------------------------------
 CREATE TABLE sys_area(
   id varchar(64) NULL COMMENT '主键',
-  parent varchar(64) DEFAULT NULL COMMENT '父节点',
   name varchar(50) DEFAULT NULL COMMENT '名称',
-  level int(1) DEFAULT 0 COMMENT '层级',
+  type int(1) DEFAULT 0 COMMENT '类别[0：国内；1：国外]',
   sort int(1) DEFAULT 0 COMMENT '排序',
-  remark varchar(100) DEFAULT NULL COMMENT '备注',
   created_time timestamp DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -118,9 +114,7 @@ CREATE TABLE sys_area(
 -- ----------------------------------------------------------
 CREATE TABLE bns_site(
   id varchar(64) NULL COMMENT '主键',
-  province varchar(64) DEFAULT NULL COMMENT '省份',
   city varchar(64) DEFAULT NULL COMMENT '城市',
-  area varchar(64) DEFAULT NULL COMMENT '区域',
   name varchar(50) DEFAULT NULL COMMENT '景点名称',
   address varchar(120) DEFAULT NULL COMMENT '景点地址',
   logo varchar(100) DEFAULT NULL COMMENT 'LOGO',
@@ -138,9 +132,7 @@ CREATE TABLE bns_site(
 -- ----------------------------------------------------------
 CREATE TABLE bns_hotel(
   id varchar(64) NULL COMMENT '主键',
-  province varchar(64) DEFAULT NULL COMMENT '省份',
   city varchar(64) DEFAULT NULL COMMENT '城市',
-  area varchar(64) DEFAULT NULL COMMENT '区域',
   name varchar(50) DEFAULT NULL COMMENT '住宿名称',
   address varchar(120) DEFAULT NULL COMMENT '住宿地址',
   logo varchar(100) DEFAULT NULL COMMENT 'LOGO',
@@ -160,33 +152,48 @@ CREATE TABLE bns_hotel(
 CREATE TABLE bns_order(
   id varchar(64) NULL COMMENT '主键',
   code varchar(30) DEFAULT NULL COMMENT '订单编号',
-  province varchar(64) DEFAULT NULL COMMENT '拍摄省份',
   city varchar(64) DEFAULT NULL COMMENT '拍摄城市',
   take_time datetime DEFAULT NULL COMMENT '拍摄时间',
   created_user varchar(64) DEFAULT NULL COMMENT '下单用户ID',
-  created_user_name varchar(64) DEFAULT NULL COMMENT '下单用户姓名',
-  created_user_dialog text DEFAULT NULL COMMENT '下单用户dialog',
+  created_user_name varchar(64) DEFAULT NULL COMMENT '下单机构',
+  accept_user varchar(64) DEFAULT NULL COMMENT '接收者ID',
+  accept_user_name varchar(30) DEFAULT NULL COMMENT '接收者机构',
+  money decimal(6,2) DEFAULT 0 COMMENT '到账金额',
+  payment varchar(30) DEFAULT NULL COMMENT '支付方式',
+  paid int(1) DEFAULT 0 COMMENT '支付状态[0：未支付；1：已支付]',
+  state int(1) DEFAULT 0 COMMENT '订单状态',
+  created_time timestamp DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+-- ----------------------------------------------------------
+-- Table structure for bns_order_child (订单从表)
+-- ----------------------------------------------------------
+CREATE TABLE bns_order_child(
+  id varchar(64) NULL COMMENT '主键',
+  order_id varchar(64) DEFAULT NULL COMMENT '主表ID',
   customer varchar(30) DEFAULT NULL COMMENT '客户姓名',
   idcard varchar(18) DEFAULT NULL COMMENT '客户身份证号',
   mobile varchar(11) DEFAULT NULL COMMENT '联系电话',
   people int(1) DEFAULT 0 COMMENT '同行人数',
-  cloth_name varchar(30) DEFAULT NULL COMMENT '服饰风格',
-  cloth_dialog text DEFAULT NULL COMMENT '服饰dialog',
-  cloth_ts int(2) DEFAULT NULL COMMENT '服饰套数',
-  cloth_js int(2) DEFAULT NULL COMMENT '服饰件数',
-  site_name varchar(30) DEFAULT NULL COMMENT '景点名称',
-  site_dialog text DEFAULT NULL COMMENT '景点dialog',
-  site_num int(1) DEFAULT NULL COMMENT '门票数量',
-  hotel_name varchar(30) DEFAULT NULL COMMENT '住宿名称',
-  hotel_dialog text DEFAULT NULL COMMENT '住宿dialog',
-  hotel_num int(1) DEFAULT 0 COMMENT '房间数量',
-  money float(4) DEFAULT 0 COMMENT '支付金额',
+  cloth  varchar(255) DEFAULT NULL COMMENT '选择服饰',
+  site varchar(255) DEFAULT NULL COMMENT '选择景点',
+  hotel varchar(255) DEFAULT NULL COMMENT '选择住宿',
   pickup int(1) DEFAULT 0 COMMENT '是否接送',
-  state int(1) DEFAULT 0 COMMENT '订单状态',
-  accept_user varchar(64) DEFAULT NULL COMMENT '接收者ID',
-  accept_user_name varchar(30) DEFAULT NULL COMMENT '接收者姓名',
-  accept_user_dialog text DEFAULT NULL COMMENT '接收者dialog',
-  imgs text DEFAULT NULL COMMENT '附件逗号分开',
+  remark varchar(100) DEFAULT NULL COMMENT '备注',
+  created_time timestamp DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------------------------------------
+-- Table structure for bns_order_img (订单附件表)
+-- ----------------------------------------------------------
+CREATE TABLE bns_order_img(
+  id varchar(64) NULL COMMENT '主键',
+  order_id varchar(64) DEFAULT NULL COMMENT '主表ID',
+  filename varchar(100) DEFAULT NULL COMMENT '附件名称',
+  syn int(1) DEFAULT 0 COMMENT '是否同步[0：否：1：是]',
   created_time timestamp DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
