@@ -24,7 +24,7 @@
 	* template reference : 
 	* - name      : DomainEntityJPA2Metamodel
 	* - file name : DomainEntityJPA2Metamodel.vm
-	* - time      : 2016/11/16 ��Ԫ at 10:46:26 CST
+	* - time      : 2016/12/13 ��Ԫ at 23:26:35 CST
 */
 package entities;
 
@@ -40,16 +40,14 @@ public class BnsCompany_ {
     public static volatile SingularAttribute<BnsCompany, String> id;
 
     public static volatile SingularAttribute<BnsCompany, String> city;
-    public static volatile SingularAttribute<BnsCompany, String> company;
+    public static volatile SingularAttribute<BnsCompany, String> name;
     public static volatile SingularAttribute<BnsCompany, String> logo;
-    public static volatile SingularAttribute<BnsCompany, String> license;
     public static volatile SingularAttribute<BnsCompany, String> address;
-    public static volatile SingularAttribute<BnsCompany, String> linkman;
-    public static volatile SingularAttribute<BnsCompany, String> mobile;
     public static volatile SingularAttribute<BnsCompany, String> frName;
     public static volatile SingularAttribute<BnsCompany, String> frMobile;
+    public static volatile SingularAttribute<BnsCompany, String> linkman;
+    public static volatile SingularAttribute<BnsCompany, String> mobile;
     public static volatile SingularAttribute<BnsCompany, String> gos;
-    public static volatile SingularAttribute<BnsCompany, Integer> history;
     public static volatile SingularAttribute<BnsCompany, Integer> num;
     public static volatile SingularAttribute<BnsCompany, Integer> state;
     public static volatile SingularAttribute<BnsCompany, Integer> rank;

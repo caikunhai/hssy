@@ -5,29 +5,22 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import entities.BnsClothes;
-import entities.BnsCompany;
-import entities.BnsHotel;
-import entities.BnsSite;
 import play.modules.spring.Spring;
 import repositories.BnsClothesRepository;
 import repositories.BnsCompanyRepository;
 import repositories.BnsHotelRepository;
 import repositories.BnsSiteRepository;
-import repositories.SysAreaRepository;
+import entities.BnsClothes;
+import entities.BnsCompany;
+import entities.BnsHotel;
+import entities.BnsSite;
 
 public class SetupManager {
 	
 	public static void setup(){
-		initArea();
 		initCompany();
 	}
 	
-	//初始化地区
-	public static void initArea() {
-		SysAreaRepository areaRepository =Spring.getBeanOfType(SysAreaRepository.class);
-		play.cache.Cache.set("area", areaRepository.findAll());
-	}
 	
 	//初始化住宿
 	public static void initHotel() {

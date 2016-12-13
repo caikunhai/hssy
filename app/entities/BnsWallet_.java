@@ -24,7 +24,7 @@
 	* template reference : 
 	* - name      : DomainEntityJPA2Metamodel
 	* - file name : DomainEntityJPA2Metamodel.vm
-	* - time      : 2016/10/21 ��Ԫ at 11:33:37 CST
+	* - time      : 2016/12/13 ��Ԫ at 23:26:35 CST
 */
 package entities;
 
@@ -39,9 +39,10 @@ public class BnsWallet_ {
 
     public static volatile SingularAttribute<BnsWallet, String> id;
 
-    public static volatile SingularAttribute<BnsWallet, java.math.BigDecimal> history;
+    public static volatile SingularAttribute<BnsWallet, Integer> history;
+    public static volatile SingularAttribute<BnsWallet, java.math.BigDecimal> total;
     public static volatile SingularAttribute<BnsWallet, java.math.BigDecimal> money;
-    public static volatile SingularAttribute<BnsWallet, Integer> state;
+    public static volatile SingularAttribute<BnsWallet, java.math.BigDecimal> vice;
     public static volatile SingularAttribute<BnsWallet, Timestamp> createdTime;
 
 

@@ -24,13 +24,13 @@
 	* template reference : 
 	* - name      : DomainEntityJPA2Annotation
 	* - file name : DomainEntityJPA2Annotation.vm
-	* - time      : 2016/10/08 ��Ԫ at 15:07:58 CST
+	* - time      : 2016/12/13 ��Ԫ at 23:26:34 CST
 */
 package entities;
 
-import java.io.Serializable;
 //MP-MANAGED-ADDED-AREA-BEGINNING @import@
 //MP-MANAGED-ADDED-AREA-ENDING @import@
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -53,30 +53,22 @@ import javax.persistence.Table;
 	 @NamedQuery(name="BnsClothes.findAll", query="SELECT bnsclothes FROM BnsClothes bnsclothes")
 	,@NamedQuery(name="BnsClothes.findByCompany", query="SELECT bnsclothes FROM BnsClothes bnsclothes WHERE bnsclothes.company = :company")
 	,@NamedQuery(name="BnsClothes.findByCompanyContaining", query="SELECT bnsclothes FROM BnsClothes bnsclothes WHERE bnsclothes.company like :company")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsClothes.findByName", query="SELECT bnsclothes FROM BnsClothes bnsclothes WHERE bnsclothes.name = :name")
 	,@NamedQuery(name="BnsClothes.findByNameContaining", query="SELECT bnsclothes FROM BnsClothes bnsclothes WHERE bnsclothes.name like :name")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsClothes.findByUnit", query="SELECT bnsclothes FROM BnsClothes bnsclothes WHERE bnsclothes.unit = :unit")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsClothes.findByNum", query="SELECT bnsclothes FROM BnsClothes bnsclothes WHERE bnsclothes.num = :num")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsClothes.findByPrice", query="SELECT bnsclothes FROM BnsClothes bnsclothes WHERE bnsclothes.price = :price")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsClothes.findByState", query="SELECT bnsclothes FROM BnsClothes bnsclothes WHERE bnsclothes.state = :state")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsClothes.findByCreatedTime", query="SELECT bnsclothes FROM BnsClothes bnsclothes WHERE bnsclothes.createdTime = :createdTime")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 })
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-annotations@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-annotations@
+
 public class BnsClothes implements Serializable {
     private static final long serialVersionUID = 1L;
 

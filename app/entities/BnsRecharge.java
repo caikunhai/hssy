@@ -24,13 +24,13 @@
 	* template reference : 
 	* - name      : DomainEntityJPA2Annotation
 	* - file name : DomainEntityJPA2Annotation.vm
-	* - time      : 2016/11/10 ��Ԫ at 15:06:15 CST
+	* - time      : 2016/12/13 ��Ԫ at 23:26:34 CST
 */
 package entities;
 
-import java.io.Serializable;
 //MP-MANAGED-ADDED-AREA-BEGINNING @import@
 //MP-MANAGED-ADDED-AREA-ENDING @import@
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;

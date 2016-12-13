@@ -24,7 +24,7 @@
 	* template reference : 
 	* - name      : DomainEntityJPA2Metamodel
 	* - file name : DomainEntityJPA2Metamodel.vm
-	* - time      : 2016/12/10 ��Ԫ at 18:06:01 CST
+	* - time      : 2016/12/13 ��Ԫ at 23:26:35 CST
 */
 package entities;
 
@@ -34,15 +34,22 @@ import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
 
-@StaticMetamodel(SysArea.class)
-public class SysArea_ {
+@StaticMetamodel(BnsOrderChild.class)
+public class BnsOrderChild_ {
 
-    public static volatile SingularAttribute<SysArea, Long> id;
+    public static volatile SingularAttribute<BnsOrderChild, String> id;
 
-    public static volatile SingularAttribute<SysArea, String> name;
-    public static volatile SingularAttribute<SysArea, Integer> state;
-    public static volatile SingularAttribute<SysArea, Integer> sort;
-    public static volatile SingularAttribute<SysArea, Timestamp> createdTime;
+    public static volatile SingularAttribute<BnsOrderChild, String> orderId;
+    public static volatile SingularAttribute<BnsOrderChild, String> customer;
+    public static volatile SingularAttribute<BnsOrderChild, String> idcard;
+    public static volatile SingularAttribute<BnsOrderChild, String> mobile;
+    public static volatile SingularAttribute<BnsOrderChild, Integer> people;
+    public static volatile SingularAttribute<BnsOrderChild, String> cloth;
+    public static volatile SingularAttribute<BnsOrderChild, String> site;
+    public static volatile SingularAttribute<BnsOrderChild, String> hotel;
+    public static volatile SingularAttribute<BnsOrderChild, Integer> pickup;
+    public static volatile SingularAttribute<BnsOrderChild, String> remark;
+    public static volatile SingularAttribute<BnsOrderChild, Timestamp> createdTime;
 
 
 

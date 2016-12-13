@@ -24,13 +24,13 @@
 	* template reference : 
 	* - name      : DomainEntityJPA2Annotation
 	* - file name : DomainEntityJPA2Annotation.vm
-	* - time      : 2016/10/21 ��Ԫ at 11:33:36 CST
+	* - time      : 2016/12/13 ��Ԫ at 23:26:35 CST
 */
 package entities;
 
-import java.io.Serializable;
 //MP-MANAGED-ADDED-AREA-BEGINNING @import@
 //MP-MANAGED-ADDED-AREA-ENDING @import@
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -52,30 +52,29 @@ import javax.persistence.Table;
 @NamedQueries({
 	 @NamedQuery(name="BnsWallet.findAll", query="SELECT bnswallet FROM BnsWallet bnswallet")
 	,@NamedQuery(name="BnsWallet.findByHistory", query="SELECT bnswallet FROM BnsWallet bnswallet WHERE bnswallet.history = :history")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
+	,@NamedQuery(name="BnsWallet.findByTotal", query="SELECT bnswallet FROM BnsWallet bnswallet WHERE bnswallet.total = :total")
+
 	,@NamedQuery(name="BnsWallet.findByMoney", query="SELECT bnswallet FROM BnsWallet bnswallet WHERE bnswallet.money = :money")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
-	,@NamedQuery(name="BnsWallet.findByState", query="SELECT bnswallet FROM BnsWallet bnswallet WHERE bnswallet.state = :state")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
+	,@NamedQuery(name="BnsWallet.findByVice", query="SELECT bnswallet FROM BnsWallet bnswallet WHERE bnswallet.vice = :vice")
+
 	,@NamedQuery(name="BnsWallet.findByCreatedTime", query="SELECT bnswallet FROM BnsWallet bnswallet WHERE bnswallet.createdTime = :createdTime")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 })
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-annotations@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-annotations@
+
 public class BnsWallet implements Serializable {
     private static final long serialVersionUID = 1L;
-	public static final java.math.BigDecimal __DEFAULT_HISTORY = java.math.BigDecimal.valueOf(0.00);
+	public static final Integer __DEFAULT_HISTORY = Integer.valueOf(0);
+	public static final java.math.BigDecimal __DEFAULT_TOTAL = java.math.BigDecimal.valueOf(0.00);
 	public static final java.math.BigDecimal __DEFAULT_MONEY = java.math.BigDecimal.valueOf(0.00);
-	public static final Integer __DEFAULT_STATE = Integer.valueOf(0);
+	public static final java.math.BigDecimal __DEFAULT_VICE = java.math.BigDecimal.valueOf(0.00);
 
     public static final String FIND_ALL = "BnsWallet.findAll";
     public static final String FIND_BY_HISTORY = "BnsWallet.findByHistory";
+    public static final String FIND_BY_TOTAL = "BnsWallet.findByTotal";
     public static final String FIND_BY_MONEY = "BnsWallet.findByMoney";
-    public static final String FIND_BY_STATE = "BnsWallet.findByState";
+    public static final String FIND_BY_VICE = "BnsWallet.findByVice";
     public static final String FIND_BY_CREATEDTIME = "BnsWallet.findByCreatedTime";
 	
     @Id @Column(name="id" ,length=64) 
@@ -85,7 +84,14 @@ public class BnsWallet implements Serializable {
 //MP-MANAGED-ADDED-AREA-ENDING @history-field-annotation@
 //MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @ATTRIBUTE-history@
     @Column(name="history"   , nullable=true , unique=false)
-    private java.math.BigDecimal history; 
+    private Integer history; 
+//MP-MANAGED-UPDATABLE-ENDING
+
+//MP-MANAGED-ADDED-AREA-BEGINNING @total-field-annotation@
+//MP-MANAGED-ADDED-AREA-ENDING @total-field-annotation@
+//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @ATTRIBUTE-total@
+    @Column(name="total"   , nullable=true , unique=false)
+    private java.math.BigDecimal total; 
 //MP-MANAGED-UPDATABLE-ENDING
 
 //MP-MANAGED-ADDED-AREA-BEGINNING @money-field-annotation@
@@ -95,11 +101,11 @@ public class BnsWallet implements Serializable {
     private java.math.BigDecimal money; 
 //MP-MANAGED-UPDATABLE-ENDING
 
-//MP-MANAGED-ADDED-AREA-BEGINNING @state-field-annotation@
-//MP-MANAGED-ADDED-AREA-ENDING @state-field-annotation@
-//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @ATTRIBUTE-state@
-    @Column(name="state"   , nullable=true , unique=false)
-    private Integer state; 
+//MP-MANAGED-ADDED-AREA-BEGINNING @vice-field-annotation@
+//MP-MANAGED-ADDED-AREA-ENDING @vice-field-annotation@
+//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @ATTRIBUTE-vice@
+    @Column(name="vice"   , nullable=true , unique=false)
+    private java.math.BigDecimal vice; 
 //MP-MANAGED-UPDATABLE-ENDING
 
 //MP-MANAGED-ADDED-AREA-BEGINNING @created_time-field-annotation@
@@ -120,16 +126,18 @@ public class BnsWallet implements Serializable {
 	*/
     public BnsWallet(
        String id,
-       java.math.BigDecimal history,
+       Integer history,
+       java.math.BigDecimal total,
        java.math.BigDecimal money,
-       Integer state,
+       java.math.BigDecimal vice,
        Timestamp createdTime) {
        //primary keys
        setId (id);
        //attributes
        setHistory (history);
+       setTotal (total);
        setMoney (money);
-       setState (state);
+       setVice (vice);
        setCreatedTime (createdTime);
        //parents
     }
@@ -138,8 +146,9 @@ public class BnsWallet implements Serializable {
 	   return new BnsWallet(
           getId(),
           getHistory(),
+          getTotal(),
           getMoney(),
-          getState(),
+          getVice(),
           getCreatedTime()
 	   );
 	}
@@ -153,12 +162,23 @@ public class BnsWallet implements Serializable {
     }
     
 //MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @GETTER-SETTER-history@
-    public java.math.BigDecimal getHistory() {
+    public Integer getHistory() {
         return history;
     }
 	
-    public void setHistory (java.math.BigDecimal history) {
+    public void setHistory (Integer history) {
         this.history =  history;
+    }
+	
+//MP-MANAGED-UPDATABLE-ENDING
+
+//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @GETTER-SETTER-total@
+    public java.math.BigDecimal getTotal() {
+        return total;
+    }
+	
+    public void setTotal (java.math.BigDecimal total) {
+        this.total =  total;
     }
 	
 //MP-MANAGED-UPDATABLE-ENDING
@@ -174,13 +194,13 @@ public class BnsWallet implements Serializable {
 	
 //MP-MANAGED-UPDATABLE-ENDING
 
-//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @GETTER-SETTER-state@
-    public Integer getState() {
-        return state;
+//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @GETTER-SETTER-vice@
+    public java.math.BigDecimal getVice() {
+        return vice;
     }
 	
-    public void setState (Integer state) {
-        this.state =  state;
+    public void setVice (java.math.BigDecimal vice) {
+        this.vice =  vice;
     }
 	
 //MP-MANAGED-UPDATABLE-ENDING
@@ -203,8 +223,9 @@ public class BnsWallet implements Serializable {
     @javax.persistence.PrePersist
     public void prePersist_ () {
         if (history==null) history=__DEFAULT_HISTORY;
+        if (total==null) total=__DEFAULT_TOTAL;
         if (money==null) money=__DEFAULT_MONEY;
-        if (state==null) state=__DEFAULT_STATE;
+        if (vice==null) vice=__DEFAULT_VICE;
     }
 //MP-MANAGED-UPDATABLE-ENDING
 
@@ -212,8 +233,9 @@ public class BnsWallet implements Serializable {
     @javax.persistence.PreUpdate
     public void preUpdate_ () {
         if (history==null) history=__DEFAULT_HISTORY;
+        if (total==null) total=__DEFAULT_TOTAL;
         if (money==null) money=__DEFAULT_MONEY;
-        if (state==null) state=__DEFAULT_STATE;
+        if (vice==null) vice=__DEFAULT_VICE;
     }
 //MP-MANAGED-UPDATABLE-ENDING
 

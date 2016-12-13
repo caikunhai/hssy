@@ -24,7 +24,7 @@
 	* template reference : 
 	* - name      : DomainEntityJPA2Metamodel
 	* - file name : DomainEntityJPA2Metamodel.vm
-	* - time      : 2016/11/13 ��Ԫ at 19:54:26 CST
+	* - time      : 2016/12/13 ��Ԫ at 23:26:35 CST
 */
 package entities;
 
@@ -43,20 +43,13 @@ public class BnsOrder_ {
     public static volatile SingularAttribute<BnsOrder, String> city;
     public static volatile SingularAttribute<BnsOrder, Timestamp> takeTime;
     public static volatile SingularAttribute<BnsOrder, String> createdUser;
-    public static volatile SingularAttribute<BnsOrder, String> customer;
-    public static volatile SingularAttribute<BnsOrder, String> idcard;
-    public static volatile SingularAttribute<BnsOrder, String> mobile;
-    public static volatile SingularAttribute<BnsOrder, Integer> people;
-    public static volatile SingularAttribute<BnsOrder, String> cloth;
-    public static volatile SingularAttribute<BnsOrder, String> site;
-    public static volatile SingularAttribute<BnsOrder, String> hotel;
+    public static volatile SingularAttribute<BnsOrder, String> createdUserName;
+    public static volatile SingularAttribute<BnsOrder, String> acceptUser;
+    public static volatile SingularAttribute<BnsOrder, String> acceptUserName;
     public static volatile SingularAttribute<BnsOrder, java.math.BigDecimal> money;
     public static volatile SingularAttribute<BnsOrder, String> payment;
-    public static volatile SingularAttribute<BnsOrder, Integer> pickup;
+    public static volatile SingularAttribute<BnsOrder, Integer> paid;
     public static volatile SingularAttribute<BnsOrder, Integer> state;
-    public static volatile SingularAttribute<BnsOrder, String> acceptUser;
-    public static volatile SingularAttribute<BnsOrder, String> imgs;
-    public static volatile SingularAttribute<BnsOrder, String> remark;
     public static volatile SingularAttribute<BnsOrder, Timestamp> createdTime;
 
 

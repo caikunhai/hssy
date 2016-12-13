@@ -34,18 +34,15 @@ import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
 
-@StaticMetamodel(BnsClothes.class)
-public class BnsClothes_ {
+@StaticMetamodel(BnsOrderImg.class)
+public class BnsOrderImg_ {
 
-    public static volatile SingularAttribute<BnsClothes, String> id;
+    public static volatile SingularAttribute<BnsOrderImg, String> id;
 
-    public static volatile SingularAttribute<BnsClothes, String> company;
-    public static volatile SingularAttribute<BnsClothes, String> name;
-    public static volatile SingularAttribute<BnsClothes, Integer> unit;
-    public static volatile SingularAttribute<BnsClothes, Integer> num;
-    public static volatile SingularAttribute<BnsClothes, java.math.BigDecimal> price;
-    public static volatile SingularAttribute<BnsClothes, Integer> state;
-    public static volatile SingularAttribute<BnsClothes, Timestamp> createdTime;
+    public static volatile SingularAttribute<BnsOrderImg, String> orderId;
+    public static volatile SingularAttribute<BnsOrderImg, String> filename;
+    public static volatile SingularAttribute<BnsOrderImg, Integer> syn;
+    public static volatile SingularAttribute<BnsOrderImg, Timestamp> createdTime;
 
 
 

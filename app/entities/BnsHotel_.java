@@ -24,7 +24,7 @@
 	* template reference : 
 	* - name      : DomainEntityJPA2Metamodel
 	* - file name : DomainEntityJPA2Metamodel.vm
-	* - time      : 2016/11/07 ��Ԫ at 11:08:34 CST
+	* - time      : 2016/12/13 ��Ԫ at 23:26:35 CST
 */
 package entities;
 

@@ -24,13 +24,13 @@
 	* template reference : 
 	* - name      : DomainEntityJPA2Annotation
 	* - file name : DomainEntityJPA2Annotation.vm
-	* - time      : 2016/11/07 ��Ԫ at 11:08:34 CST
+	* - time      : 2016/12/13 ��Ԫ at 23:26:34 CST
 */
 package entities;
 
-import java.io.Serializable;
 //MP-MANAGED-ADDED-AREA-BEGINNING @import@
 //MP-MANAGED-ADDED-AREA-ENDING @import@
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -53,50 +53,37 @@ import javax.persistence.Table;
 	 @NamedQuery(name="BnsHotel.findAll", query="SELECT bnshotel FROM BnsHotel bnshotel")
 	,@NamedQuery(name="BnsHotel.findByCompany", query="SELECT bnshotel FROM BnsHotel bnshotel WHERE bnshotel.company = :company")
 	,@NamedQuery(name="BnsHotel.findByCompanyContaining", query="SELECT bnshotel FROM BnsHotel bnshotel WHERE bnshotel.company like :company")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsHotel.findByCity", query="SELECT bnshotel FROM BnsHotel bnshotel WHERE bnshotel.city = :city")
 	,@NamedQuery(name="BnsHotel.findByCityContaining", query="SELECT bnshotel FROM BnsHotel bnshotel WHERE bnshotel.city like :city")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsHotel.findByName", query="SELECT bnshotel FROM BnsHotel bnshotel WHERE bnshotel.name = :name")
 	,@NamedQuery(name="BnsHotel.findByNameContaining", query="SELECT bnshotel FROM BnsHotel bnshotel WHERE bnshotel.name like :name")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsHotel.findByAddress", query="SELECT bnshotel FROM BnsHotel bnshotel WHERE bnshotel.address = :address")
 	,@NamedQuery(name="BnsHotel.findByAddressContaining", query="SELECT bnshotel FROM BnsHotel bnshotel WHERE bnshotel.address like :address")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsHotel.findByLogo", query="SELECT bnshotel FROM BnsHotel bnshotel WHERE bnshotel.logo = :logo")
 	,@NamedQuery(name="BnsHotel.findByLogoContaining", query="SELECT bnshotel FROM BnsHotel bnshotel WHERE bnshotel.logo like :logo")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsHotel.findByType", query="SELECT bnshotel FROM BnsHotel bnshotel WHERE bnshotel.type = :type")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsHotel.findByState", query="SELECT bnshotel FROM BnsHotel bnshotel WHERE bnshotel.state = :state")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsHotel.findByStar", query="SELECT bnshotel FROM BnsHotel bnshotel WHERE bnshotel.star = :star")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsHotel.findByDescription", query="SELECT bnshotel FROM BnsHotel bnshotel WHERE bnshotel.description = :description")
 	,@NamedQuery(name="BnsHotel.findByDescriptionContaining", query="SELECT bnshotel FROM BnsHotel bnshotel WHERE bnshotel.description like :description")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsHotel.findByPrice", query="SELECT bnshotel FROM BnsHotel bnshotel WHERE bnshotel.price = :price")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsHotel.findByRemark", query="SELECT bnshotel FROM BnsHotel bnshotel WHERE bnshotel.remark = :remark")
 	,@NamedQuery(name="BnsHotel.findByRemarkContaining", query="SELECT bnshotel FROM BnsHotel bnshotel WHERE bnshotel.remark like :remark")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsHotel.findByCreatedTime", query="SELECT bnshotel FROM BnsHotel bnshotel WHERE bnshotel.createdTime = :createdTime")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 })
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-annotations@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-annotations@
+
 public class BnsHotel implements Serializable {
     private static final long serialVersionUID = 1L;
 	public static final Integer __DEFAULT_TYPE = Integer.valueOf(0);
@@ -159,7 +146,7 @@ public class BnsHotel implements Serializable {
 //MP-MANAGED-ADDED-AREA-BEGINNING @logo-field-annotation@
 //MP-MANAGED-ADDED-AREA-ENDING @logo-field-annotation@
 //MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @ATTRIBUTE-logo@
-    @Column(name="logo"  , length=100 , nullable=true , unique=false)
+    @Column(name="logo"   , nullable=true , unique=false)
     private String logo; 
 //MP-MANAGED-UPDATABLE-ENDING
 

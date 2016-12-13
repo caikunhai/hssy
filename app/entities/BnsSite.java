@@ -24,13 +24,13 @@
 	* template reference : 
 	* - name      : DomainEntityJPA2Annotation
 	* - file name : DomainEntityJPA2Annotation.vm
-	* - time      : 2016/11/07 ��Ԫ at 11:08:34 CST
+	* - time      : 2016/12/13 ��Ԫ at 23:26:35 CST
 */
 package entities;
 
-import java.io.Serializable;
 //MP-MANAGED-ADDED-AREA-BEGINNING @import@
 //MP-MANAGED-ADDED-AREA-ENDING @import@
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -53,47 +53,35 @@ import javax.persistence.Table;
 	 @NamedQuery(name="BnsSite.findAll", query="SELECT bnssite FROM BnsSite bnssite")
 	,@NamedQuery(name="BnsSite.findByCompany", query="SELECT bnssite FROM BnsSite bnssite WHERE bnssite.company = :company")
 	,@NamedQuery(name="BnsSite.findByCompanyContaining", query="SELECT bnssite FROM BnsSite bnssite WHERE bnssite.company like :company")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsSite.findByCity", query="SELECT bnssite FROM BnsSite bnssite WHERE bnssite.city = :city")
 	,@NamedQuery(name="BnsSite.findByCityContaining", query="SELECT bnssite FROM BnsSite bnssite WHERE bnssite.city like :city")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsSite.findByName", query="SELECT bnssite FROM BnsSite bnssite WHERE bnssite.name = :name")
 	,@NamedQuery(name="BnsSite.findByNameContaining", query="SELECT bnssite FROM BnsSite bnssite WHERE bnssite.name like :name")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsSite.findByAddress", query="SELECT bnssite FROM BnsSite bnssite WHERE bnssite.address = :address")
 	,@NamedQuery(name="BnsSite.findByAddressContaining", query="SELECT bnssite FROM BnsSite bnssite WHERE bnssite.address like :address")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsSite.findByLogo", query="SELECT bnssite FROM BnsSite bnssite WHERE bnssite.logo = :logo")
 	,@NamedQuery(name="BnsSite.findByLogoContaining", query="SELECT bnssite FROM BnsSite bnssite WHERE bnssite.logo like :logo")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsSite.findByType", query="SELECT bnssite FROM BnsSite bnssite WHERE bnssite.type = :type")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsSite.findByState", query="SELECT bnssite FROM BnsSite bnssite WHERE bnssite.state = :state")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsSite.findByDescription", query="SELECT bnssite FROM BnsSite bnssite WHERE bnssite.description = :description")
 	,@NamedQuery(name="BnsSite.findByDescriptionContaining", query="SELECT bnssite FROM BnsSite bnssite WHERE bnssite.description like :description")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsSite.findByMoney", query="SELECT bnssite FROM BnsSite bnssite WHERE bnssite.money = :money")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsSite.findByRemark", query="SELECT bnssite FROM BnsSite bnssite WHERE bnssite.remark = :remark")
 	,@NamedQuery(name="BnsSite.findByRemarkContaining", query="SELECT bnssite FROM BnsSite bnssite WHERE bnssite.remark like :remark")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsSite.findByCreatedTime", query="SELECT bnssite FROM BnsSite bnssite WHERE bnssite.createdTime = :createdTime")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 })
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-annotations@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-annotations@
+
 public class BnsSite implements Serializable {
     private static final long serialVersionUID = 1L;
 	public static final Integer __DEFAULT_TYPE = Integer.valueOf(0);
@@ -154,7 +142,7 @@ public class BnsSite implements Serializable {
 //MP-MANAGED-ADDED-AREA-BEGINNING @logo-field-annotation@
 //MP-MANAGED-ADDED-AREA-ENDING @logo-field-annotation@
 //MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @ATTRIBUTE-logo@
-    @Column(name="logo"  , length=100 , nullable=true , unique=false)
+    @Column(name="logo"   , nullable=true , unique=false)
     private String logo; 
 //MP-MANAGED-UPDATABLE-ENDING
 

@@ -24,13 +24,13 @@
 	* template reference : 
 	* - name      : DomainEntityJPA2Annotation
 	* - file name : DomainEntityJPA2Annotation.vm
-	* - time      : 2016/11/16 ��Ԫ at 10:46:26 CST
+	* - time      : 2016/12/13 ��Ԫ at 23:26:34 CST
 */
 package entities;
 
-import java.io.Serializable;
 //MP-MANAGED-ADDED-AREA-BEGINNING @import@
 //MP-MANAGED-ADDED-AREA-ENDING @import@
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -53,62 +53,41 @@ import javax.persistence.Table;
 	 @NamedQuery(name="BnsCompany.findAll", query="SELECT bnscompany FROM BnsCompany bnscompany")
 	,@NamedQuery(name="BnsCompany.findByCity", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.city = :city")
 	,@NamedQuery(name="BnsCompany.findByCityContaining", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.city like :city")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
-	,@NamedQuery(name="BnsCompany.findByCompany", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.company = :company")
-	,@NamedQuery(name="BnsCompany.findByCompanyContaining", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.company like :company")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
+	,@NamedQuery(name="BnsCompany.findByName", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.name = :name")
+	,@NamedQuery(name="BnsCompany.findByNameContaining", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.name like :name")
+
 	,@NamedQuery(name="BnsCompany.findByLogo", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.logo = :logo")
 	,@NamedQuery(name="BnsCompany.findByLogoContaining", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.logo like :logo")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
-	,@NamedQuery(name="BnsCompany.findByLicense", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.license = :license")
-	,@NamedQuery(name="BnsCompany.findByLicenseContaining", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.license like :license")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsCompany.findByAddress", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.address = :address")
 	,@NamedQuery(name="BnsCompany.findByAddressContaining", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.address like :address")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
-	,@NamedQuery(name="BnsCompany.findByLinkman", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.linkman = :linkman")
-	,@NamedQuery(name="BnsCompany.findByLinkmanContaining", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.linkman like :linkman")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
-	,@NamedQuery(name="BnsCompany.findByMobile", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.mobile = :mobile")
-	,@NamedQuery(name="BnsCompany.findByMobileContaining", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.mobile like :mobile")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsCompany.findByFrName", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.frName = :frName")
 	,@NamedQuery(name="BnsCompany.findByFrNameContaining", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.frName like :frName")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsCompany.findByFrMobile", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.frMobile = :frMobile")
 	,@NamedQuery(name="BnsCompany.findByFrMobileContaining", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.frMobile like :frMobile")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
+	,@NamedQuery(name="BnsCompany.findByLinkman", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.linkman = :linkman")
+	,@NamedQuery(name="BnsCompany.findByLinkmanContaining", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.linkman like :linkman")
+
+	,@NamedQuery(name="BnsCompany.findByMobile", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.mobile = :mobile")
+	,@NamedQuery(name="BnsCompany.findByMobileContaining", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.mobile like :mobile")
+
 	,@NamedQuery(name="BnsCompany.findByGos", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.gos = :gos")
 	,@NamedQuery(name="BnsCompany.findByGosContaining", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.gos like :gos")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
-	,@NamedQuery(name="BnsCompany.findByHistory", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.history = :history")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsCompany.findByNum", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.num = :num")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsCompany.findByState", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.state = :state")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsCompany.findByRank", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.rank = :rank")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 	,@NamedQuery(name="BnsCompany.findByCreatedTime", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.createdTime = :createdTime")
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+
 })
-//MP-MANAGED-ADDED-AREA-BEGINNING @custom-annotations@
-//MP-MANAGED-ADDED-AREA-ENDING @custom-annotations@
+
 public class BnsCompany implements Serializable {
     private static final long serialVersionUID = 1L;
 	public static final Integer __DEFAULT_NUM = Integer.valueOf(0);
@@ -118,25 +97,22 @@ public class BnsCompany implements Serializable {
     public static final String FIND_ALL = "BnsCompany.findAll";
     public static final String FIND_BY_CITY = "BnsCompany.findByCity";
     public static final String FIND_BY_CITY_CONTAINING ="BnsCompany.findByCityContaining";
-    public static final String FIND_BY_COMPANY = "BnsCompany.findByCompany";
-    public static final String FIND_BY_COMPANY_CONTAINING ="BnsCompany.findByCompanyContaining";
+    public static final String FIND_BY_NAME = "BnsCompany.findByName";
+    public static final String FIND_BY_NAME_CONTAINING ="BnsCompany.findByNameContaining";
     public static final String FIND_BY_LOGO = "BnsCompany.findByLogo";
     public static final String FIND_BY_LOGO_CONTAINING ="BnsCompany.findByLogoContaining";
-    public static final String FIND_BY_LICENSE = "BnsCompany.findByLicense";
-    public static final String FIND_BY_LICENSE_CONTAINING ="BnsCompany.findByLicenseContaining";
     public static final String FIND_BY_ADDRESS = "BnsCompany.findByAddress";
     public static final String FIND_BY_ADDRESS_CONTAINING ="BnsCompany.findByAddressContaining";
-    public static final String FIND_BY_LINKMAN = "BnsCompany.findByLinkman";
-    public static final String FIND_BY_LINKMAN_CONTAINING ="BnsCompany.findByLinkmanContaining";
-    public static final String FIND_BY_MOBILE = "BnsCompany.findByMobile";
-    public static final String FIND_BY_MOBILE_CONTAINING ="BnsCompany.findByMobileContaining";
     public static final String FIND_BY_FRNAME = "BnsCompany.findByFrName";
     public static final String FIND_BY_FRNAME_CONTAINING ="BnsCompany.findByFrNameContaining";
     public static final String FIND_BY_FRMOBILE = "BnsCompany.findByFrMobile";
     public static final String FIND_BY_FRMOBILE_CONTAINING ="BnsCompany.findByFrMobileContaining";
+    public static final String FIND_BY_LINKMAN = "BnsCompany.findByLinkman";
+    public static final String FIND_BY_LINKMAN_CONTAINING ="BnsCompany.findByLinkmanContaining";
+    public static final String FIND_BY_MOBILE = "BnsCompany.findByMobile";
+    public static final String FIND_BY_MOBILE_CONTAINING ="BnsCompany.findByMobileContaining";
     public static final String FIND_BY_GOS = "BnsCompany.findByGos";
     public static final String FIND_BY_GOS_CONTAINING ="BnsCompany.findByGosContaining";
-    public static final String FIND_BY_HISTORY = "BnsCompany.findByHistory";
     public static final String FIND_BY_NUM = "BnsCompany.findByNum";
     public static final String FIND_BY_STATE = "BnsCompany.findByState";
     public static final String FIND_BY_RANK = "BnsCompany.findByRank";
@@ -152,11 +128,11 @@ public class BnsCompany implements Serializable {
     private String city; 
 //MP-MANAGED-UPDATABLE-ENDING
 
-//MP-MANAGED-ADDED-AREA-BEGINNING @company-field-annotation@
-//MP-MANAGED-ADDED-AREA-ENDING @company-field-annotation@
-//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @ATTRIBUTE-company@
-    @Column(name="company"  , length=60 , nullable=true , unique=false)
-    private String company; 
+//MP-MANAGED-ADDED-AREA-BEGINNING @name-field-annotation@
+//MP-MANAGED-ADDED-AREA-ENDING @name-field-annotation@
+//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @ATTRIBUTE-name@
+    @Column(name="name"  , length=60 , nullable=true , unique=false)
+    private String name; 
 //MP-MANAGED-UPDATABLE-ENDING
 
 //MP-MANAGED-ADDED-AREA-BEGINNING @logo-field-annotation@
@@ -166,32 +142,11 @@ public class BnsCompany implements Serializable {
     private String logo; 
 //MP-MANAGED-UPDATABLE-ENDING
 
-//MP-MANAGED-ADDED-AREA-BEGINNING @license-field-annotation@
-//MP-MANAGED-ADDED-AREA-ENDING @license-field-annotation@
-//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @ATTRIBUTE-license@
-    @Column(name="license"  , length=100 , nullable=true , unique=false)
-    private String license; 
-//MP-MANAGED-UPDATABLE-ENDING
-
 //MP-MANAGED-ADDED-AREA-BEGINNING @address-field-annotation@
 //MP-MANAGED-ADDED-AREA-ENDING @address-field-annotation@
 //MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @ATTRIBUTE-address@
     @Column(name="address"  , length=100 , nullable=true , unique=false)
     private String address; 
-//MP-MANAGED-UPDATABLE-ENDING
-
-//MP-MANAGED-ADDED-AREA-BEGINNING @linkman-field-annotation@
-//MP-MANAGED-ADDED-AREA-ENDING @linkman-field-annotation@
-//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @ATTRIBUTE-linkman@
-    @Column(name="linkman"  , length=30 , nullable=true , unique=false)
-    private String linkman; 
-//MP-MANAGED-UPDATABLE-ENDING
-
-//MP-MANAGED-ADDED-AREA-BEGINNING @mobile-field-annotation@
-//MP-MANAGED-ADDED-AREA-ENDING @mobile-field-annotation@
-//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @ATTRIBUTE-mobile@
-    @Column(name="mobile"  , length=20 , nullable=true , unique=false)
-    private String mobile; 
 //MP-MANAGED-UPDATABLE-ENDING
 
 //MP-MANAGED-ADDED-AREA-BEGINNING @fr_name-field-annotation@
@@ -208,18 +163,25 @@ public class BnsCompany implements Serializable {
     private String frMobile; 
 //MP-MANAGED-UPDATABLE-ENDING
 
+//MP-MANAGED-ADDED-AREA-BEGINNING @linkman-field-annotation@
+//MP-MANAGED-ADDED-AREA-ENDING @linkman-field-annotation@
+//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @ATTRIBUTE-linkman@
+    @Column(name="linkman"  , length=30 , nullable=true , unique=false)
+    private String linkman; 
+//MP-MANAGED-UPDATABLE-ENDING
+
+//MP-MANAGED-ADDED-AREA-BEGINNING @mobile-field-annotation@
+//MP-MANAGED-ADDED-AREA-ENDING @mobile-field-annotation@
+//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @ATTRIBUTE-mobile@
+    @Column(name="mobile"  , length=20 , nullable=true , unique=false)
+    private String mobile; 
+//MP-MANAGED-UPDATABLE-ENDING
+
 //MP-MANAGED-ADDED-AREA-BEGINNING @gos-field-annotation@
 //MP-MANAGED-ADDED-AREA-ENDING @gos-field-annotation@
 //MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @ATTRIBUTE-gos@
     @Column(name="gos"  , length=255 , nullable=true , unique=false)
     private String gos; 
-//MP-MANAGED-UPDATABLE-ENDING
-
-//MP-MANAGED-ADDED-AREA-BEGINNING @history-field-annotation@
-//MP-MANAGED-ADDED-AREA-ENDING @history-field-annotation@
-//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @ATTRIBUTE-history@
-    @Column(name="history"   , nullable=true , unique=false)
-    private Integer history; 
 //MP-MANAGED-UPDATABLE-ENDING
 
 //MP-MANAGED-ADDED-AREA-BEGINNING @num-field-annotation@
@@ -262,16 +224,14 @@ public class BnsCompany implements Serializable {
     public BnsCompany(
        String id,
        String city,
-       String company,
+       String name,
        String logo,
-       String license,
        String address,
-       String linkman,
-       String mobile,
        String frName,
        String frMobile,
+       String linkman,
+       String mobile,
        String gos,
-       Integer history,
        Integer num,
        Integer state,
        Integer rank,
@@ -280,16 +240,14 @@ public class BnsCompany implements Serializable {
        setId (id);
        //attributes
        setCity (city);
-       setCompany (company);
+       setName (name);
        setLogo (logo);
-       setLicense (license);
        setAddress (address);
-       setLinkman (linkman);
-       setMobile (mobile);
        setFrName (frName);
        setFrMobile (frMobile);
+       setLinkman (linkman);
+       setMobile (mobile);
        setGos (gos);
-       setHistory (history);
        setNum (num);
        setState (state);
        setRank (rank);
@@ -301,16 +259,14 @@ public class BnsCompany implements Serializable {
 	   return new BnsCompany(
           getId(),
           getCity(),
-          getCompany(),
+          getName(),
           getLogo(),
-          getLicense(),
           getAddress(),
-          getLinkman(),
-          getMobile(),
           getFrName(),
           getFrMobile(),
+          getLinkman(),
+          getMobile(),
           getGos(),
-          getHistory(),
           getNum(),
           getState(),
           getRank(),
@@ -337,13 +293,13 @@ public class BnsCompany implements Serializable {
 	
 //MP-MANAGED-UPDATABLE-ENDING
 
-//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @GETTER-SETTER-company@
-    public String getCompany() {
-        return company;
+//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @GETTER-SETTER-name@
+    public String getName() {
+        return name;
     }
 	
-    public void setCompany (String company) {
-        this.company =  company;
+    public void setName (String name) {
+        this.name =  name;
     }
 	
 //MP-MANAGED-UPDATABLE-ENDING
@@ -359,17 +315,6 @@ public class BnsCompany implements Serializable {
 	
 //MP-MANAGED-UPDATABLE-ENDING
 
-//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @GETTER-SETTER-license@
-    public String getLicense() {
-        return license;
-    }
-	
-    public void setLicense (String license) {
-        this.license =  license;
-    }
-	
-//MP-MANAGED-UPDATABLE-ENDING
-
 //MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @GETTER-SETTER-address@
     public String getAddress() {
         return address;
@@ -377,28 +322,6 @@ public class BnsCompany implements Serializable {
 	
     public void setAddress (String address) {
         this.address =  address;
-    }
-	
-//MP-MANAGED-UPDATABLE-ENDING
-
-//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @GETTER-SETTER-linkman@
-    public String getLinkman() {
-        return linkman;
-    }
-	
-    public void setLinkman (String linkman) {
-        this.linkman =  linkman;
-    }
-	
-//MP-MANAGED-UPDATABLE-ENDING
-
-//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @GETTER-SETTER-mobile@
-    public String getMobile() {
-        return mobile;
-    }
-	
-    public void setMobile (String mobile) {
-        this.mobile =  mobile;
     }
 	
 //MP-MANAGED-UPDATABLE-ENDING
@@ -425,6 +348,28 @@ public class BnsCompany implements Serializable {
 	
 //MP-MANAGED-UPDATABLE-ENDING
 
+//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @GETTER-SETTER-linkman@
+    public String getLinkman() {
+        return linkman;
+    }
+	
+    public void setLinkman (String linkman) {
+        this.linkman =  linkman;
+    }
+	
+//MP-MANAGED-UPDATABLE-ENDING
+
+//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @GETTER-SETTER-mobile@
+    public String getMobile() {
+        return mobile;
+    }
+	
+    public void setMobile (String mobile) {
+        this.mobile =  mobile;
+    }
+	
+//MP-MANAGED-UPDATABLE-ENDING
+
 //MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @GETTER-SETTER-gos@
     public String getGos() {
         return gos;
@@ -432,17 +377,6 @@ public class BnsCompany implements Serializable {
 	
     public void setGos (String gos) {
         this.gos =  gos;
-    }
-	
-//MP-MANAGED-UPDATABLE-ENDING
-
-//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @GETTER-SETTER-history@
-    public Integer getHistory() {
-        return history;
-    }
-	
-    public void setHistory (Integer history) {
-        this.history =  history;
     }
 	
 //MP-MANAGED-UPDATABLE-ENDING

@@ -51,7 +51,7 @@ public class Global extends GlobalSettings {
 
 	@Override
 	public Action<?> onRequest(Request req, Method method) {
-		 RequestLogger.log(req);
+		 //RequestLogger.log(req);
 		return super.onRequest(req, method);
 	}
 
