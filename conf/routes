@@ -12,9 +12,6 @@ GET     /file/get				   controllers.SysController.get(name:String)
 GET     /file/download  		   controllers.SysController.download(id:String)
 GET     /file/doing		  		   controllers.SysController.unFinish(token:String)
 
-#Area
-GET     /area/list			   	   controllers.AreaController.list()
-POST    /area/save			   	   controllers.AreaController.save()
 #Site
 GET     /site/list  			   controllers.SiteController.list()
 GET     /site/all   			   controllers.SiteController.all()
