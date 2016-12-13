@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>管理平台</title>
+	<link rel="stylesheet" type="text/css" href="css/css.css" />
+	<link rel="stylesheet" type="text/css" href="js/themes/default/easyui.css" />
+	<link rel="stylesheet" type="text/css" href="css/icon.css">
+	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="js/core.js"></script>
+    <script type="text/javascript" src="js/bns.js"></script>
+</head>
+<body>
+	<p>权限：<input type="text" name="role"></p>
+	<ul style="list-style-type:none;">
+		<li><input type="checkbox" value="1" style="width:30px;">下单管理</li>
+	</ul>
+	<p align="center"><input type="button" value="提交保存"></p>
+<script>
+$(function(){
+	bns.menu_list(menu_html);
+	$("input[type=button]").click(function(){
+		var role =$("input[name=role]").val();
+		if(role==''){
+			alert('请填写权限');
+			return;
+		}
+		var menu='';
+		$('input[name="menu"]:checked').each(function(){ 
+			menu+=$(this).val()+'#';
+		}); 
+		var obj=new Object();
+		obj.role=role;
+		obj.menus=menu;
+		bns.menu_role(JSON.stringify(obj),save_html);
+	});
+});
+
+function menu_html(data){
+	var xhrObj = JSON.parse(data);
+	var html='';
+	for(var i=0;i<xhrObj.length;i++){
+		html+='<li><input type="checkbox" value="'+xhrObj[i].id+'" style="width:30px;" name="menu">'+xhrObj[i].name+'</li>';
+	}
+	$("ul").empty().append(html);
+}
+
+function save_html(data){
+	var xhrObj = JSON.parse(data);
+	alert(xhrObj.message);
+}
+
+</script>
+</body>
+</html>

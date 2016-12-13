@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>管理平台</title>
+	<link rel="stylesheet" type="text/css" href="css/css.css" />
+	<link rel="stylesheet" type="text/css" href="js/themes/default/easyui.css" />
+	<link rel="stylesheet" type="text/css" href="uploadify/css/uploadify.css" media="screen"/>
+	<link rel="stylesheet" type="text/css" href="css/icon.css">
+	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="js/core.js"></script>
+    <script type="text/javascript" src="js/bns.js"></script>
+    <script type="text/javascript" src="uploadify/scripts/jquery.uploadify.js"></script>
+</head>
+<body>
+	<div class="easyui-panel" style="width:100%;padding:30px 60px;">
+		<form id="ff" class="easyui-form" method="post" data-options="novalidate:true">
+			<div style="margin-bottom:20px">
+				<select class="easyui-combobox" id="city" label="所在城市" style="width: 240px;" data-options="editable:false,panelHeight:'auto'"></select>
+			</div>
+			<div style="margin-bottom:20px">
+				<input class="easyui-textbox" id="name" data-options="label:'景点名称:',required:true" style="width: 240px;">
+			</div>
+			<div style="margin-bottom:20px">
+				<input class="easyui-textbox" id="description" data-options="label:'景点介绍:',required:true" style="width: 240px;">
+			</div>
+			<div style="margin-bottom:20px">
+				<input class="easyui-textbox" id="money" data-options="label:'景点门票:',required:true" style="width: 240px;">
+			</div>
+			<div style="margin-bottom:20px">
+				<select class="easyui-combobox" id="type" label="景点类型" style="width: 240px;" data-options="editable:false,panelHeight:'auto'">
+					<option value="-1">---选择状态--</option>
+					<option value="0">免费</option>
+					<option value="1">收费</option>
+				</select>
+			</div>
+			<div style="margin-bottom:20px">
+				<select class="easyui-combobox" id="state" label="景点状态" style="width: 240px;" data-options="editable:false,panelHeight:'auto'">
+					<option value="-1">---选择状态--</option>
+					<option value="0">启用</option>
+					<option value="1">禁用</option>
+				</select>
+			</div>
+			<div style="margin-bottom:20px">
+				<input class="easyui-textbox" id="remark" data-options="label:'备注信息:',required:true" style="width: 240px;">
+			</div>
+			<div style="text-align:center;padding:5px 0">
+				<input id="logo" type="file"/>
+			</div>
+			<ul style="padding:5px 0;" id="logo_"></ul>
+		</form>
+		<div style="padding:5px 0;clear: both;">
+			<a href="javascript:void(0)" class="easyui-linkbutton" style="width:80px">提交保存</a>
+		</div>
+	</div>
+	<script>
+	var area=new Array();
+	$(function(){
+		
+		$("#logo").uploadify({
+		  'swf' : 'uploadify/scripts/uploadify.swf',
+		  'uploader': core.file_upload_url,
+		  'queueID': 'fileQueue',
+		  'removeCompleted' : 'false',
+		  'auto': true,
+		  'buttonText': 'Logo上传',
+		  'simUploadLimit' : 1,
+		  'progressData' : 'speed',
+		  'queueSizeLimit' : 1,
+		  'fileObjName' : 'filedata',
+		  'fileExt': '*.jpg;*.gif;*.jpeg;*.png;*.bmp;*.zip;*.rar;*.7z',
+		  onUploadSuccess: function(file, data, response) {
+		  	if(data.indexOf('.jpg')!=-1){
+		  		if($("input[name=logo]").val()==''){
+		  			$("input[name=logo]").val(data+',');
+		  		}else{
+		  			$("input[name=logo]").val($("input[name=logo]").val()+data+',');
+		  		}
+		  		$("#logo_").append('<li class="left" title='+data+'><img src="'+img_src(data)+'" width=120px height=100px>');
+		  	}
+		  },
+		  onError: function(event, queueID, fileObj) {
+		      alert("文件:" + fileObj.name + "上传失败");
+		  }
+		});
+		
+		
+		bns.area_list();
+		var id =getQueryParam("id");
+		console.log('====id========='+id);
+		if(id!=''){
+			bns.site_get(id,init_html);
+		}
+		
+		$("a").click(function() {
+			if($(this).text()!='提交保存'){
+				return;
+			}
+			var obj = new Object();
+			if(id!=''){
+				obj.id =id;
+			}
+			
+			var city =$('#city').combobox('getValue');
+			if(city==-1){
+				msgShow("系统提示","请选择城市","warning");
+				return;
+			}
+			obj.city =city;
+			var name = $("#name").textbox('getValue');
+			if(name!=''){
+				obj.name =name;
+			}
+			var description = $("#description").textbox('getValue');
+			if(description!=''){
+				obj.description =description;
+			}
+			var money = $("#money").textbox('getValue');
+			if(money!=''){
+				obj.money =money;
+			}
+			var type =$('#type').combobox('getValue');
+			if(type!=-1){
+				obj.type =type;
+			}
+			var state =$('#state').combobox('getValue');
+			if(state!=-1){
+				obj.state =state;
+			}
+			var remark = $("#remark").textbox('getValue');
+			if(remark!=''){
+				obj.remark =remark;
+			}
+			var img_src='';
+			$('li').each(function(index, element) {
+				img_src +=$(element).attr('title')+',';
+			});
+			if(img_src!=''){
+				obj.logo =img_src;
+			}
+			console.log('============='+JSON.stringify(obj));
+			bns.site_save(JSON.stringify(obj),common_html);
+		});
+		
+	});
+	
+	function init_html(data){
+		var xhrObj = JSON.parse(data);
+		console.log(JSON.stringify(xhrObj));
+		$("#city").combobox('setValue',xhrObj.city);
+		$("#name").textbox('setValue',xhrObj.name);
+		$("#description").textbox('setValue',xhrObj.description);
+		$("#money").textbox('setValue',xhrObj.money);
+		$('#type').combobox('setValue',xhrObj.type);
+		$("#state").combobox('setValue',xhrObj.state);
+		$("#remark").textbox('setValue',xhrObj.remark);
+		var imgs='';
+		if(xhrObj.logo!=null&&xhrObj.logo!=''){
+			imgs =xhrObj.logo.split(',');
+		}
+		var img_html='';
+		for(var i=0;i<imgs.length;i++){
+			if(imgs[i]!=''){
+				img_html+='<li class="left" title='+imgs[i]+'><img src="'+img_src(imgs[i])+'" width=120px height=100px>';
+			}
+		}
+		$("#logo_").empty().append(img_html);
+	}
+	
+	</script>
+</body>
+</html>

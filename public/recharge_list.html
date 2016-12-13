@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>管理平台</title>
+	<link rel="stylesheet" type="text/css" href="css/css.css" />
+	<link rel="stylesheet" type="text/css" href="js/themes/default/easyui.css" />
+	<link rel="stylesheet" type="text/css" href="css/icon.css">
+	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="js/core.js"></script>
+    <script type="text/javascript" src="js/bns.js"></script>
+    <script type="text/javascript" src="js/util.date.js"></script>
+</head>
+<body>
+	<table style="width:100%" id="dg" data-options="
+                rownumbers:true,
+                singleSelect:true,
+                autoRowHeight:false,
+                pagination:true,
+                pageSize:10">
+		<thead>
+			<tr>
+				<th field="code" width="10%">充值编号</th>
+				<th field="actual" width="10%">充值金额</th>
+				<th field="state" width="10%">充值状态</th>
+				<th field="createdTime" width="20%">充值时间</th>
+			</tr>
+		</thead>
+	</table>
+	
+<script>
+	$(function(){
+		bns.recharge_list(list_html);
+		
+	});
+	
+	//列表数据
+	function list_html(data){
+		var xhrObj = JSON.parse(data);
+		var rows = [];
+		for(var i=0;i<xhrObj.length;i++){
+			rows.push({
+			    code: xhrObj[i].code,
+				actual: xhrObj[i].actual,
+				state:xhrObj[i].state==0?'待到账':'已到账',
+				createdTime:time.formatterDate(new Date(xhrObj[i].createdTime))
+			});
+		}
+        $('#dg').datagrid({loadFilter:pagerFilter}).datagrid('loadData', rows);
+	}
+</script>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>管理平台</title>
+	<link rel="stylesheet" type="text/css" href="css/css.css" />
+	<link rel="stylesheet" type="text/css" href="js/themes/default/easyui.css" />
+	<link rel="stylesheet" type="text/css" href="css/icon.css">
+	<link rel="stylesheet" type="text/css" href="uploadify/css/uploadify.css" media="screen"/>
+	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="js/core.js"></script>
+    <script type="text/javascript" src="js/bns.js"></script>
+    <script type="text/javascript" src="uploadify/scripts/jquery.uploadify.js"></script>
+</head>
+<body>
+	<div class="easyui-panel"  style="width:1200px;padding:20px 60px;border:1px solid #fff;">
+		<p>
+			<input class="easyui-textbox" id="code" data-options="label:'订单编号:'" style="width: 230px;" readonly="readonly">
+			<span class="left30"></span>
+			<input class="easyui-textbox" id="takeTime" data-options="label:'拍摄日期:'" style="width: 230px;" readonly="readonly">
+			<span class="left30"></span>
+			<input class="easyui-textbox" id="city" data-options="label:'拍摄城市:'" style="width: 230px;" readonly="readonly">
+		</p>
+		<div class="divider"></div>
+		<p style="margin-bottom:10px">
+			<input class="easyui-textbox" id="createdUser" data-options="label:'下单公司:'" style="width: 230px;" readonly="readonly">
+			<span class="left30"></span>
+			<input class="easyui-textbox" id="createdAddress" data-options="label:'公司地址:'" style="width: 230px;" readonly="readonly">
+			<span class="left30"></span>
+			<input class="easyui-textbox" id="createdMobile" data-options="label:'负责人电话:'" style="width: 230px;" readonly="readonly">
+		</p>
+		<div class="divider"></div>
+		<p style="margin-bottom:10px">
+			<input class="easyui-textbox" id="acceptUser" data-options="label:'接单公司:'" style="width: 230px;" readonly="readonly">
+			<span class="left30"></span>
+			<input class="easyui-textbox" id="acceptAddress" data-options="label:'公司地址:'" style="width: 230px;" readonly="readonly">
+			<span class="left30"></span>
+			<input class="easyui-textbox" id="acceptMobile" data-options="label:'负责人电话:'" style="width: 230px;" readonly="readonly">
+		</p>
+		<div class="divider"></div>
+		<p style="margin-bottom:10px">
+			<input class="easyui-textbox" id="customer" data-options="label:'客户姓名:'" style="width: 230px;" readonly="readonly">
+			<span class="left30"></span>
+			<input class="easyui-textbox" id="idcard" data-options="label:'身份证号:'" style="width: 230px;" readonly="readonly">
+		</p>
+		<p>
+			<input class="easyui-textbox" id="mobile" data-options="label:'联系电话:'" style="width: 230px;" readonly="readonly">
+			<span class="left30"></span>
+			<input class="easyui-textbox" id="people" data-options="label:'同行人数:'" style="width: 230px;" readonly="readonly">
+		</p>
+		<div class="divider"></div>
+		<p>
+			<input class="easyui-textbox" data-options="label:'服饰风格:'" style="width: 780px;" id="cloth" readonly="readonly">
+		</p>
+		<div class="divider"></div>
+		<p>
+			<input class="easyui-textbox" data-options="label:'订购景点:'" style="width: 780px;" id="site" readonly="readonly">
+		</p>
+		<div class="divider"></div>
+		<p>
+			<input class="easyui-textbox" data-options="label:'订购住宿:'" style="width: 780px;" id="hotel" readonly="readonly">
+		</p>
+		<div class="divider"></div>
+		<p>
+			<input class="easyui-textbox" data-options="label:'是否接送:'" style="width: 230px;" id="pickup" readonly="readonly">
+			<span class="left30"></span>
+			<input class="easyui-textbox" data-options="label:'服务费用:'" style="width: 230px;" id="money" readonly="readonly">
+		</p>
+		<div class="divider"></div>
+		<p>
+			<input class="easyui-textbox" data-options="label:'备注信息:'" style="width: 780px;" id="remark">
+		</p>
+		<div class="divider"></div>
+		<p>
+			<input type="button" value="确认接单" class="inputBtn hidden" id="get">
+			<input type="button" value="提交保存" class="inputBtn hidden" id="save">
+			<input type="button" value="上传结束" class="inputBtn hidden" id="up">
+		</p>
+		<div class="divider"></div>
+		<p style="text-align:center;padding:5px 0;display: none;" id="logo">
+			<input id="imgs" type="file"/>
+		</p>
+		<ul style="padding:5px 0;" id="imgs_"></ul>
+	</div>
+    <script>
+	$(function(){
+		
+		$("#imgs").uploadify({
+		  'swf' : 'uploadify/scripts/uploadify.swf',
+		  'uploader': core.file_upload_url,
+		  'queueID': 'fileQueue',
+		  'removeCompleted' : 'false',
+		  'auto': true,
+		  'buttonText': 'Logo上传',
+		  'simUploadLimit' : 1,
+		  'progressData' : 'speed',
+		  'queueSizeLimit' : 1,
+		  'fileObjName' : 'filedata',
+		  'fileExt': '*.jpg;*.gif;*.jpeg;*.png;*.bmp;*.zip;*.rar;*.7z',
+		  onUploadSuccess: function(file, data, response) {
+		  	if(data.indexOf('.jpg')!=-1){
+		  		$("#imgs_").empty().append('<li class="left"><img src="'+img_src(data)+'" width=120px height=100px></li>');
+		  	}
+		  },
+		  onError: function(event, queueID, fileObj) {
+		      alert("文件:" + fileObj.name + "上传失败");
+		  }
+		});
+		
+		bns.order_get(getQueryParam("id"),order_get_html);
+		
+		function order_callback(data) {
+			var xhrObj = JSON.parse(data);
+	        if (xhrObj.code == '1') {
+	            window.location.href =window.location.href;
+	        }
+	    }
+		$("#get").click(function() {
+			bns.order_accept(getQueryParam("id"),order_callback);
+		});
+		
+		$("#up").click(function() {
+			var obj=new Object();
+			obj.id=getQueryParam("id");
+			obj.state=core.Wait_Download;
+			bns.order_next(JSON.stringify(obj),order_callback);
+		});
+		
+		$("#save").click(function() {
+			var obj=new Object();
+			obj.id=getQueryParam("id");
+			obj.remark=$('#remark').combobox('getValue');
+			var img_src='';
+			$('ul li').each(function(index, element) {
+				img_src +=$(element).attr("title")+',';
+			});
+			if(img_src!=''){
+				obj.imgs =img_src;
+			}
+			bns.order_imgs(JSON.stringify(obj),order_callback);
+		});
+		
+		
+	});
+	
+	function order_get_html(data){
+		var xhrObj = JSON.parse(data);
+		$("#code").textbox('setValue',xhrObj.code);
+		$("#takeTime").textbox('setValue',xhrObj.takeTime);
+		$("#city").textbox('setValue',xhrObj.city);
+		$("#createdUser").textbox('setValue',xhrObj.createdUser);
+		$("#createdAddress").textbox('setValue',xhrObj.createdAddress);
+		$("#createdMobile").textbox('setValue',xhrObj.createdMobile);
+		$("#acceptUser").textbox('setValue',xhrObj.acceptUser);
+		$("#acceptAddress").textbox('setValue',xhrObj.acceptAddress);
+		$("#acceptMobile").textbox('setValue',xhrObj.acceptMobile);
+		$("#customer").textbox('setValue',xhrObj.customer);
+		$("#idcard").textbox('setValue',xhrObj.idcard);
+		$("#mobile").textbox('setValue',xhrObj.mobile);
+		$("#people").textbox('setValue',xhrObj.people);
+		$("#cloth").textbox('setValue',xhrObj.cloth);
+		$("#site").textbox('setValue',xhrObj.site);
+		$("#hotel").textbox('setValue',xhrObj.hotel);
+		$("#pickup").textbox('setValue',xhrObj.pickup);
+		$("#money").textbox('setValue',xhrObj.money);
+		$("#remark").textbox('setValue',xhrObj.remark);
+		if(xhrObj.state==0){
+			$("#get").show();
+		}
+		if(xhrObj.state==1){
+			$("#save").show();
+			$("#up").show();
+			$("#logo").show();
+		}
+		if(xhrObj.imgs!=null){
+			var imgs =xhrObj.imgs.split(',');
+			$.each(imgs, function(index,obj){
+				if(obj!=''&&obj.indexOf('.jpg')!=-1){
+					$("#imgs_").append('<li class="left"><img src="'+img_src(obj)+'" width=100></li>');
+				}
+			}); 
+		}
+	}
+	
+	</script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>管理平台</title>
+	<link rel="stylesheet" type="text/css" href="css/css.css" />
+	<link rel="stylesheet" type="text/css" href="js/themes/default/easyui.css" />
+	<link rel="stylesheet" type="text/css" href="css/icon.css">
+	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="js/core.js"></script>
+    <script type="text/javascript" src="js/bns.js"></script>
+</head>
+<body>
+	<div class="easyui-panel" style="width:100%;padding:30px 60px;">
+		<div style="margin-bottom:20px">
+			<input class="easyui-textbox" id="city" data-options="label:'所在城市:'" style="width: 320px;" readonly="readonly">
+		</div>
+		<div style="margin-bottom:20px">
+			<input class="easyui-textbox" id="company" data-options="label:'公司名称:',required:true" style="width: 320px;">
+			<span class="left80"></span>
+			<input class="easyui-textbox" id="address" data-options="label:'公司地址:',required:true" style="width: 320px;">
+		</div>
+		<div style="margin-bottom:20px">
+			<input class="easyui-textbox" id="frName" data-options="label:'法人姓名:',required:true" style="width: 320px;">
+			<span class="left80"></span>
+			<input class="easyui-textbox" id="frMobile" data-options="label:'法人电话:',required:true" style="width: 320px;">
+		</div>
+		<div style="margin-bottom:20px">
+			<input class="easyui-textbox" id="linkman" data-options="label:'负责人姓名:',required:true" style="width: 320px;">
+			<span class="left80"></span>
+			<input class="easyui-textbox" id="mobile" data-options="label:'负责人电话:',required:true" style="width: 320px;">
+		</div>
+		<div style="margin-bottom:20px">
+			<input class="easyui-textbox" id="gos" data-options="label:'业务范围:',required:true" style="width: 725px;">
+		</div>
+		<div style="margin-bottom:20px">
+			<input class="easyui-textbox" id="num" data-options="label:'每日接单:',required:true" style="width: 320px;">
+			<span class="left80"></span>
+			<input class="easyui-textbox" id="remark" data-options="label:'备注信息:'" style="width: 320px;">
+		</div>
+		<div style="margin-bottom:20px">
+			<select class="easyui-combobox" id="state" label="公司状态" style="width: 320px;" data-options="editable:false,panelHeight:'auto'">
+				<option value="0">启用</option>
+				<option value="1">禁用</option>
+			</select>
+			<span class="left80"></span>
+			<select class="easyui-combobox" id="flag" label="公司类型" style="width: 320px;" data-options="editable:false,panelHeight:'auto'">
+				<option value="0">一般服务商</option>
+				<option value="1">申请审核中</option>
+				<option value="2">高级服务商</option>
+			</select>
+		</div>
+		<div style="text-align:left;padding:5px 0" id="logo_"></div>
+		<ul style="padding:5px 0;" id="imgs_"></ul>
+		<div style="padding:5px 0">
+			<a href="javascript:;" class="easyui-linkbutton" style="width:80px">提交保存</a>
+		</div>
+	</div>
+	<script>
+	$(function(){
+		bns.company_get(getQueryParam("id"),company_get_html);
+		$("a").click(function() {
+			if($(this).text()!='提交保存'){
+				return;
+			}
+			var obj = new Object();
+			obj.id =getQueryParam("id");
+			obj.state =$('#state').combobox('getValue');
+			obj.flag =$('#flag').combobox('getValue');
+			var company =$("#company").textbox('getValue');
+			if(company==''){
+				msgShow("系统提示","公司名称不能为空","warning");
+				return;
+			}
+			obj.company =company;
+			var address =$("#address").textbox('getValue');
+			if(address==''){
+				msgShow("系统提示","公司地址不能为空","warning");
+				return;
+			}
+			obj.address =address;
+			var frName =$("#frName").textbox('getValue');
+			if(frName==''){
+				msgShow("系统提示","法人姓名不能为空","warning");
+				return;
+			}
+			obj.frName =frName;
+			var frMobile =$("#frMobile").textbox('getValue');
+			if(frMobile==''){
+				msgShow("系统提示","法人电话不能为空","warning");
+				return;
+			}
+			obj.frMobile =frMobile;
+			var linkman =$("#linkman").textbox('getValue');
+			if(linkman==''){
+				msgShow("系统提示","负责人姓名不能为空","warning");
+				return;
+			}
+			obj.linkman =linkman;
+			var mobile =$("#mobile").textbox('getValue');
+			if(mobile==''){
+				msgShow("系统提示","负责人电话不能为空","warning");
+				return;
+			}
+			obj.mobile =mobile;
+			var gos =$("#gos").textbox('getValue');
+			if(gos==''){
+				msgShow("系统提示","业务范围不能为空","warning");
+				return;
+			}
+			obj.gos =gos;
+			var num =$("#num").textbox('getValue');
+			if(num==''){
+				msgShow("系统提示","每天接单数不能为空","warning");
+				return;
+			}
+			obj.num =num;
+			var remark =$("#remark").textbox('getValue');
+			if(remark!=''){
+				obj.remark =remark;
+			}
+			console.log('============='+JSON.stringify(obj));
+			bns.company_save(JSON.stringify(obj),common_html);
+		});
+		
+	});
+	
+	function company_get_html(result){
+		var xhrObj = JSON.parse(result);
+		if(xhrObj.code==101){
+			$('#w').window('close');
+			$.messager.confirm('系统提示', xhrObj.message, function(r) {
+			    if (r) {
+			        parent.$("#login").window('open');
+			    }
+			});
+			return;
+		}
+		console.log(JSON.stringify(xhrObj));
+		$("#city").textbox('setValue',xhrObj.cityName);
+		$("#company").textbox('setValue',xhrObj.company);
+		$("#address").textbox('setValue',xhrObj.address);
+		$("#state").combobox('setValue',xhrObj.state);
+		$("#flag").combobox('setValue',xhrObj.flag);
+		$("#frName").textbox('setValue',xhrObj.frName);
+		$("#frMobile").textbox('setValue',xhrObj.frMobile);
+		$("#linkman").textbox('setValue',xhrObj.linkman);
+		$("#mobile").textbox('setValue',xhrObj.mobile);
+		$("#gos").textbox('setValue',xhrObj.gos);
+		$("#num").textbox('setValue',xhrObj.num);
+		$("#remark").textbox('setValue',xhrObj.remark);
+		if(xhrObj.logo!=null&&xhrObj.logo!=''){
+			$("#logo_").empty().append('<img src="'+img_src(xhrObj.logo)+'" width=120px height=100px>');
+		}
+		if(xhrObj.license!=null&&xhrObj.license!=''){
+			var pics=xhrObj.license.split(',');
+			var img_html='';
+			for(var i=0;i<pics.length;i++){
+				img_html+='<li class=left><img src="'+img_src(pics[i])+'" width=120px height=100px></li>'
+			}
+			$("#imgs_").empty().append(img_html);
+		}
+	}
+	
+	
+	</script>
+</body>
+</html>

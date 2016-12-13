@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>管理平台</title>
+	<link rel="stylesheet" type="text/css" href="css/css.css" />
+	<link rel="stylesheet" type="text/css" href="js/themes/default/easyui.css" />
+	<link rel="stylesheet" type="text/css" href="css/icon.css">
+	<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="js/core.js"></script>
+    <script type="text/javascript" src="js/bns.js"></script>
+</head>
+<body>
+	<div style="margin-top: 20px;">
+		<select class="easyui-combobox" panelHeight="auto" style="width:200px" id="company" data-options="label:'所属公司:',editable:false,panelHeight:'auto'"></select>
+		<a href="javascript:;" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+	</div><br/>
+
+	<table style="width:100%" id="dg" data-options="
+                rownumbers:true,
+                singleSelect:true,
+                autoRowHeight:false,
+                pagination:true,
+                pageSize:10">
+                <thead>
+		<thead>
+			<tr>
+				<th field="company" width="200">所属公司</th>
+				<th field="name" width="200">服饰风格</th>
+				<th field="unit" width="200">包含套数</th>
+				<th field="num" width="200">包含件数</th>
+				<th field="price" width="200">市场价</th>
+				<th field="state" width="200">服饰状态</th>
+				<th field="createdTime" width="200">创建时间</th>
+			</tr>
+		</thead>
+	</table>
+	
+<script>
+	var rows = [];
+	$(function(){
+		bns.cloth_all(list_html);
+		
+		//查询
+		$("a[iconCls=icon-search]").click(function() {
+			console.log('============='+JSON.stringify(rows));
+			var company=$('#company').combobox('getText');
+			if(company==-1){
+				$('#dg').datagrid({loadFilter:pagerFilter}).datagrid('loadData', rows);
+				return;
+			}
+			var data=[];
+			$.each(rows, function(index,obj){
+				if(company==obj.company){
+					data.push(obj);
+				}
+			}); 
+			$('#dg').datagrid({loadFilter:pagerFilter}).datagrid('loadData', data);
+			
+		});
+	});
+	
+	//列表数据
+	function list_html(data){
+		var xhrObj = JSON.parse(data);
+		for(var i=0;i<xhrObj.length;i++){
+			rows.push({
+	            company: xhrObj[i].companyName,
+				name: xhrObj[i].name,
+				unit: xhrObj[i].unit,
+				num: xhrObj[i].num,
+				price:xhrObj[i].price,
+				state:xhrObj[i].state==0?'启用':'禁用',
+				createdTime:xhrObj[i].createdTime
+	        });
+		}
+        //console.log(JSON.stringify(rows));
+        $('#dg').datagrid({loadFilter:pagerFilter}).datagrid('loadData', rows);
+        bns.company_simple(company_html);
+	}
+	
+	
+</script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>管理平台</title>
+	<link rel="stylesheet" type="text/css" href="css/css.css" />
+	<link rel="stylesheet" type="text/css" href="js/themes/default/easyui.css" />
+	<link rel="stylesheet" type="text/css" href="css/icon.css">
+	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="js/core.js"></script>
+    <script type="text/javascript" src="js/bns.js"></script>
+    <script type="text/javascript" src="js/util.date.js"></script>
+</head>
+<body>
+	<table style="width:100%" id="dg" data-options="
+                rownumbers:true,
+                singleSelect:true,
+                autoRowHeight:false,
+                pagination:true,
+                pageSize:10">
+		<thead>
+			<tr>
+				<th field="code" width="10%">提现编号</th>
+				<th field="money" width="10%">提现金额</th>
+				<th field="type" width="10%">类别</th>
+				<th field="createdTime" width="20%">提现时间</th>
+			</tr>
+		</thead>
+	</table>
+	
+<script>
+	$(function(){
+		bns.cash_list(cash_list_html);
+	});
+	
+	//提现列表数据
+	function cash_list_html(data){
+		var xhrObj = JSON.parse(data);
+		var rows = [];
+		for(var i=0;i<xhrObj.length;i++){
+			rows.push({
+			    code: xhrObj[i].code,
+				money: xhrObj[i].money,
+				type:xhrObj[i].type==0?'待审核':(xhrObj[i].type==1?'成功':'失败'),
+				createdTime:time.formatterDate(new Date(xhrObj[i].createdTime))
+			});
+		}
+        $('#dg').datagrid({loadFilter:pagerFilter}).datagrid('loadData', rows);
+	}
+	
+</script>
+</body>
+</html>

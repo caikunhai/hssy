@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>管理平台</title>
+	<link rel="stylesheet" type="text/css" href="css/css.css" />
+	<link rel="stylesheet" type="text/css" href="js/themes/default/easyui.css" />
+	<link rel="stylesheet" type="text/css" href="css/icon.css">
+	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="js/core.js"></script>
+    <script type="text/javascript" src="js/bns.js"></script>
+</head>
+<body>
+	<div class="easyui-panel" style="width:100%;padding:30px 60px;">
+		<div style="margin-bottom:20px">
+			<input class="easyui-textbox" id="history" data-options="label:'历史金额:'" style="width: 320px;" readonly="readonly">
+		</div>
+		<div style="margin-bottom:20px">
+			<input class="easyui-textbox" id="money" data-options="label:'可用金额:'" style="width: 320px;" readonly="readonly">
+		</div>
+		<div style="margin-bottom:20px">
+			<input class="easyui-textbox" id="recharge" data-options="label:'充值金额:'" style="width: 320px;">
+		</div>
+		<div style="padding:5px 0">
+			<a href="javascript:cz();" class="easyui-linkbutton" style="width:80px">确定充值</a>
+		</div>
+	</div>
+	<div id="pay"></div>
+	
+	<script>
+	$(function(){
+		bns.wallet_get(wallet);
+	});
+	
+	function wallet(data){
+		var xhrObj = JSON.parse(data);
+		if(xhrObj.code==1){
+			$("#history").textbox('setValue',xhrObj.history);
+			$("#money").textbox('setValue',xhrObj.money);
+		}
+	}
+	
+	
+	function cz(){
+		var recharge =$("#recharge").val();
+		if(recharge==''){
+			msgShow("系统提示","充值金额不能为空","warning");
+			return;
+		}
+		var cz_html =function(data){
+			var xhrObj = JSON.parse(data);
+			if(xhrObj.code==1){
+				$('#pay').append(xhrObj.message);
+			}
+		}
+		bns.recharge_save(JSON.stringify({actual: recharge}),cz_html);
+	}
+	</script>
+</body>
+</html>
