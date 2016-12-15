@@ -5,15 +5,21 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import entities.BnsOrder;
+import repositories.BnsOrderChildRepository;
 import repositories.BnsOrderRepository;
 import services.OrderService;
+import entities.BnsOrder;
+import entities.BnsOrderChild;
 
 @Service("orderService")
 public class OrderServiceImpl implements OrderService {
 	
 	@Autowired
 	private BnsOrderRepository orderRepository;
+	
+	@Autowired
+	private BnsOrderChildRepository orderChildRepository;
+	
 	
 	@Override
 	public BnsOrder saveOrder(BnsOrder arg0) {
@@ -27,12 +33,6 @@ public class OrderServiceImpl implements OrderService {
 		return orderRepository.findOne(arg0);
 	}
 
-	@Override
-	public Iterable<BnsOrder> listAll() {
-		// TODO Auto-generated method stub
-		return orderRepository.findAll();
-	}
-
 
 	@Override
 	public BnsOrder findByCode(String code) {
@@ -41,15 +41,21 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public List<BnsOrder> listByHost(String userId) {
+	public List<BnsOrder> listByHostToken(String token) {
 		// TODO Auto-generated method stub
-		return orderRepository.listByHost(userId);
+		return orderRepository.findByHostToken(token);
 	}
 
 	@Override
-	public List<BnsOrder> listByServer(String userId) {
+	public List<BnsOrder> listByServerToken(String token) {
 		// TODO Auto-generated method stub
-		return orderRepository.listByServer(userId);
+		return orderRepository.findByServerToken(token);
+	}
+
+	@Override
+	public BnsOrderChild detail(String orderId) {
+		// TODO 自动生成的方法存根
+		return orderChildRepository.findByOrderId(orderId);
 	}
 
 }

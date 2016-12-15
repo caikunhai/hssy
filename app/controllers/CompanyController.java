@@ -62,7 +62,6 @@ public class CompanyController extends play.mvc.Controller {
 		obj.setId(CryptTool.getUUID());
 		obj.setState(0);
 		obj.setRank(0);
-		obj.setHistory(0);
 		obj.setCreatedTime(new Timestamp(System.currentTimeMillis()));
 		//同步创建管理账户
 		Boolean flag =UserController.companyAdministrator(obj);
@@ -80,14 +79,11 @@ public class CompanyController extends play.mvc.Controller {
 	}
 	
 	public static Result companyEdit(Map<String,Object> vo,BnsCompany obj,CompanyForm data){
-		if(data.getCompany()!=null){
-			obj.setCompany(data.getCompany());
+		if(data.getName()!=null){
+			obj.setName(data.getName());
 		}
 		if(data.getLogo()!=null){
 			obj.setLogo(data.getLogo());
-		}
-		if(data.getLicense()!=null){
-			obj.setLicense(data.getLicense());
 		}
 		if(data.getAddress()!=null){
 			obj.setAddress(data.getAddress());
@@ -143,7 +139,7 @@ public class CompanyController extends play.mvc.Controller {
 			if(obj.getRank()==2){
 				Map<String,Object> map =new HashMap<String,Object>();
 				map.put("id", obj.getId());
-				map.put("company", obj.getCompany());
+				map.put("name", obj.getName());
 				map.put("address", obj.getAddress());
 				map.put("linkman", obj.getLinkman());
 				map.put("mobile", obj.getMobile());
@@ -185,16 +181,14 @@ public class CompanyController extends play.mvc.Controller {
 		Map<String,Object> map =new HashMap<String,Object>();
 		map.put("id", obj.getId());
 		map.put("city", obj.getCity());
-		map.put("company", obj.getCompany());
+		map.put("name", obj.getName());
 		map.put("logo", obj.getLogo());
-		map.put("license", obj.getLicense());
 		map.put("address", obj.getAddress());
 		map.put("frName", obj.getFrName());
 		map.put("frMobile", obj.getFrMobile());
 		map.put("linkman", obj.getLinkman());
 		map.put("mobile", obj.getMobile());
 		map.put("gos", obj.getGos());
-		map.put("history", obj.getHistory());
 		map.put("num", obj.getNum());
 		map.put("state", obj.getState());
 		map.put("rank", obj.getRank());
@@ -218,7 +212,7 @@ public class CompanyController extends play.mvc.Controller {
 			return "";
 		}
 		StringBuffer html=new StringBuffer();
-		html.append("<p>组织名称："+comapny.getCompany()+"</p>");
+		html.append("<p>组织名称："+comapny.getName()+"</p>");
 		html.append("<p>联系电话："+comapny.getMobile()+"</p>");
 		html.append("<p>所在地址："+comapny.getAddress()+"</p>");
 		return html.toString();
@@ -230,7 +224,7 @@ public class CompanyController extends play.mvc.Controller {
 		if(comapny ==null){
 			return "";
 		}
-		return comapny.getCompany();
+		return comapny.getName();
 	}
 	
 	public static BnsCompany companyHistoryOrderPlus(String id){
@@ -238,7 +232,7 @@ public class CompanyController extends play.mvc.Controller {
 		if(comapny ==null){
 			return null;
 		}
-		comapny.setHistory(comapny.getHistory()+1);
+		//comapny.setHistory(comapny.getHistory()+1);
 		return companyService.save(comapny);
 	}
 	

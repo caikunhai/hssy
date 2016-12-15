@@ -71,13 +71,13 @@ public class SysController extends play.mvc.Controller {
 			return ok();
 		}
 		List<File> list =new ArrayList<File>();
-		String[] imgs =obj.getImgs().split(",");
+		/*String[] imgs =obj.getImgs().split(",");
 		for(String img:imgs){
 			File file =new File(Play.application().path() + "/public/uploads/"+img);
 			if(file.exists()&&!file.isDirectory()){
 				list.add(file);
 	        }
-		}
+		}*/
 		
 		OutputStream os = null;
 		if (list.size()==0)

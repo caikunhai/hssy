@@ -210,12 +210,6 @@ public class OrderController extends play.mvc.Controller {
 			vo.put("message", "查无此订单");
 			return ok(Json.toJson(vo));
 		}
-		if(data.getRemark()!=null){
-			order.setRemark(data.getRemark());
-		}
-		if(data.getImgs()!=null){
-			order.setImgs(data.getImgs());
-		}
 		xstream.alias("order", BnsOrder.class);
 		Logger.info("order", xstream.toXML(order));
 		orderService.saveOrder(order);
@@ -226,41 +220,45 @@ public class OrderController extends play.mvc.Controller {
 	
 	
 	@Security.Authenticated(Secured.class)
-	public static Result host(String progress){
+	public static Result find(String identity,String progress){
 		String token = request().getHeader("token");
+		if("host".equals(identity)){
+			return host(token,progress);
+		}
+		if("server".equals(identity)){
+			return server(token,progress);
+		}
+		return ok();
+	}
+	
+	//服务商订单查询
+	public static Result server(String token,String progress){
 		List<Object> list =new ArrayList<Object>();
-		List<BnsOrder> all =orderService.listByHost(UserController.companyId(token));
+		List<BnsOrder> all =orderService.listByServerToken(token);
 		for(BnsOrder obj:all){
-			if(obj.getState()==OrderStatus.Wait_Pay.ordinal()){
-				continue;
+			if("over".equals(progress)&&(obj.getState()==OrderStatus.Game_Over.ordinal()||obj.getState()==OrderStatus.Game_Close.ordinal())){
+				list.add(obj);
 			}
-			if("over".equals(progress)&&obj.getState()!=OrderStatus.Game_Over.ordinal()){
-				continue;
+			if("process".equals(progress)&&obj.getState()<3){
+				list.add(obj);
 			}
-			if("process".equals(progress)&&obj.getState()==OrderStatus.Game_Over.ordinal()){
-				continue;
-			}
-			list.add(Obj2Map4List(obj));
+			
 		}
 		return ok(Json.toJson(list));
 	}
 	
-	@Security.Authenticated(Secured.class)
-	public static Result server(String progress){
-		String token = request().getHeader("token");
+	//服务商订单查询
+	public static Result host(String token,String progress){
 		List<Object> list =new ArrayList<Object>();
-		List<BnsOrder> all =orderService.listByServer(UserController.companyId(token));
+		List<BnsOrder> all =orderService.listByHostToken(token);
 		for(BnsOrder obj:all){
-			if(obj.getState()==OrderStatus.Wait_Pay.ordinal()){
-				continue;
+			if("over".equals(progress)&&(obj.getState()==OrderStatus.Game_Over.ordinal()||obj.getState()==OrderStatus.Game_Close.ordinal())){
+				list.add(obj);
 			}
-			if("over".equals(progress)&&obj.getState()!=OrderStatus.Game_Over.ordinal()){
-				continue;
+			if("process".equals(progress)&&obj.getState()<3){
+				list.add(obj);
 			}
-			if("process".equals(progress)&&obj.getState()==OrderStatus.Game_Over.ordinal()){
-				continue;
-			}
-			list.add(Obj2Map4List(obj));
+				
 		}
 		return ok(Json.toJson(list));
 	}
@@ -298,13 +296,10 @@ public class OrderController extends play.mvc.Controller {
 	}
 	
 	@Security.Authenticated(Secured.class)
-	public static Result get(String id){
-		BnsOrder obj =orderService.get(id);
-		if(obj==null){
-			return ok();
-		}
-		return ok(Json.toJson(Obj2Map4Detail(obj)));
+	public static Result detail(String id){
+		return ok(Json.toJson(orderService.detail(id)));
 	}
+	
 	
 	
 	private static Map<String,Object> Obj2Map4List(BnsOrder obj){
@@ -313,13 +308,13 @@ public class OrderController extends play.mvc.Controller {
 		map.put("code", obj.getCode());
 		map.put("city", obj.getCity());
 		map.put("takeTime", new SimpleDateFormat("yyyy-MM-dd").format(obj.getTakeTime()));
-		map.put("customer", obj.getCustomer());
+		/*map.put("customer", obj.getCustomer());
 		map.put("idcard", obj.getIdcard());
 		map.put("mobile", obj.getMobile());
 		map.put("people", obj.getPeople());
 		map.put("pickup", obj.getPickup()==1?"接送":"不接送");
 		map.put("state", BnsUtils.stateName(obj.getState()));
-		map.put("remark", obj.getRemark());
+		map.put("remark", obj.getRemark());*/
 		map.put("money", obj.getMoney());
 		map.put("createdTime", new SimpleDateFormat("yyyy-MM-dd").format(obj.getCreatedTime()));
 		return map;
@@ -332,7 +327,7 @@ public class OrderController extends play.mvc.Controller {
 		map.put("city", obj.getCity());
 		map.put("takeTime", new SimpleDateFormat("yyyy-MM-dd").format(obj.getTakeTime()));
 		BnsCompany company =CompanyController.Obj(obj.getCreatedUser());
-		map.put("createdUser", company.getCompany());
+		/*map.put("createdUser", company.getCompany());
 		map.put("createdAddress", company.getAddress());
 		map.put("createdMobile", company.getMobile());
 		map.put("customer", obj.getCustomer());
@@ -341,16 +336,16 @@ public class OrderController extends play.mvc.Controller {
 		map.put("people", obj.getPeople());
 		map.put("cloth", obj.getCloth());
 		map.put("site", obj.getSite());
-		map.put("hotel", obj.getHotel());
+		map.put("hotel", obj.getHotel());*/
 		map.put("money", obj.getMoney());
 		map.put("payment", obj.getPayment());
-		map.put("pickup", obj.getPickup()==1?"接送":"不接送");
+		/*map.put("pickup", obj.getPickup()==1?"接送":"不接送");
 		BnsCompany accept =CompanyController.Obj(obj.getAcceptUser());
 		map.put("acceptUser", accept.getCompany());
 		map.put("acceptAddress", accept.getAddress());
 		map.put("acceptMobile", accept.getMobile());
 		map.put("state", obj.getState());
-		map.put("remark", obj.getRemark());
+		map.put("remark", obj.getRemark());*/
 		map.put("createdTime", new SimpleDateFormat("yyyy-MM-dd").format(obj.getCreatedTime()));
 		return map;
 	}
@@ -370,7 +365,7 @@ public class OrderController extends play.mvc.Controller {
 	
 	public static List<BnsOrder> unFinish(String token){
 		List<BnsOrder> list =new ArrayList<BnsOrder>();
-		List<BnsOrder> all =orderService.listByServer(UserController.companyId(token));
+		List<BnsOrder> all =orderService.listByServerToken(UserController.companyId(token));
 		for(BnsOrder obj:all){
 			if(obj.getState()==0){
 				continue;

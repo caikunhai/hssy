@@ -3,6 +3,7 @@ package services;
 import java.util.List;
 
 import entities.BnsOrder;
+import entities.BnsOrderChild;
 
 public interface OrderService {
 	
@@ -10,12 +11,13 @@ public interface OrderService {
 	
 	public BnsOrder get(String args);
 	
-	public Iterable<BnsOrder> listAll();
+	public BnsOrderChild detail(String orderId);
 	
 	public BnsOrder findByCode(String code);
 
-	public List<BnsOrder> listByHost(String userId);
+	public List<BnsOrder> listByHostToken(String token);
 
-	public List<BnsOrder> listByServer(String userId);
+	public List<BnsOrder> listByServerToken(String token);
+
 	
 }

@@ -53,7 +53,7 @@ public class ClothController extends play.mvc.Controller {
 			Map<String,Object> map =new HashMap<String,Object>();
 			map.put("id", obj.getId());
 			map.put("company", obj.getCompany());
-			map.put("companyName", companyMap.get(obj.getCompany()).getCompany());
+			map.put("companyName", companyMap.get(obj.getCompany()).getName());
 			map.put("name", obj.getName());
 			map.put("unit", obj.getUnit());
 			map.put("num", obj.getNum());

@@ -12,10 +12,10 @@ public interface BnsOrderRepository extends CrudRepository<BnsOrder, String> {
 	@Query(value = "SELECT *FROM bns_order t WHERE t.code =?", nativeQuery = true)
 	public BnsOrder findByCode(String code);
 
-	@Query(value = "SELECT *FROM bns_order t WHERE t.state!=5 AND t.created_user =?", nativeQuery = true)
-	public List<BnsOrder> listByHost(String userId);
+	@Query(value = "SELECT t.* FROM bns_order t LEFT JOIN bns_user u ON t.created_user =u.id WHERE u.token =?", nativeQuery = true)
+	public List<BnsOrder> findByHostToken(String userId);
 
-	@Query(value = "SELECT *FROM bns_order t WHERE t.state!=5 AND t.accept_user =?", nativeQuery = true)
-	public List<BnsOrder> listByServer(String userId);
+	@Query(value = "SELECT t.* FROM bns_order t LEFT JOIN bns_user u ON t.accept_user =u.id WHERE u.token =?", nativeQuery = true)
+	public List<BnsOrder> findByServerToken(String userId);
 
 }

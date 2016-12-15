@@ -37,9 +37,9 @@ public class WalletController extends play.mvc.Controller {
 	public static void createWallet(String company){
 		BnsWallet wallet =new BnsWallet();
 		wallet.setId(company);
-		wallet.setHistory(new BigDecimal(0));
+		//wallet.setHistory(new BigDecimal(0));
 		wallet.setMoney(new BigDecimal(0));
-		wallet.setState(0);
+		//wallet.setState(0);
 		wallet.setCreatedTime(new Timestamp(System.currentTimeMillis()));
 		walletService.save(wallet);
 	}
@@ -64,7 +64,7 @@ public class WalletController extends play.mvc.Controller {
 		if(wallet==null){
 			return null;
 		}
-		wallet.setHistory(wallet.getHistory().add(money));
+		//wallet.setHistory(wallet.getHistory().add(money));
 		wallet.setMoney(wallet.getMoney().add(money));
 		walletService.save(wallet);
 		return wallet;

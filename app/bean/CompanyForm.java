@@ -3,7 +3,7 @@ package bean;
 public class CompanyForm {
 	private String id;
 	private String city;
-	private String company;
+	private String name;
 	private String logo;
 	private String license;
 	private String address;
@@ -21,11 +21,11 @@ public class CompanyForm {
 	public void setCity(String city) {
 		this.city = city;
 	}
-	public String getCompany() {
-		return company;
+	public String getName() {
+		return name;
 	}
-	public void setCompany(String company) {
-		this.company = company;
+	public void setName(String name) {
+		this.name = name;
 	}
 	public String getLogo() {
 		return logo;

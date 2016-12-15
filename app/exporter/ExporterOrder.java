@@ -80,14 +80,14 @@ public class ExporterOrder {
 		titles.add("订单状态");
 		titles.add("拍摄日期");
 		titles.add("下单商家");
-		titles.add("客户姓名");
+		/*titles.add("客户姓名");
 		titles.add("身份证号");
 		titles.add("联系电话");
 		titles.add("拍摄风格");
 		titles.add("拍摄景点");
 		titles.add("订购住宿");
 		titles.add("是否接送");
-		titles.add("总费用");
+		titles.add("总费用");*/
 		return titles;
 	}
 
@@ -122,14 +122,14 @@ public class ExporterOrder {
 				data.add( BnsUtils.stateName(vo.getState()));
 				data.add( new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(vo.getTakeTime()) );
 				data.add( CompanyController.name4Company(vo.getCreatedUser()) );
-				data.add( vo.getCustomer() );
+				/*data.add( vo.getCustomer() );
 				data.add( vo.getIdcard() );
 				data.add( vo.getMobile() );
 				data.add( vo.getCloth() );
 				data.add( vo.getSite() );
 				data.add( vo.getHotel() );
 				data.add( vo.getPickup()==0?"否":"是" );
-				data.add( vo.getMoney()+"" );
+				data.add( vo.getMoney()+"" );*/
 				
 				// 添加一行的内容
 				addRowContent(cellStyle, row, data);
