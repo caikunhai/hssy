@@ -436,28 +436,19 @@ var bns = {};
 	    bns.ajax_private(params, callback);
 	};
 	
-	//订单搜索（下单方）
-	bns.order_host = function (progress,callback) {
+	//订单查找
+	bns.order_find = function (identity,progress,callback) {
 	    var params =new Object();
-	    params.url=core.host + '/order/host?progress='+progress;
-	    params.method='GET';
-	    params.data=null;
-	    bns.ajax_private(params, callback);
-	};
-	
-	//订单搜索（接单方）
-	bns.order_server = function (progress,callback) {
-	    var params =new Object();
-	    params.url=core.host + '/order/server?progress='+progress;
+	    params.url=core.host + '/order/host?progress='+progress+'&&identity='+identity;
 	    params.method='GET';
 	    params.data=null;
 	    bns.ajax_private(params, callback);
 	};
 	
 	//订单详情
-	bns.order_get = function (id,callback) {
+	bns.order_detail = function (id,callback) {
 	    var params =new Object();
-	    params.url=core.host + '/order/get?id='+id;
+	    params.url=core.host + '/order/detail?id='+id;
 	    params.method='GET';
 	    params.data=null;
 	    bns.ajax_private(params, callback);
