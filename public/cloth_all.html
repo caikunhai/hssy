@@ -10,6 +10,7 @@
 	<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="js/core.js"></script>
     <script type="text/javascript" src="js/bns.js"></script>
+    <script type="text/javascript" src="js/util.date.js"></script>
 </head>
 <body>
 	<div style="margin-top: 20px;">
@@ -26,12 +27,11 @@
                 <thead>
 		<thead>
 			<tr>
-				<th field="company" width="200">所属公司</th>
+				<th field="company" width="120">所属公司</th>
 				<th field="name" width="200">服饰风格</th>
-				<th field="unit" width="200">包含套数</th>
-				<th field="num" width="200">包含件数</th>
-				<th field="price" width="200">市场价</th>
-				<th field="state" width="200">服饰状态</th>
+				<th field="unit" width="100">包含套数</th>
+				<th field="num" width="100">包含件数</th>
+				<th field="price" width="100">市场价</th>
 				<th field="createdTime" width="200">创建时间</th>
 			</tr>
 		</thead>
@@ -66,13 +66,12 @@
 		var xhrObj = JSON.parse(data);
 		for(var i=0;i<xhrObj.length;i++){
 			rows.push({
-	            company: xhrObj[i].companyName,
-				name: xhrObj[i].name,
-				unit: xhrObj[i].unit,
-				num: xhrObj[i].num,
-				price:xhrObj[i].price,
-				state:xhrObj[i].state==0?'启用':'禁用',
-				createdTime:xhrObj[i].createdTime
+	            company: xhrObj[i][0],
+				name: xhrObj[i][1],
+				unit: xhrObj[i][2],
+				num: xhrObj[i][3],
+				price:xhrObj[i][4],
+				createdTime:time.formatterDate2(xhrObj[i][5])
 	        });
 		}
         //console.log(JSON.stringify(rows));

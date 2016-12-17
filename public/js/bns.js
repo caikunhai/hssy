@@ -31,24 +31,6 @@ var bns = {};
 		};
 	};
 	
-	//地区查询
-	bns.area_list = function (callback) {
-	    var params =new Object();
-	    params.url=core.host + '/area/list';
-	    params.method='GET';
-	    params.data=null;
-	    bns.ajax_private(params, callback);
-	};
-	
-	//地区保存
-	bns.area_save = function (data, callback) {
-	    var params =new Object();
-	    params.url=core.host + '/area/save';
-	    params.method='POST';
-	    params.data=data;
-	    bns.ajax_private(params, callback);
-	};
-	
 	//景点查询（客商）
 	bns.site_list = function (callback) {
 	    var params =new Object();
@@ -277,7 +259,7 @@ var bns = {};
 	//公司搜索
 	bns.company_search = function (city,callback) {
 	    var params =new Object();
-	    params.url=core.host + '/company/search?city='+city;
+	    params.url=encodeURI(core.host + '/company/search?city='+city);
 	    params.method='GET';
 	    params.data=null;
 	    bns.ajax_private(params, callback);
@@ -439,7 +421,7 @@ var bns = {};
 	//订单查找
 	bns.order_find = function (identity,progress,callback) {
 	    var params =new Object();
-	    params.url=core.host + '/order/host?progress='+progress+'&&identity='+identity;
+	    params.url=core.host + '/order/find?progress='+progress+'&&identity='+identity;
 	    params.method='GET';
 	    params.data=null;
 	    bns.ajax_private(params, callback);

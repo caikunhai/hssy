@@ -10,6 +10,7 @@
     <script type="text/javascript" src="js/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="js/core.js"></script>
     <script type="text/javascript" src="js/bns.js"></script>
+    <script type="text/javascript" src="js/area.js"></script>
 </head>
 <body>
 	<div class="easyui-panel"  style="width:1200px;padding:20px 60px;border:1px solid #fff;">
@@ -187,18 +188,25 @@
     
 	<script>
 	$(function(){
+		list_city(0);
 		$("#takeTime").datebox({
 		    panelHeight: 240,
 		    panelWidth: 235
 		});
-		bns.area_list(area_html);
-		$("#city").combobox({
-			onChange: function (now,old) {
-				if(now==-1){
-					com=new Array();
-					return;
+		$('#takeTime').datebox({
+			formatter: function(date){ 
+				var years=date.getFullYear();//获取年
+				var months=date.getMonth()+1;//获取月
+				var dates=date.getDate();//获取日
+				
+				if(months<10){//当月份不满10的时候前面补0，例如09
+					months='0'+months;
 				}
-				bns.company_search(now,company_html);
+				
+				if(dates<10){//当日期不满10的时候前面补0，例如09
+					dates='0'+dates;
+				}
+				return years+"-"+months+"-"+dates;//根据自己需求进行改动
 			}
 		});
 		$("#takeTime").datebox({
@@ -207,6 +215,14 @@
 				company_html();
 			}
 		});
+		
+		$("#city").combobox({
+			onChange: function (now,old) {
+				console.log('---------'+now+'=========='+old);
+				bns.company_search(now,company_html);
+			}
+		});
+		
 				
 	});
 	function doCompany(){
@@ -223,13 +239,14 @@
 	}
 	
 	function company_html(data){
+		console.log('--------data=========='+data);
 		var com=JSON.parse(data);
 		var com_html='<tr style="border: 1px solid #ccc;height: 32px;cursor:pointer;">';
 			com_html+='<td>机构名称</td><td>详细地址</td><td>业务负责人</td><td>负责人电话</td><td>服务范围</td><td>累计成交</td>';
             com_html+='</tr>';
 		for(var i=0;i<com.length;i++){
 			com_html +='<tr style="border: 1px solid #ccc;height: 32px;cursor:pointer;" rel='+com[i].id+'>';
-			com_html +='<td>'+com[i].company+'</td>';
+			com_html +='<td>'+com[i].name+'</td>';
 			com_html +='<td>'+com[i].address+'</td>';
 			com_html +='<td>'+com[i].linkman+'</td>';
 			com_html +='<td>'+com[i].mobile+'</td>';
@@ -358,7 +375,7 @@
 			hotel_html +='<td>'+xhrObj[i].description+'</td>';
 			hotel_html +='<td>'+xhrObj[i].star+'</td>';
 			hotel_html +='<td>'+xhrObj[i].address+'</td>';
-			hotel_html +='<td>'+xhrObj[i].money+'</td>';
+			hotel_html +='<td>'+xhrObj[i].price+'</td>';
 			hotel_html +='<td><input type="text" style="width:40px;" value=1></td>';
 			hotel_html +='</tr>';
 		}
@@ -394,7 +411,7 @@
 	
 	function ok(){
 		var city =$('#city').combobox('getText');
-		var time= $('#takeTime').datebox('getValue');
+		var takeTime= $('#takeTime').datebox('getValue');
 		var company =$("input[name=company]").val();
 		var customer =$("#customer").textbox('getValue');
 		var idcard =$("#idcard").textbox('getValue');
@@ -409,7 +426,7 @@
 			msgShow("系统提示","请选择城市","warning");
 			return;
 		}
-		if(time==''){
+		if(takeTime==''){
 			msgShow("系统提示","请选择时间","warning");
 			return;
 		}

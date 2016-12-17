@@ -2,7 +2,7 @@ var time = {
 	/**
      * 当前时间
      */
-    nowDate: function (date) {
+    nowDate: function () {
         return formatDate(new Date(),"yyyy-MM-dd hh:mm:ss");
     },
     /**
@@ -20,6 +20,13 @@ var time = {
 	    var second=now.getSeconds();     
 	    return year+"-"+month+"-"+date;    
     },
+    
+    /**
+     * 格式化日期（不含时间）
+     */
+    formatterDate2: function (now) {
+	    return time.formatterDate(new Date(now));    
+    },
     /**
      * 格式化去日期（含时间）
      */
@@ -34,5 +41,11 @@ var time = {
 	    var minute=now.getMinutes();     
 	    var second=now.getSeconds(); 
 	    return year+"-"+month+"-"+date+" "+hour+":"+minute+":"+second;
+	},
+	/**
+     * 格式化去日期（含时间）
+     */
+    formatterDateTime2: function (now) {
+	    return time.formatterDateTime(new Date(now));
 	},
 };

@@ -10,6 +10,7 @@
 	<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="js/core.js"></script>
     <script type="text/javascript" src="js/bns.js"></script>
+    <script type="text/javascript" src="js/util.date.js"></script>
 </head>
 <body>
 	<div style="height:auto;border: 1px solid #95B8E7;margin-bottom: 10px;">
@@ -24,19 +25,19 @@
                 <thead>
 		<thead>
 			<tr>
-				<th field="name" width="200">服饰风格</th>
-				<th field="unit" width="200">包含套数</th>
-				<th field="num" width="200">包含件数</th>
-				<th field="price" width="200">市场价</th>
-				<th field="state" width="200">服饰状态</th>
-				<th field="createdTime" width="200">创建时间</th>
+				<th field="name" width="120">服饰风格</th>
+				<th field="unit" width="80">包含套数</th>
+				<th field="num" width="80">包含件数</th>
+				<th field="price" width="80">市场价</th>
+				<th field="state" width="80">服饰状态</th>
+				<th field="createdTime" width="150">创建时间</th>
 				<th field="operation" width="200">操作</th>
 			</tr>
 		</thead>
 	</table>
 	
 	<div id="w" class="easyui-window" title="新增服饰" collapsible="false" minimizable="false" closed="true"
-        maximizable="false"  style="width: 300px; height: 220px; padding: 5px;background: #fafafa;">
+        maximizable="false"  style="width: 300px; height: 260px; padding: 5px;background: #fafafa;">
         <div class="easyui-layout" fit="true">
             <div region="center" border="false" style="padding: 10px; background: #fff; border: 1px solid #ccc;">
                 <div style="margin-bottom:14px">
@@ -47,6 +48,9 @@
 				</div>
 				<div style="margin-bottom:14px">
 					<input class="easyui-textbox" data-options="label:'包含件数:'" id="num" style="width: 240px;">
+				</div>
+				<div style="margin-bottom:14px">
+					<input class="easyui-textbox" data-options="label:'市场价格:'" id="price" style="width: 240px;">
 				</div>
             </div>
             <div region="south" border="false" style="text-align: center; height: 36px;padding-top: 10px;">
@@ -83,6 +87,12 @@
 					return;
 				}
 				obj.num =num;
+				var price =$("#price").textbox('getValue');
+				if(num==''){
+					msgShow("系统提示","市场价格不能为空","warning");
+					return;
+				}
+				obj.price =price;				
 				bns.cloth_save(JSON.stringify(obj),refresh_href);
 			}
 		});
@@ -101,7 +111,7 @@
 				num: xhrObj[i].num,
 				price:xhrObj[i].price,
 				state:xhrObj[i].state==0?'启用':'禁用',
-				createdTime:xhrObj[i].createdTime,
+				createdTime:time.formatterDateTime2(xhrObj[i].createdTime),
 				operation:'<a href=javascript:newOpen("服饰编辑","'+cloth+'")>编辑</a>'
 	        });
 		}

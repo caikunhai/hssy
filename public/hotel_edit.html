@@ -11,6 +11,7 @@
     <script type="text/javascript" src="js/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="js/core.js"></script>
     <script type="text/javascript" src="js/bns.js"></script>
+    <script type="text/javascript" src="js/area.js"></script>
     <script type="text/javascript" src="uploadify/scripts/jquery.uploadify.js"></script>
 </head>
 <body>
@@ -36,23 +37,18 @@
 			</div>
 			<div style="margin-bottom:20px">
 				<select class="easyui-combobox" id="type" label="住宿类型" style="width: 240px;" data-options="editable:false,panelHeight:'auto'">
-					<option value="-1">---选择状态--</option>
 					<option value="0">免费</option>
 					<option value="1">收费</option>
 				</select>
 			</div>
 			<div style="margin-bottom:20px">
 				<select class="easyui-combobox" id="state" label="住宿状态" style="width: 240px;" data-options="editable:false,panelHeight:'auto'">
-					<option value="-1">---选择状态--</option>
 					<option value="0">启用</option>
 					<option value="1">禁用</option>
 				</select>
 			</div>
 			<div style="margin-bottom:20px">
 				<input class="easyui-textbox" id="remark" data-options="label:'备注信息:',required:true" style="width: 240px;">
-			</div>
-			<div style="text-align:center;padding:5px 0">
-				<input id="logo" type="file"/>
 			</div>
 			<ul style="padding:5px 0;" id="logo_"></ul>
 		</form>
@@ -62,7 +58,7 @@
 	</div>
 	<script>
 	$(function(){
-		
+		list_city(0);
 		$("#logo").uploadify({
 		  'swf' : 'uploadify/scripts/uploadify.swf',
 		  'uploader': core.file_upload_url,
@@ -91,7 +87,6 @@
 		});
 		
 		
-		bns.area_list(area_html);
 		var id =getQueryParam("id");
 		console.log('====id========='+id);
 		if(id!=''){
@@ -107,12 +102,7 @@
 				obj.id =id;
 			}
 			
-			var city =$('#city').combobox('getValue');
-			if(city==-1){
-				msgShow("系统提示","请选择城市","warning");
-				return;
-			}
-			obj.city =city;
+			obj.city =$('#city').combobox('getValue');
 			var name = $("#name").textbox('getValue');
 			if(name!=''){
 				obj.name =name;
@@ -133,24 +123,11 @@
 			if(star!=''){
 				obj.star =star;
 			}
-			var type =$('#type').combobox('getValue');
-			if(type!=-1){
-				obj.type =type;
-			}
-			var state =$('#state').combobox('getValue');
-			if(state!=-1){
-				obj.state =state;
-			}
+			obj.type =$('#type').combobox('getValue');
+			obj.state =$('#state').combobox('getValue');
 			var remark = $("#remark").textbox('getValue');
 			if(remark!=''){
 				obj.remark =remark;
-			}
-			var img_src='';
-			$('ul li').each(function(index, element) {
-				img_src +=$(element).attr("title")+',';
-			});
-			if(img_src!=''){
-				obj.logo =img_src;
 			}
 			console.log('============='+JSON.stringify(obj));
 			bns.hotel_save(JSON.stringify(obj),common_html);
@@ -160,7 +137,6 @@
 	
 	function init_html(data){
 		var xhrObj = JSON.parse(data);
-		console.log(JSON.stringify(xhrObj));
 		$("#city").combobox('setValue',xhrObj.city);
 		$("#name").textbox('setValue',xhrObj.name);
 		$("#description").textbox('setValue',xhrObj.description);
@@ -170,15 +146,6 @@
 		$('#type').combobox('setValue',xhrObj.type);
 		$("#state").combobox('setValue',xhrObj.state);
 		$("#remark").textbox('setValue',xhrObj.remark);
-		var imgs='';
-		if(xhrObj.logo!=null&&xhrObj.logo!=''){
-			imgs =xhrObj.logo.split(',');
-		}
-		var img_html='';
-		for(var i=0;i<imgs.length;i++){
-			img_html+='<li class="left" title='+imgs[i]+'><img src="'+img_src(imgs[i])+'" width=120px height=100px>';
-		}
-		$("#logo_").empty().append(img_html);
 	}
 	
 	</script>

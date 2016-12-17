@@ -13,30 +13,6 @@
 </head>
 <body>
 	<div class="easyui-panel"  style="width:1200px;padding:20px 60px;border:1px solid #fff;">
-		<p>
-			<input class="easyui-textbox" id="code" data-options="label:'订单编号:'" style="width: 230px;" readonly="readonly">
-			<span class="left30"></span>
-			<input class="easyui-textbox" id="takeTime" data-options="label:'拍摄日期:'" style="width: 230px;" readonly="readonly">
-			<span class="left30"></span>
-			<input class="easyui-textbox" id="city" data-options="label:'拍摄城市:'" style="width: 230px;" readonly="readonly">
-		</p>
-		<div class="divider"></div>
-		<p style="margin-bottom:10px">
-			<input class="easyui-textbox" id="createdUser" data-options="label:'下单公司:'" style="width: 230px;" readonly="readonly">
-			<span class="left30"></span>
-			<input class="easyui-textbox" id="createdAddress" data-options="label:'公司地址:'" style="width: 230px;" readonly="readonly">
-			<span class="left30"></span>
-			<input class="easyui-textbox" id="createdMobile" data-options="label:'负责人电话:'" style="width: 230px;" readonly="readonly">
-		</p>
-		<div class="divider"></div>
-		<p style="margin-bottom:10px">
-			<input class="easyui-textbox" id="acceptUser" data-options="label:'接单公司:'" style="width: 230px;" readonly="readonly">
-			<span class="left30"></span>
-			<input class="easyui-textbox" id="acceptAddress" data-options="label:'公司地址:'" style="width: 230px;" readonly="readonly">
-			<span class="left30"></span>
-			<input class="easyui-textbox" id="acceptMobile" data-options="label:'负责人电话:'" style="width: 230px;" readonly="readonly">
-		</p>
-		<div class="divider"></div>
 		<p style="margin-bottom:10px">
 			<input class="easyui-textbox" id="customer" data-options="label:'客户姓名:'" style="width: 230px;" readonly="readonly">
 			<span class="left30"></span>
@@ -47,27 +23,19 @@
 			<span class="left30"></span>
 			<input class="easyui-textbox" id="people" data-options="label:'同行人数:'" style="width: 230px;" readonly="readonly">
 		</p>
-		<div class="divider"></div>
 		<p>
-			<input class="easyui-textbox" data-options="label:'服饰风格:'" style="width: 780px;" id="cloth" readonly="readonly">
+			<input class="easyui-textbox" data-options="label:'服饰风格:'" style="width: 680px;" id="cloth" readonly="readonly">
 		</p>
-		<div class="divider"></div>
 		<p>
-			<input class="easyui-textbox" data-options="label:'订购景点:'" style="width: 780px;" id="site" readonly="readonly">
+			<input class="easyui-textbox" data-options="label:'订购景点:'" style="width: 680px;" id="site" readonly="readonly">
 		</p>
-		<div class="divider"></div>
 		<p>
-			<input class="easyui-textbox" data-options="label:'订购住宿:'" style="width: 780px;" id="hotel" readonly="readonly">
+			<input class="easyui-textbox" data-options="label:'订购住宿:'" style="width: 680px;" id="hotel" readonly="readonly">
 		</p>
-		<div class="divider"></div>
 		<p>
 			<input class="easyui-textbox" data-options="label:'是否接送:'" style="width: 230px;" id="pickup" readonly="readonly">
 			<span class="left30"></span>
-			<input class="easyui-textbox" data-options="label:'服务费用:'" style="width: 230px;" id="money" readonly="readonly">
-		</p>
-		<div class="divider"></div>
-		<p>
-			<input class="easyui-textbox" data-options="label:'备注信息:'" style="width: 780px;" id="remark">
+			<input class="easyui-textbox" data-options="label:'备注信息:'" style="width: 420px;" id="remark">
 		</p>
 		<div class="divider"></div>
 		<p>
@@ -75,12 +43,10 @@
 			<input type="button" value="确认完成" class="inputBtn hidden" id="ok">
 			<input type="button" value="图片下载" class="inputBtn hidden" id="down">
 		</p>
-		<div class="divider"></div>
-		<ul style="padding:5px 0;" id="imgs"></ul>
 	</div>
     <script>
 	$(function(){
-		bns.order_get(getQueryParam("id"),order_get_html);
+		bns.order_detail(getQueryParam("id"),order_get_html);
 		
 		$("#del").click(function() {
 			var obj=new Object();
@@ -108,15 +74,6 @@
 	
 	function order_get_html(data){
 		var xhrObj = JSON.parse(data);
-		$("#code").textbox('setValue',xhrObj.code);
-		$("#takeTime").textbox('setValue',xhrObj.takeTime);
-		$("#city").textbox('setValue',xhrObj.city);
-		$("#createdUser").textbox('setValue',xhrObj.createdUser);
-		$("#createdAddress").textbox('setValue',xhrObj.createdAddress);
-		$("#createdMobile").textbox('setValue',xhrObj.createdMobile);
-		$("#acceptUser").textbox('setValue',xhrObj.acceptUser);
-		$("#acceptAddress").textbox('setValue',xhrObj.acceptAddress);
-		$("#acceptMobile").textbox('setValue',xhrObj.acceptMobile);
 		$("#customer").textbox('setValue',xhrObj.customer);
 		$("#idcard").textbox('setValue',xhrObj.idcard);
 		$("#mobile").textbox('setValue',xhrObj.mobile);
@@ -125,7 +82,6 @@
 		$("#site").textbox('setValue',xhrObj.site);
 		$("#hotel").textbox('setValue',xhrObj.hotel);
 		$("#pickup").textbox('setValue',xhrObj.pickup);
-		$("#money").textbox('setValue',xhrObj.money);
 		$("#remark").textbox('setValue',xhrObj.remark);
 		if(xhrObj.state==5){
 			$("#del").show();
@@ -133,14 +89,6 @@
 		if(xhrObj.state==2){
 			$("#ok").show();
 			$("#down").show();
-		}
-		if(xhrObj.imgs!=null){
-			var imgs =xhrObj.imgs.split(',');
-			$.each(imgs, function(index,obj){
-				if(obj!=''&&obj.indexOf('.jpg')!=-1){
-					$("#imgs").append('<li class="left"><img src="'+img_src(obj)+'" width=100></li>');
-				}
-			}); 
 		}
 	}
 	

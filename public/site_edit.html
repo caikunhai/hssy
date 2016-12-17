@@ -11,6 +11,7 @@
     <script type="text/javascript" src="js/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="js/core.js"></script>
     <script type="text/javascript" src="js/bns.js"></script>
+    <script type="text/javascript" src="js/area.js"></script>
     <script type="text/javascript" src="uploadify/scripts/jquery.uploadify.js"></script>
 </head>
 <body>
@@ -30,14 +31,12 @@
 			</div>
 			<div style="margin-bottom:20px">
 				<select class="easyui-combobox" id="type" label="景点类型" style="width: 240px;" data-options="editable:false,panelHeight:'auto'">
-					<option value="-1">---选择状态--</option>
 					<option value="0">免费</option>
 					<option value="1">收费</option>
 				</select>
 			</div>
 			<div style="margin-bottom:20px">
 				<select class="easyui-combobox" id="state" label="景点状态" style="width: 240px;" data-options="editable:false,panelHeight:'auto'">
-					<option value="-1">---选择状态--</option>
 					<option value="0">启用</option>
 					<option value="1">禁用</option>
 				</select>
@@ -55,9 +54,8 @@
 		</div>
 	</div>
 	<script>
-	var area=new Array();
 	$(function(){
-		
+		list_city(0);
 		$("#logo").uploadify({
 		  'swf' : 'uploadify/scripts/uploadify.swf',
 		  'uploader': core.file_upload_url,
@@ -86,9 +84,7 @@
 		});
 		
 		
-		bns.area_list();
 		var id =getQueryParam("id");
-		console.log('====id========='+id);
 		if(id!=''){
 			bns.site_get(id,init_html);
 		}
@@ -132,13 +128,6 @@
 			if(remark!=''){
 				obj.remark =remark;
 			}
-			var img_src='';
-			$('li').each(function(index, element) {
-				img_src +=$(element).attr('title')+',';
-			});
-			if(img_src!=''){
-				obj.logo =img_src;
-			}
 			console.log('============='+JSON.stringify(obj));
 			bns.site_save(JSON.stringify(obj),common_html);
 		});
@@ -147,7 +136,6 @@
 	
 	function init_html(data){
 		var xhrObj = JSON.parse(data);
-		console.log(JSON.stringify(xhrObj));
 		$("#city").combobox('setValue',xhrObj.city);
 		$("#name").textbox('setValue',xhrObj.name);
 		$("#description").textbox('setValue',xhrObj.description);
@@ -155,16 +143,6 @@
 		$('#type').combobox('setValue',xhrObj.type);
 		$("#state").combobox('setValue',xhrObj.state);
 		$("#remark").textbox('setValue',xhrObj.remark);
-		var imgs='';
-		if(xhrObj.logo!=null&&xhrObj.logo!=''){
-			imgs =xhrObj.logo.split(',');
-		}
-		var img_html='';
-		for(var i=0;i<imgs.length;i++){
-			if(imgs[i]!=''){
-				img_html+='<li class="left" title='+imgs[i]+'><img src="'+img_src(imgs[i])+'" width=120px height=100px>';
-			}
-		}
 		$("#logo_").empty().append(img_html);
 	}
 	

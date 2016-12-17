@@ -30,8 +30,8 @@
 				<th field="type" width="60px">景点类型</th>
 				<th field="money" width="60px">景点门票</th>
 				<th field="state" width="60px">使用状态</th>
-				<th field="remark" width="80px">备注信息</th>
-				<th field="createdTime" width="80px">创建时间</th>
+				<th field="remark" width="140px">备注信息</th>
+				<th field="createdTime" width="120px">创建时间</th>
 				<th field="operation" width="100px">操作</th>
 			</tr>
 		</thead>
@@ -56,7 +56,7 @@
 				state:xhrObj[i].state==0?'启用':'禁用',
 				remark:xhrObj[i].remark,
 				num:xhrObj[i].num,
-				createdTime:xhrObj[i].createdTime,
+				createdTime:time.formatterDateTime2(xhrObj[i].createdTime),
 				operation:'&nbsp;<a href=javascript:newOpen("景点编辑","'+url+'")>编辑</a>'
 	        });
 		}

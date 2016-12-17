@@ -13,12 +13,12 @@ $(function() {
 			obj.id =$("input[name=id]").val();
 			var state =$('#state').combobox('getValue');
 			obj.state =state;
-			var company =$("#company").textbox('getValue');
-			if(company==''){
+			var name =$("#name").textbox('getValue');
+			if(name==''){
 				msgShow("系统提示","公司名称不能为空","warning");
 				return;
 			}
-			obj.company =company;
+			obj.name =name;
 			var address =$("#address").textbox('getValue');
 			if(address==''){
 				msgShow("系统提示","公司地址不能为空","warning");
@@ -61,7 +61,6 @@ $(function() {
 				return;
 			}
 			obj.num =num;
-			obj.logo=$("input[name=logo]").val();
 			console.log('============='+JSON.stringify(obj));
 			bns.company_save(JSON.stringify(obj),common_html);
 		});
@@ -113,10 +112,10 @@ function company_info_html(result){
 		}
 		console.log(JSON.stringify(xhrObj));
 		$("input[name=id]").val(xhrObj.id);
-		$("#city").textbox('setValue',xhrObj.cityName);
+		$("#city").textbox('setValue',xhrObj.city);
 		$("#state").combobox('setValue',xhrObj.state);
-		$("#rank").textbox('setValue',xhrObj.rank==0?'普通商家':(xhrObj.rank==1?'升级中':'高级商家'));
-		$("#company").textbox('setValue',xhrObj.company);
+		$("#rank").textbox('setValue',xhrObj.rank_);
+		$("#name").textbox('setValue',xhrObj.name);
 		$("#address").textbox('setValue',xhrObj.address);
 		$("#frName").textbox('setValue',xhrObj.frName);
 		$("#frMobile").textbox('setValue',xhrObj.frMobile);
@@ -124,11 +123,6 @@ function company_info_html(result){
 		$("#mobile").textbox('setValue',xhrObj.mobile);
 		$("#gos").textbox('setValue',xhrObj.gos);
 		$("#num").textbox('setValue',xhrObj.num);
-		$("input[name=logo]").val(xhrObj.logo);
-		
-		if(xhrObj.logo!=null&&xhrObj.logo!=''){
-			$("#logo_").empty().append('<img src="'+img_src(xhrObj.logo)+'" width=120px height=100px>');
-		}
 	}
 
 
