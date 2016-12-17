@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import entities.BnsSite;
 import repositories.BnsSiteRepository;
 import services.SiteService;
+import entities.BnsSite;
 
 @Service("siteService")
 public class SiteServiceImpl  implements SiteService {
@@ -28,15 +28,15 @@ public class SiteServiceImpl  implements SiteService {
 	}
 
 	@Override
-	public List<BnsSite> listAll() {
+	public List<Object> listAll() {
 		// TODO Auto-generated method stub
 		return siteRepository.listAll();
 	}
 
 	@Override
-	public List<BnsSite> search(String company) {
+	public List<BnsSite> searchByCompany(String company) {
 		// TODO Auto-generated method stub
-		return siteRepository.findByCompany(company);
+		return siteRepository.searchByCompany(company);
 	}
 
 }

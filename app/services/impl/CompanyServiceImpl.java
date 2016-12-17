@@ -38,4 +38,22 @@ public class CompanyServiceImpl implements CompanyService {
 		// TODO 自动生成的方法存根
 		return companyRepository.findOne(id);
 	}
+
+	@Override
+	public BnsCompany getByToken(String token) {
+		// TODO 自动生成的方法存根
+		return companyRepository.getByToken(token);
+	}
+
+	@Override
+	public void detele(BnsCompany obj) {
+		// TODO 自动生成的方法存根
+		companyRepository.delete(obj);
+	}
+
+	@Override
+	public List<BnsCompany> findService() {
+		// TODO 自动生成的方法存根
+		return companyRepository.findService();
+	}
 }

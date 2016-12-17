@@ -21,6 +21,6 @@ public interface UserService {
 	
 	public List<SysMenu> findMenu(int role);
 
-	public List<BnsUser> listByCompany(String company);
+	public List<BnsUser> listEmployeeByToken(String token);
 
 }

@@ -28,7 +28,7 @@ public class ClothServiceImpl implements ClothService {
 	}
 
 	@Override
-	public List<BnsClothes> list() {
+	public List<Object> listAll() {
 		// TODO Auto-generated method stub
 		return clothesRepository.listAll();
 	}

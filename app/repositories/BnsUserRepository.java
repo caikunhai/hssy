@@ -18,7 +18,7 @@ public interface BnsUserRepository extends CrudRepository<BnsUser, String> {
 	@Query(value = "SELECT *FROM bns_user t WHERE t.token =? LIMIT 0,1", nativeQuery = true)
 	public BnsUser findByToken(String token);
 
-	@Query(value = "SELECT *FROM bns_user t WHERE t.company =?", nativeQuery = true)
-	public List<BnsUser> listByCompany(String company);
+	@Query(value = "SELECT t.*FROM bns_user t WHERE t.role='2' AND t.company =(SELECT u.company FROM bns_user u WHERE u.token=?)", nativeQuery = true)
+	public List<BnsUser> listEmployeeByToken(String token);
 
 }

@@ -10,8 +10,8 @@ public interface SiteService {
 	
 	public BnsSite get(String id);
 	
-	public List<BnsSite> listAll();
+	public List<Object> listAll();
 	
-	public List<BnsSite> search(String company);
+	public List<BnsSite> searchByCompany(String company);
 
 }

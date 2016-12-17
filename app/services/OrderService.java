@@ -9,6 +9,8 @@ public interface OrderService {
 	
 	public BnsOrder saveOrder(BnsOrder args);
 	
+	public BnsOrderChild saveOrderChildren(BnsOrderChild children);
+	
 	public BnsOrder get(String args);
 	
 	public BnsOrderChild detail(String orderId);
@@ -19,5 +21,4 @@ public interface OrderService {
 
 	public List<BnsOrder> listByServerToken(String token);
 
-	
 }

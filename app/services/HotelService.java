@@ -10,7 +10,7 @@ public interface HotelService {
 	
 	public BnsHotel get(String id);
 	
-	public List<BnsHotel> listAll();
+	public List<Object> listAll();
 	
 	public List<BnsHotel> search(String company);
 

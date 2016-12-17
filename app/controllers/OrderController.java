@@ -11,22 +11,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
-import com.thoughtworks.xstream.XStream;
-
-import bean.OrderAddForm;
-import bean.OrderImgForm;
-import bean.OrderNextForm;
-import bean.OrderStatus;
-import bean.PayForm;
-import entities.BnsCompany;
-import entities.BnsOrder;
-import external.alipay.alipaydirect.util.AlipaydirectBean;
-import external.alipay.alipaydirect.util.AlipaydirectHtmlText;
 import play.data.Form;
 import play.libs.Json;
 import play.mvc.Result;
@@ -35,6 +23,19 @@ import services.OrderService;
 import system.log.Logger;
 import utils.BnsUtils;
 import utils.CryptTool;
+import bean.OrderAddForm;
+import bean.OrderImgForm;
+import bean.OrderNextForm;
+import bean.OrderStatus;
+import bean.PayForm;
+
+import com.thoughtworks.xstream.XStream;
+
+import entities.BnsCompany;
+import entities.BnsOrder;
+import entities.BnsOrderChild;
+import external.alipay.alipaydirect.util.AlipaydirectBean;
+import external.alipay.alipaydirect.util.AlipaydirectHtmlText;
 
 @Controller
 public class OrderController extends play.mvc.Controller {
@@ -62,15 +63,37 @@ public class OrderController extends play.mvc.Controller {
 		xstream.alias("request", OrderAddForm.class);
 		Logger.info("保存订单", xstream.toXML(data));
 		BnsOrder order =new BnsOrder();
-		BeanUtils.copyProperties(order, data);
 		order.setId(CryptTool.getUUID());
 		order.setCode(CryptTool.getCode("C"));
-		order.setCreatedUser(BnsUtils.getId(token));
-		order.setCreatedTime(new Timestamp(System.currentTimeMillis()));
+		order.setCity(data.getCity());
+		order.setTakeTime(Timestamp.valueOf(data.getTakeTime()));
+		BnsCompany creator =CompanyController.getByToken(token);
+		order.setCreatedUser(creator.getId());
+		order.setCreatedUserName(creator.getName());
+		BnsCompany accept =CompanyController.Obj(data.getAcceptUser());
+		order.setAcceptUser(data.getAcceptUser());
+		order.setAcceptUserName(accept.getName());
+		order.setMoney(data.getMoney());
+		order.setPaid(0);
 		order.setState(OrderStatus.Wait_Pay.ordinal());
+		order.setCreatedTime(new Timestamp(System.currentTimeMillis()));
 		xstream.alias("order", BnsOrder.class);
 		Logger.info("order", xstream.toXML(order));
 		orderService.saveOrder(order);
+		BnsOrderChild children=new BnsOrderChild();
+		children.setId(CryptTool.getUUID());
+		children.setOrderId(order.getId());
+		children.setCustomer(data.getCustomer());
+		children.setIdcard(data.getIdcard());
+		children.setMobile(data.getMobile());
+		children.setPeople(data.getPeople());
+		children.setCloth(data.getCloth());
+		children.setSite(data.getSite());
+		children.setHotel(data.getHotel());
+		children.setPickup(data.getPickup());
+		children.setRemark(data.getRemark());
+		children.setCreatedTime(new Timestamp(System.currentTimeMillis()));
+		orderService.saveOrderChildren(children);
 		vo.put("code", 1);
 		vo.put("id", order.getId());
 		vo.put("orderCode", order.getCode());
@@ -109,13 +132,14 @@ public class OrderController extends play.mvc.Controller {
 			vo.put("message", directHtmlText);
 		}
 		if("余额".equals(data.getPayment())){
-			obj.setState(OrderStatus.Wait_Receive.ordinal());
 			if(!WalletController.walletMinus(obj.getCreatedUser(), obj.getMoney())){
 				vo.put("message", "余额不足");
 				return ok(Json.toJson(vo));
 			}
 			vo.put("message", "支付成功");
 		}
+		obj.setState(OrderStatus.Wait_Receive.ordinal());
+		obj.setPaid(1);
 		vo.put("code", 1);
 		orderService.saveOrder(obj);
 		return ok(Json.toJson(vo));
@@ -235,15 +259,16 @@ public class OrderController extends play.mvc.Controller {
 	public static Result server(String token,String progress){
 		List<Object> list =new ArrayList<Object>();
 		List<BnsOrder> all =orderService.listByServerToken(token);
+		System.out.println("=====all.size()========="+all.size());
 		for(BnsOrder obj:all){
 			if("over".equals(progress)&&(obj.getState()==OrderStatus.Game_Over.ordinal()||obj.getState()==OrderStatus.Game_Close.ordinal())){
 				list.add(obj);
 			}
-			if("process".equals(progress)&&obj.getState()<3){
+			if("progress".equals(progress)&&obj.getState()<3){
 				list.add(obj);
 			}
 			
-		}
+		}System.out.println("=====list.size()========="+list.size());
 		return ok(Json.toJson(list));
 	}
 	
@@ -251,15 +276,16 @@ public class OrderController extends play.mvc.Controller {
 	public static Result host(String token,String progress){
 		List<Object> list =new ArrayList<Object>();
 		List<BnsOrder> all =orderService.listByHostToken(token);
+		System.out.println("=====all.size()========="+all.size());
 		for(BnsOrder obj:all){
 			if("over".equals(progress)&&(obj.getState()==OrderStatus.Game_Over.ordinal()||obj.getState()==OrderStatus.Game_Close.ordinal())){
 				list.add(obj);
 			}
-			if("process".equals(progress)&&obj.getState()<3){
+			if("progress".equals(progress)&&obj.getState()<3){
 				list.add(obj);
 			}
 				
-		}
+		}System.out.println("=====list.size()========="+list.size());
 		return ok(Json.toJson(list));
 	}
 	
@@ -365,7 +391,7 @@ public class OrderController extends play.mvc.Controller {
 	
 	public static List<BnsOrder> unFinish(String token){
 		List<BnsOrder> list =new ArrayList<BnsOrder>();
-		List<BnsOrder> all =orderService.listByServerToken(UserController.companyId(token));
+		List<BnsOrder> all =orderService.listByServerToken(CompanyController.getByToken(token).getId());
 		for(BnsOrder obj:all){
 			if(obj.getState()==0){
 				continue;

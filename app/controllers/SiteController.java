@@ -4,8 +4,6 @@ import static play.data.Form.form;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,11 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
-import com.thoughtworks.xstream.XStream;
-
-import bean.SiteForm;
-import entities.BnsCompany;
-import entities.BnsSite;
 import play.data.Form;
 import play.libs.Json;
 import play.mvc.Result;
@@ -27,6 +20,11 @@ import play.mvc.Security;
 import services.SiteService;
 import system.log.Logger;
 import utils.CryptTool;
+import bean.SiteForm;
+
+import com.thoughtworks.xstream.XStream;
+
+import entities.BnsSite;
 
 @Controller
 public class SiteController extends play.mvc.Controller {
@@ -42,52 +40,13 @@ public class SiteController extends play.mvc.Controller {
 	@Security.Authenticated(Secured.class)
 	public static Result list(){
 		String token = request().getHeader("token");
-		return ok(Json.toJson(siteService.search(UserController.companyId(token))));
+		String company =CompanyController.getByToken(token).getId();
+		return ok(Json.toJson(siteService.searchByCompany(company)));
 	}
 	
 	@Security.Authenticated(Secured.class)
 	public static Result all(){
-		Map<String, BnsCompany> companyMap =CompanyController.comapnyMap();
-		List<Object> data =new ArrayList<Object>();
-		List<BnsSite> list =siteService.listAll();
-		for(BnsSite obj:list){
-			Map<String,Object> map =new HashMap<String,Object>();
-			map.put("id", obj.getId());
-			map.put("company", obj.getCompany());
-			map.put("companyName", companyMap.get(obj.getCompany()).getName());
-			map.put("city", obj.getCity());
-			map.put("name", obj.getName());
-			map.put("logo", obj.getLogo());
-			map.put("type", obj.getType());
-			map.put("state", obj.getState());
-			map.put("description", obj.getDescription());
-			map.put("money", obj.getMoney());
-			map.put("remark", obj.getRemark());
-			map.put("createdTime", new SimpleDateFormat("yyyy-MM-dd").format(obj.getCreatedTime()));
-			data.add(map);
-		}
-		return ok(Json.toJson(data));
-	}
-	
-	public static List<Object> search(String company){
-		List<Object> list =new ArrayList<Object>();
-		List<BnsSite> caches =siteService.search(company);
-		for(BnsSite obj:caches){
-			Map<String,Object> map =new HashMap<String,Object>();
-			map.put("id", obj.getId());
-			map.put("company", obj.getCompany());
-			map.put("city", obj.getCity());
-			map.put("name", obj.getName());
-			map.put("address", "address");
-			map.put("logo", obj.getLogo());
-			map.put("type", obj.getType());
-			map.put("state", obj.getState());
-			map.put("description", obj.getDescription());
-			map.put("money", obj.getMoney());
-			map.put("remark", obj.getRemark());
-			list.add(map);
-		}
-		return list;
+		return ok(Json.toJson(siteService.listAll()));
 	}
 	
 	@Security.Authenticated(Secured.class)
@@ -110,7 +69,7 @@ public class SiteController extends play.mvc.Controller {
 			BeanUtils.copyProperties(obj, data);
 			obj.setId(CryptTool.getUUID());
 			String token = request().getHeader("token");
-			obj.setCompany(UserController.companyId(token));
+			obj.setCompany(CompanyController.getByToken(token).getId());
 			obj.setMoney(new BigDecimal(0));
 			obj.setState(0);
 			obj.setCreatedTime(new Timestamp(System.currentTimeMillis()));
@@ -136,6 +95,9 @@ public class SiteController extends play.mvc.Controller {
 			if(data.getMoney()!=null){
 				obj.setMoney(data.getMoney());
 			}
+			if(data.getRemark()!=null){
+				obj.setRemark(data.getRemark());
+			}
 		}
 		siteService.save(obj);
 		vo.put("code", 1);
@@ -148,8 +110,8 @@ public class SiteController extends play.mvc.Controller {
 		return ok(Json.toJson(siteService.get(id)));
 	}
 	
-	public static BnsSite siteObj(String id){
-		return siteService.get(id);
+	public static List<BnsSite> search(String company){
+		return siteService.searchByCompany(company);
 	}
 
 }

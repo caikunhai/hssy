@@ -10,7 +10,7 @@ public interface ClothService {
 	
 	public BnsClothes get(String id);
 	
-	public List<BnsClothes> list();
+	public List<Object> listAll();
 	
 	public List<BnsClothes> search(String company);
 

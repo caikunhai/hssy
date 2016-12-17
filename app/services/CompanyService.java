@@ -14,4 +14,10 @@ public interface CompanyService {
 	
 	public BnsCompany get(String id);
 
+	public BnsCompany getByToken(String token);
+
+	public void detele(BnsCompany obj);
+	
+	public List<BnsCompany> findService();
+
 }

@@ -58,4 +58,10 @@ public class OrderServiceImpl implements OrderService {
 		return orderChildRepository.findByOrderId(orderId);
 	}
 
+	@Override
+	public BnsOrderChild saveOrderChildren(BnsOrderChild children) {
+		// TODO 自动生成的方法存根
+		return orderChildRepository.save(children);
+	}
+
 }

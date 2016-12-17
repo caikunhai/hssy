@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import com.thoughtworks.xstream.XStream;
 
 import bean.CompanyForm;
+import bean.SearchForm;
 import entities.BnsCompany;
 import play.data.Form;
 import play.libs.Json;
@@ -60,12 +61,14 @@ public class CompanyController extends play.mvc.Controller {
 		obj=new BnsCompany();
 		BeanUtils.copyProperties(obj, data);
 		obj.setId(CryptTool.getUUID());
+		obj.setHistory(0);
 		obj.setState(0);
 		obj.setRank(0);
 		obj.setCreatedTime(new Timestamp(System.currentTimeMillis()));
 		//同步创建管理账户
 		Boolean flag =UserController.companyAdministrator(obj);
 		if(!flag){
+			companyService.detele(obj);
 			vo.put("message", "创建公司账户失败");
 			return ok(Json.toJson(vo));
 		}
@@ -108,9 +111,6 @@ public class CompanyController extends play.mvc.Controller {
 		}
 		Logger.info("保存公司", Json.toJson(obj)+"");
 		companyService.save(obj);
-		if(obj.getRank()==2){
-			SetupManager.initCompany();
-		}
 		vo.put("code", 1);
 		vo.put("message", "保存成功");
 		return ok(Json.toJson(vo));
@@ -131,26 +131,21 @@ public class CompanyController extends play.mvc.Controller {
 	
 	@Security.Authenticated(Secured.class)
 	public static Result simple(){
-		Iterable<BnsCompany> itr =companyService.list();
-		Iterator<BnsCompany> it =itr.iterator();
-		List<Object> list =new ArrayList<Object>();
-		while(it.hasNext()){
-			BnsCompany obj =it.next();
-			if(obj.getRank()==2){
-				Map<String,Object> map =new HashMap<String,Object>();
-				map.put("id", obj.getId());
-				map.put("name", obj.getName());
-				map.put("address", obj.getAddress());
-				map.put("linkman", obj.getLinkman());
-				map.put("mobile", obj.getMobile());
-				list.add(map);
-			}
-		}
-		return ok(Json.toJson(list));
+		return ok(Json.toJson(companyService.findService()));
 	}
 	
 	@Security.Authenticated(Secured.class)
 	public static Result search(String city){
+		/*Form<SearchForm> form = form(SearchForm.class).bindFromRequest();
+		if (form.hasErrors()) {
+			Logger.error("查询公司", form.toString());
+			return status(403,Json.toJson(form.toString()));
+		}
+		SearchForm data =form.get();
+		XStream xstream = new XStream();
+		xstream.alias("request", SearchForm.class);*/
+	//	Logger.info("查询公司", xstream.toXML(data));
+		Logger.info("查询公司", "========="+city);
 		return ok(Json.toJson(companyService.listByCity(city)));
 	}
 	
@@ -174,7 +169,8 @@ public class CompanyController extends play.mvc.Controller {
 	@Security.Authenticated(Secured.class)
 	public static Result info(){
 		String token = request().getHeader("token");
-		return get(UserController.companyId(token));
+		BnsCompany obj=getByToken(token);
+		return ok(Json.toJson(Map4Obj(obj)));
 	}
 	
 	private static Map<String,Object> Map4Obj(BnsCompany obj){
@@ -189,43 +185,16 @@ public class CompanyController extends play.mvc.Controller {
 		map.put("linkman", obj.getLinkman());
 		map.put("mobile", obj.getMobile());
 		map.put("gos", obj.getGos());
+		map.put("history", obj.getHistory());
 		map.put("num", obj.getNum());
 		map.put("state", obj.getState());
+		map.put("state_", obj.getState()==0?"启用":"禁用");
 		map.put("rank", obj.getRank());
+		map.put("rank_", obj.getRank()==0?"普通服务商":(obj.getRank()==1?"升级中":"高级服务商"));
 		map.put("createdTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(obj.getCreatedTime()));
 		return map;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static Map<String,BnsCompany> comapnyMap(){
-		return (Map<String,BnsCompany>)play.cache.Cache.get("company");
-	}
-	
-	public static BnsCompany Obj(String id){
-		return companyService.get(id);
-	}
-	
-	//组装公司dialog
-	public static String dialog4Company(String id){
-		BnsCompany comapny =comapnyMap().get(id);
-		if(comapny ==null){
-			return "";
-		}
-		StringBuffer html=new StringBuffer();
-		html.append("<p>组织名称："+comapny.getName()+"</p>");
-		html.append("<p>联系电话："+comapny.getMobile()+"</p>");
-		html.append("<p>所在地址："+comapny.getAddress()+"</p>");
-		return html.toString();
-	}
-	
-	//组装公司dialog
-	public static String name4Company(String id){
-		BnsCompany comapny =comapnyMap().get(id);
-		if(comapny ==null){
-			return "";
-		}
-		return comapny.getName();
-	}
 	
 	public static BnsCompany companyHistoryOrderPlus(String id){
 		BnsCompany comapny =companyService.get(id);
@@ -234,6 +203,16 @@ public class CompanyController extends play.mvc.Controller {
 		}
 		//comapny.setHistory(comapny.getHistory()+1);
 		return companyService.save(comapny);
+	}
+	
+	//根据token获取机构对象
+	public static BnsCompany getByToken(String token){
+		return companyService.getByToken(token);
+	}
+	
+	//根据id获取机构对象
+	public static BnsCompany Obj(String id){
+		return companyService.get(id);
 	}
 	
 	

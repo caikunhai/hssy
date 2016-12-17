@@ -28,7 +28,7 @@ public class HotelServiceImpl implements HotelService {
 	}
 
 	@Override
-	public List<BnsHotel> listAll() {
+	public List<Object> listAll() {
 		// TODO Auto-generated method stub
 		return hotelRepository.listAll();
 	}

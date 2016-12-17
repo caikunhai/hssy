@@ -3,8 +3,6 @@ import static play.data.Form.form;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,19 +12,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
-import com.thoughtworks.xstream.XStream;
-
-import bean.HotelForm;
-import entities.BnsCompany;
-import entities.BnsHotel;
 import play.data.Form;
 import play.libs.Json;
 import play.mvc.Result;
 import play.mvc.Security;
 import services.HotelService;
 import system.log.Logger;
-import utils.BnsUtils;
 import utils.CryptTool;
+import bean.HotelForm;
+
+import com.thoughtworks.xstream.XStream;
+
+import entities.BnsHotel;
 
 @Controller
 public class HotelController extends play.mvc.Controller {
@@ -42,55 +39,13 @@ public class HotelController extends play.mvc.Controller {
 	@Security.Authenticated(Secured.class)
 	public static Result list(){
 		String token = request().getHeader("token");
-		return ok(Json.toJson(hotelService.search(UserController.companyId(token))));
+		String company =CompanyController.getByToken(token).getId();
+		return ok(Json.toJson(hotelService.search(company)));
 	}
 	
 	@Security.Authenticated(Secured.class)
 	public static Result all(){
-		Map<String, BnsCompany> companyMap =CompanyController.comapnyMap();
-		List<Object> data =new ArrayList<Object>();
-		List<BnsHotel> list =hotelService.listAll();
-		for(BnsHotel obj:list){
-			Map<String,Object> map =new HashMap<String,Object>();
-			map.put("id", obj.getId());
-			map.put("company", obj.getCompany());
-			map.put("name", companyMap.get(obj.getCompany()).getName());
-			map.put("city", obj.getCity());
-			map.put("name", obj.getName());
-			map.put("logo", obj.getLogo());
-			map.put("type", obj.getType());
-			map.put("state", obj.getState());
-			map.put("star", obj.getStar());
-			map.put("description", obj.getDescription());
-			map.put("address", obj.getAddress());
-			map.put("money", obj.getPrice());
-			map.put("remark", obj.getRemark());
-			map.put("createdTime", new SimpleDateFormat("yyyy-MM-dd").format(obj.getCreatedTime()));
-			data.add(map);
-		}
-		return ok(Json.toJson(data));
-	}
-	
-	public static List<Object> search(String company){
-		List<Object> list =new ArrayList<Object>();
-		List<BnsHotel> caches =hotelService.search(company);
-		for(BnsHotel obj:caches){
-			Map<String,Object> map =new HashMap<String,Object>();
-			map.put("id", obj.getId());
-			map.put("company", obj.getCompany());
-			map.put("city", obj.getCity());
-			map.put("name", obj.getName());
-			map.put("logo", obj.getLogo());
-			map.put("type", obj.getType());
-			map.put("state", obj.getState());
-			map.put("star", obj.getStar());
-			map.put("description", obj.getDescription());
-			map.put("address", obj.getAddress());
-			map.put("money", obj.getPrice());
-			map.put("remark", obj.getRemark());
-			list.add(map);
-		}
-		return list;
+		return ok(Json.toJson(hotelService.listAll()));
 	}
 	
 	@Security.Authenticated(Secured.class)
@@ -112,7 +67,7 @@ public class HotelController extends play.mvc.Controller {
 			BeanUtils.copyProperties(obj, data);
 			obj.setId(CryptTool.getUUID());
 			String token = request().getHeader("token");
-			obj.setCompany(UserController.companyId(token));
+			obj.setCompany(CompanyController.getByToken(token).getId());
 			obj.setCreatedTime(new Timestamp(System.currentTimeMillis()));
 		}else{
 			if(data.getName()!=null){
@@ -136,6 +91,9 @@ public class HotelController extends play.mvc.Controller {
 			if(data.getType()!=null){
 				obj.setType(data.getType());
 			}
+			if(data.getRemark()!=null){
+				obj.setRemark(data.getRemark());
+			}
 		}
 		hotelService.save(obj);
 		vo.put("code", 1);
@@ -148,8 +106,8 @@ public class HotelController extends play.mvc.Controller {
 		return ok(Json.toJson(hotelService.get(id)));
 	}
 	
-	public static BnsHotel hotelObj(String id){
-		return hotelService.get(id);
+	public static List<BnsHotel> search(String company){
+		return hotelService.search(company);
 	}
 
 }

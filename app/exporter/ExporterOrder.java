@@ -121,7 +121,7 @@ public class ExporterOrder {
 				data.add( vo.getCode());
 				data.add( BnsUtils.stateName(vo.getState()));
 				data.add( new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(vo.getTakeTime()) );
-				data.add( CompanyController.name4Company(vo.getCreatedUser()) );
+				data.add( "" );
 				/*data.add( vo.getCustomer() );
 				data.add( vo.getIdcard() );
 				data.add( vo.getMobile() );

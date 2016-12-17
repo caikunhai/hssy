@@ -1,12 +1,14 @@
 package bean;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class OrderAddForm {
 	
 	private String city;
-	private Date takeTime;
+	private String takeTime;
 	private String customer;
 	private String idcard;
 	private String mobile;
@@ -24,12 +26,6 @@ public class OrderAddForm {
 	}
 	public void setCity(String city) {
 		this.city = city;
-	}
-	public Date getTakeTime() {
-		return takeTime;
-	}
-	public void setTakeTime(Date takeTime) {
-		this.takeTime = takeTime;
 	}
 	public String getCustomer() {
 		return customer;
@@ -97,6 +93,11 @@ public class OrderAddForm {
 	public void setMoney(BigDecimal money) {
 		this.money = money;
 	}
-	
+	public String getTakeTime() {
+		return takeTime+" 00:00:00";
+	}
+	public void setTakeTime(String takeTime) {
+		this.takeTime = takeTime;
+	}
 	
 }

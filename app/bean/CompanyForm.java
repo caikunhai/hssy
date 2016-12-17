@@ -5,7 +5,6 @@ public class CompanyForm {
 	private String city;
 	private String name;
 	private String logo;
-	private String license;
 	private String address;
 	private String frName;
 	private String frMobile;
@@ -14,7 +13,6 @@ public class CompanyForm {
 	private String gos;
 	private Integer num;
 	private Integer state;
-	private Integer rank;
 	public String getCity() {
 		return city;
 	}
@@ -32,12 +30,6 @@ public class CompanyForm {
 	}
 	public void setLogo(String logo) {
 		this.logo = logo;
-	}
-	public String getLicense() {
-		return license;
-	}
-	public void setLicense(String license) {
-		this.license = license;
 	}
 	public String getAddress() {
 		return address;
@@ -93,11 +85,6 @@ public class CompanyForm {
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
-	public Integer getRank() {
-		return rank;
-	}
-	public void setRank(Integer rank) {
-		this.rank = rank;
-	}
+	
 	
 }

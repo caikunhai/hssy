@@ -13,6 +13,7 @@ public class SiteForm {
 	private String description;
 	private Integer state;
 	private BigDecimal money;
+	private String remark;
 	
 	public String getId() {
 		return id;
@@ -68,6 +69,11 @@ public class SiteForm {
 	public void setMoney(BigDecimal money) {
 		this.money = money;
 	}
-	
+	public String getRemark() {
+		return remark;
+	}
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
 
 }

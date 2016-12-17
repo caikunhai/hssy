@@ -90,14 +90,14 @@ public class CashController extends play.mvc.Controller {
 	
 	@Security.Authenticated(Secured.class)
 	public static Result all(){
-		Map<String, BnsUser> map =UserController.userMap();
+		//Map<String, BnsUser> map =UserController.userMap();
 		List<Object> list =new ArrayList<Object>();
 		Iterable<BnsCash> itr =cashService.list();
 		Iterator<BnsCash> it =itr.iterator();
 		while(it.hasNext()){
 			BnsCash obj =it.next();
-			obj.setCreatedUser(map.get(obj.getCreatedUser()).getUsername());
-			obj.setCheckedUser(obj.getCheckedUser()==null?"":map.get(obj.getCheckedUser()).getUsername());
+		//	obj.setCreatedUser(map.get(obj.getCreatedUser()).getUsername());
+		//	obj.setCheckedUser(obj.getCheckedUser()==null?"":map.get(obj.getCheckedUser()).getUsername());
 			list.add(obj);
 		}
 		return ok(Json.toJson(list));

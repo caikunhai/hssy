@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 public class HotelForm {
 	private String id;
 	private String city;
-	private String area;
 	private String name;
 	private String address;
 	private String logo;
@@ -14,6 +13,7 @@ public class HotelForm {
 	private BigDecimal price;
 	private Integer star;
 	private Integer state;
+	private String remark;
 	public String getId() {
 		return id;
 	}
@@ -25,12 +25,6 @@ public class HotelForm {
 	}
 	public void setCity(String city) {
 		this.city = city;
-	}
-	public String getArea() {
-		return area;
-	}
-	public void setArea(String area) {
-		this.area = area;
 	}
 	public String getName() {
 		return name;
@@ -79,6 +73,12 @@ public class HotelForm {
 	}
 	public void setPrice(BigDecimal price) {
 		this.price = price;
+	}
+	public String getRemark() {
+		return remark;
+	}
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 	
 }

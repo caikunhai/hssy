@@ -5,7 +5,6 @@ import static play.data.Form.form;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -14,15 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
-import com.thoughtworks.xstream.XStream;
-
-import bean.LoginForm;
-import bean.PasswordForm;
-import bean.RoleEnum;
-import bean.UserForm;
-import entities.BnsCompany;
-import entities.BnsUser;
-import entities.SysMenu;
 import play.data.Form;
 import play.libs.Json;
 import play.mvc.Result;
@@ -32,6 +22,16 @@ import system.log.Logger;
 import utils.BnsUtils;
 import utils.CryptTool;
 import utils.MD5Util;
+import bean.LoginForm;
+import bean.PasswordForm;
+import bean.UserForm;
+
+import com.thoughtworks.xstream.XStream;
+
+import entities.BnsCompany;
+import entities.BnsUser;
+import entities.SysMenu;
+import enumeration.ComRole;
 
 @Controller
 public class UserController extends play.mvc.Controller {
@@ -135,12 +135,12 @@ public class UserController extends play.mvc.Controller {
 				return ok(Json.toJson(vo));
 			}
 			user.setId(CryptTool.getUUID());
-			user.setCompany(companyId(token));
+			user.setCompany(CompanyController.getByToken(token).getId());
 			user.setPassword(MD5Util.encode("123456"));
 			user.setSecret(MD5Util.encode("123456"));
 			user.setUsername(data.getUsername());
+			user.setRole(ComRole.employee.ordinal());
 			user.setState(0);
-			user.setRole(0);
 			user.setCreatedTime(new Timestamp(System.currentTimeMillis()));
 		}else{
 			if(data.getState()!=null){
@@ -233,7 +233,7 @@ public class UserController extends play.mvc.Controller {
 	@Security.Authenticated(Secured.class)
 	public static Result list(){
 		String token = request().getHeader("token");
-		return ok(Json.toJson(userService.listByCompany(companyId(token))));
+		return ok(Json.toJson(userService.listEmployeeByToken(token)));
 	}
 	
 	@Security.Authenticated(Secured.class)
@@ -241,25 +241,6 @@ public class UserController extends play.mvc.Controller {
 		return ok(Json.toJson(userService.get(id)));
 	}
 
-	public static Map<String, BnsUser> userMap() {
-		// TODO Auto-generated method stub
-		Map<String,BnsUser> map =new HashMap<String,BnsUser>();
-		Iterable<BnsUser> itr =userService.listAll();
-		Iterator<BnsUser> it =itr.iterator();
-		while(it.hasNext()){
-			BnsUser obj =it.next();
-			map.put(obj.getId(), obj);
-		}
-		return map;
-	}
-	
-	public static String companyId(String token){
-		BnsUser obj =userService.findByToken(token);
-		if(obj==null){
-			return null;
-		}
-		return obj.getCompany();
-	}
 	
 	public static Boolean companyAdministrator(BnsCompany company){
 		try {
@@ -273,7 +254,7 @@ public class UserController extends play.mvc.Controller {
 			obj.setSecret(MD5Util.encode("123456"));
 			obj.setUsername(company.getFrMobile());
 			obj.setState(0);
-			obj.setRole(RoleEnum.company.ordinal());
+			obj.setRole(ComRole.company.ordinal());
 			obj.setCreatedTime(new Timestamp(System.currentTimeMillis()));
 			userService.saveSysUser(obj);
 		} catch (Exception e) {

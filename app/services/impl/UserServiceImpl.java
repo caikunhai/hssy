@@ -63,9 +63,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<BnsUser> listByCompany(String company) {
+	public List<BnsUser> listEmployeeByToken(String token) {
 		// TODO Auto-generated method stub
-		return userRepository.listByCompany(company);
+		return userRepository.listEmployeeByToken(token);
 	}
 
 }

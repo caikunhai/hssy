@@ -24,7 +24,7 @@
 	* template reference : 
 	* - name      : DomainEntityJPA2Annotation
 	* - file name : DomainEntityJPA2Annotation.vm
-	* - time      : 2016/12/13 ��Ԫ at 23:26:34 CST
+	* - time      : 2016/12/17 ��Ԫ at 14:41:30 CST
 */
 package entities;
 
@@ -78,6 +78,8 @@ import javax.persistence.Table;
 	,@NamedQuery(name="BnsCompany.findByGos", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.gos = :gos")
 	,@NamedQuery(name="BnsCompany.findByGosContaining", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.gos like :gos")
 
+	,@NamedQuery(name="BnsCompany.findByHistory", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.history = :history")
+
 	,@NamedQuery(name="BnsCompany.findByNum", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.num = :num")
 
 	,@NamedQuery(name="BnsCompany.findByState", query="SELECT bnscompany FROM BnsCompany bnscompany WHERE bnscompany.state = :state")
@@ -90,6 +92,7 @@ import javax.persistence.Table;
 
 public class BnsCompany implements Serializable {
     private static final long serialVersionUID = 1L;
+	public static final Integer __DEFAULT_HISTORY = Integer.valueOf(0);
 	public static final Integer __DEFAULT_NUM = Integer.valueOf(0);
 	public static final Integer __DEFAULT_STATE = Integer.valueOf(0);
 	public static final Integer __DEFAULT_RANK = Integer.valueOf(0);
@@ -113,6 +116,7 @@ public class BnsCompany implements Serializable {
     public static final String FIND_BY_MOBILE_CONTAINING ="BnsCompany.findByMobileContaining";
     public static final String FIND_BY_GOS = "BnsCompany.findByGos";
     public static final String FIND_BY_GOS_CONTAINING ="BnsCompany.findByGosContaining";
+    public static final String FIND_BY_HISTORY = "BnsCompany.findByHistory";
     public static final String FIND_BY_NUM = "BnsCompany.findByNum";
     public static final String FIND_BY_STATE = "BnsCompany.findByState";
     public static final String FIND_BY_RANK = "BnsCompany.findByRank";
@@ -184,6 +188,13 @@ public class BnsCompany implements Serializable {
     private String gos; 
 //MP-MANAGED-UPDATABLE-ENDING
 
+//MP-MANAGED-ADDED-AREA-BEGINNING @history-field-annotation@
+//MP-MANAGED-ADDED-AREA-ENDING @history-field-annotation@
+//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @ATTRIBUTE-history@
+    @Column(name="history"   , nullable=true , unique=false)
+    private Integer history; 
+//MP-MANAGED-UPDATABLE-ENDING
+
 //MP-MANAGED-ADDED-AREA-BEGINNING @num-field-annotation@
 //MP-MANAGED-ADDED-AREA-ENDING @num-field-annotation@
 //MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @ATTRIBUTE-num@
@@ -232,6 +243,7 @@ public class BnsCompany implements Serializable {
        String linkman,
        String mobile,
        String gos,
+       Integer history,
        Integer num,
        Integer state,
        Integer rank,
@@ -248,6 +260,7 @@ public class BnsCompany implements Serializable {
        setLinkman (linkman);
        setMobile (mobile);
        setGos (gos);
+       setHistory (history);
        setNum (num);
        setState (state);
        setRank (rank);
@@ -267,6 +280,7 @@ public class BnsCompany implements Serializable {
           getLinkman(),
           getMobile(),
           getGos(),
+          getHistory(),
           getNum(),
           getState(),
           getRank(),
@@ -381,6 +395,17 @@ public class BnsCompany implements Serializable {
 	
 //MP-MANAGED-UPDATABLE-ENDING
 
+//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @GETTER-SETTER-history@
+    public Integer getHistory() {
+        return history;
+    }
+	
+    public void setHistory (Integer history) {
+        this.history =  history;
+    }
+	
+//MP-MANAGED-UPDATABLE-ENDING
+
 //MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @GETTER-SETTER-num@
     public Integer getNum() {
         return num;
@@ -431,6 +456,7 @@ public class BnsCompany implements Serializable {
 //MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @prepersist-bns_company@
     @javax.persistence.PrePersist
     public void prePersist_ () {
+        if (history==null) history=__DEFAULT_HISTORY;
         if (num==null) num=__DEFAULT_NUM;
         if (state==null) state=__DEFAULT_STATE;
         if (rank==null) rank=__DEFAULT_RANK;
@@ -440,6 +466,7 @@ public class BnsCompany implements Serializable {
 //MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @preupdate-bns_company@
     @javax.persistence.PreUpdate
     public void preUpdate_ () {
+        if (history==null) history=__DEFAULT_HISTORY;
         if (num==null) num=__DEFAULT_NUM;
         if (state==null) state=__DEFAULT_STATE;
         if (rank==null) rank=__DEFAULT_RANK;
