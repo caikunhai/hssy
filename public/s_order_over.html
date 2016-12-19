@@ -24,10 +24,9 @@
 				<th field="code" width="140px">订单编号</th>
 				<th field="city" width="80px">拍摄城市</th>
 				<th field="acceptUserName" width="120px">服务机构</th>
-				<th field="payment" width="120px">支付方式</th>
 				<th field="money" width="80px">支付金额</th>
-				<th field="state" width="80px">订单状态</th>
-				<th field="createdTime" width="100px">创建时间</th>
+				<th field="doUser" width="150px">执行人</th>
+				<th field="createdTime" width="100px">下单时间</th>
 				<th field="operation" width="100px">操作</th>
 			</tr>
 		</thead>
@@ -51,10 +50,8 @@
 				code:xhrObj[i].code,
 				city:xhrObj[i].city,
 				acceptUserName:xhrObj[i].acceptUserName,
-				payment:xhrObj[i].payment,
 				money:xhrObj[i].money,
-				state:xhrObj[i].state,
-				money:xhrObj[i].money,
+				doUser:xhrObj[i].doUser,
 				createdTime:time.formatterDate2(xhrObj[i].createdTime),
 				operation:operation_html
 	        });
