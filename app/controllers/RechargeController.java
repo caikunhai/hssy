@@ -119,7 +119,7 @@ public class RechargeController extends play.mvc.Controller {
 	@Security.Authenticated(Secured.class)
 	public static Result all(){
 		List<Object> list =new ArrayList<Object>();
-		Map<String, BnsUser> userMap =UserController.userMap();
+		/*Map<String, BnsUser> userMap =UserController.userMap();
 		Iterable<BnsRecharge> itr =rechargeService.list();
 		Iterator<BnsRecharge> it =itr.iterator();
 		while(it.hasNext()){
@@ -127,7 +127,7 @@ public class RechargeController extends play.mvc.Controller {
 			obj.setCreatedUser(userMap.get(obj.getCreatedUser()).getUsername());
 			obj.setCheckedUser(obj.getCheckedUser()==null?"":userMap.get(obj.getCheckedUser()).getUsername());
 			list.add(obj);
-		}
+		}*/
 		return ok(Json.toJson(list));
 	}
 	

@@ -13,7 +13,7 @@ public interface OrderService {
 	
 	public BnsOrder get(String args);
 	
-	public BnsOrderChild detail(String orderId);
+	public BnsOrderChild detail(String id);
 	
 	public BnsOrder findByCode(String code);
 

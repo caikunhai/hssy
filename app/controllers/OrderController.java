@@ -5,7 +5,6 @@ import static play.data.Form.form;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,16 +25,13 @@ import utils.CryptTool;
 import bean.OrderAddForm;
 import bean.OrderImgForm;
 import bean.OrderNextForm;
-import bean.OrderStatus;
-import bean.PayForm;
 
 import com.thoughtworks.xstream.XStream;
 
 import entities.BnsCompany;
 import entities.BnsOrder;
 import entities.BnsOrderChild;
-import external.alipay.alipaydirect.util.AlipaydirectBean;
-import external.alipay.alipaydirect.util.AlipaydirectHtmlText;
+import enumeration.OrderStatus;
 
 @Controller
 public class OrderController extends play.mvc.Controller {
@@ -74,15 +70,14 @@ public class OrderController extends play.mvc.Controller {
 		order.setAcceptUser(data.getAcceptUser());
 		order.setAcceptUserName(accept.getName());
 		order.setMoney(data.getMoney());
-		order.setPaid(0);
 		order.setState(OrderStatus.Wait_Pay.ordinal());
 		order.setCreatedTime(new Timestamp(System.currentTimeMillis()));
 		xstream.alias("order", BnsOrder.class);
 		Logger.info("order", xstream.toXML(order));
 		orderService.saveOrder(order);
 		BnsOrderChild children=new BnsOrderChild();
-		children.setId(CryptTool.getUUID());
-		children.setOrderId(order.getId());
+		//让子ID跟父ID相同
+		children.setId(order.getId());
 		children.setCustomer(data.getCustomer());
 		children.setIdcard(data.getIdcard());
 		children.setMobile(data.getMobile());
@@ -98,94 +93,6 @@ public class OrderController extends play.mvc.Controller {
 		vo.put("id", order.getId());
 		vo.put("orderCode", order.getCode());
 		vo.put("money",order.getMoney());
-		return ok(Json.toJson(vo));
-	}
-	
-	@Security.Authenticated(Secured.class)
-	public static Result pay() throws IllegalAccessException, InvocationTargetException, IOException{
-		Map<String,Object> vo =new HashMap<String,Object>();
-		vo.put("code", 0);
-		Form<PayForm> form = form(PayForm.class).bindFromRequest();
-		if (form.hasErrors()) {
-			Logger.error("订单支付", form.toString());
-			return status(403,Json.toJson(form.toString()));
-		}
-		PayForm data =form.get();
-		XStream xstream = new XStream();
-		xstream.alias("request", PayForm.class);
-		Logger.info("订单支付", xstream.toXML(data));
-		BnsOrder obj =orderService.get(data.getId());
-		if(obj==null){
-			vo.put("message", "查无此订单");
-			return ok(Json.toJson(vo));
-		}
-		obj.setPayment(data.getPayment());
-		if("支付宝".equals(data.getPayment())){
-			//待支付
-			obj.setState(OrderStatus.Wait_Pay.ordinal());
-			AlipaydirectBean directBean =new AlipaydirectBean();
-			directBean.setOut_trade_no(obj.getCode());
-			directBean.setSubject("测试");
-			directBean.setTotal_fee(String.valueOf(obj.getMoney()));
-			directBean.setBody("测试");
-			String directHtmlText = new AlipaydirectHtmlText().getAlipaydirectHtmlText(directBean);
-			vo.put("message", directHtmlText);
-		}
-		if("余额".equals(data.getPayment())){
-			if(!WalletController.walletMinus(obj.getCreatedUser(), obj.getMoney())){
-				vo.put("message", "余额不足");
-				return ok(Json.toJson(vo));
-			}
-			vo.put("message", "支付成功");
-		}
-		obj.setState(OrderStatus.Wait_Receive.ordinal());
-		obj.setPaid(1);
-		vo.put("code", 1);
-		orderService.saveOrder(obj);
-		return ok(Json.toJson(vo));
-	}
-	
-	@Security.Authenticated(Secured.class)
-	public static Result accept(String orderId){
-		Map<String,Object> vo =new HashMap<String,Object>();
-		vo.put("code", 0);
-		String token = request().getHeader("token");
-		String id =BnsUtils.getId(token);
-		BnsOrder obj =orderService.get(orderId);
-		if(obj==null){
-			vo.put("message", "查无此订单");
-			return ok(Json.toJson(vo));
-		}
-		if(!obj.getAcceptUser().equals(id)){
-			vo.put("message", "无效操作");
-			return ok(Json.toJson(vo));
-		}
-		//状态变更为进行中
-		obj.setState(OrderStatus.Just_Doing.ordinal());
-		orderService.saveOrder(obj);
-		vo.put("code", 1);
-		vo.put("message", "操作成功");
-		return ok(Json.toJson(vo));
-	}
-	
-	@Security.Authenticated(Secured.class)
-	public static Result cancel(String orderId){
-		Map<String,Object> vo =new HashMap<String,Object>();
-		vo.put("code", 0);
-		String token = request().getHeader("token");
-		String id =BnsUtils.getId(token);
-		BnsOrder obj =orderService.get(orderId);
-		if(obj==null){
-			vo.put("message", "查无此订单");
-			return ok(Json.toJson(vo));
-		}
-		//状态变更为进行中
-		obj.setState(OrderStatus.Game_Close.ordinal());
-		orderService.saveOrder(obj);
-		//账户金额累加
-		WalletController.walletPlus(id, obj.getMoney());
-		vo.put("code", 1);
-		vo.put("message", "操作成功");
 		return ok(Json.toJson(vo));
 	}
 	
@@ -259,16 +166,14 @@ public class OrderController extends play.mvc.Controller {
 	public static Result server(String token,String progress){
 		List<Object> list =new ArrayList<Object>();
 		List<BnsOrder> all =orderService.listByServerToken(token);
-		System.out.println("=====all.size()========="+all.size());
 		for(BnsOrder obj:all){
-			if("over".equals(progress)&&(obj.getState()==OrderStatus.Game_Over.ordinal()||obj.getState()==OrderStatus.Game_Close.ordinal())){
+			if("over".equals(progress)&&obj.getState()==OrderStatus.Game_Over.ordinal()){
 				list.add(obj);
 			}
-			if("progress".equals(progress)&&obj.getState()<3){
+			if("progress".equals(progress)&&obj.getState()==OrderStatus.Just_Doing.ordinal()){
 				list.add(obj);
 			}
-			
-		}System.out.println("=====list.size()========="+list.size());
+		}
 		return ok(Json.toJson(list));
 	}
 	
@@ -276,16 +181,14 @@ public class OrderController extends play.mvc.Controller {
 	public static Result host(String token,String progress){
 		List<Object> list =new ArrayList<Object>();
 		List<BnsOrder> all =orderService.listByHostToken(token);
-		System.out.println("=====all.size()========="+all.size());
 		for(BnsOrder obj:all){
-			if("over".equals(progress)&&(obj.getState()==OrderStatus.Game_Over.ordinal()||obj.getState()==OrderStatus.Game_Close.ordinal())){
+			if("over".equals(progress)&&obj.getState()==OrderStatus.Game_Over.ordinal()){
 				list.add(obj);
 			}
-			if("progress".equals(progress)&&obj.getState()<3){
+			if("progress".equals(progress)&&obj.getState()==OrderStatus.Just_Doing.ordinal()){
 				list.add(obj);
 			}
-				
-		}System.out.println("=====list.size()========="+list.size());
+		}
 		return ok(Json.toJson(list));
 	}
 	
@@ -302,10 +205,6 @@ public class OrderController extends play.mvc.Controller {
 			return ok(Json.toJson(vo));
 		}
 		if(!obj.getCreatedUser().equals(id)){
-			vo.put("message", "无效操作");
-			return ok(Json.toJson(vo));
-		}
-		if(obj.getState()!=OrderStatus.Wait_Download.ordinal()){
 			vo.put("message", "无效操作");
 			return ok(Json.toJson(vo));
 		}
@@ -326,61 +225,11 @@ public class OrderController extends play.mvc.Controller {
 		return ok(Json.toJson(orderService.detail(id)));
 	}
 	
-	
-	
-	private static Map<String,Object> Obj2Map4List(BnsOrder obj){
-		Map<String,Object> map =new HashMap<String,Object>();
-		map.put("id", obj.getId());
-		map.put("code", obj.getCode());
-		map.put("city", obj.getCity());
-		map.put("takeTime", new SimpleDateFormat("yyyy-MM-dd").format(obj.getTakeTime()));
-		/*map.put("customer", obj.getCustomer());
-		map.put("idcard", obj.getIdcard());
-		map.put("mobile", obj.getMobile());
-		map.put("people", obj.getPeople());
-		map.put("pickup", obj.getPickup()==1?"接送":"不接送");
-		map.put("state", BnsUtils.stateName(obj.getState()));
-		map.put("remark", obj.getRemark());*/
-		map.put("money", obj.getMoney());
-		map.put("createdTime", new SimpleDateFormat("yyyy-MM-dd").format(obj.getCreatedTime()));
-		return map;
-	}
-	
-	private static Map<String,Object> Obj2Map4Detail(BnsOrder obj){
-		Map<String,Object> map =new HashMap<String,Object>();
-		map.put("id", obj.getId());
-		map.put("code", obj.getCode());
-		map.put("city", obj.getCity());
-		map.put("takeTime", new SimpleDateFormat("yyyy-MM-dd").format(obj.getTakeTime()));
-		BnsCompany company =CompanyController.Obj(obj.getCreatedUser());
-		/*map.put("createdUser", company.getCompany());
-		map.put("createdAddress", company.getAddress());
-		map.put("createdMobile", company.getMobile());
-		map.put("customer", obj.getCustomer());
-		map.put("idcard", obj.getIdcard());
-		map.put("mobile", obj.getMobile());
-		map.put("people", obj.getPeople());
-		map.put("cloth", obj.getCloth());
-		map.put("site", obj.getSite());
-		map.put("hotel", obj.getHotel());*/
-		map.put("money", obj.getMoney());
-		map.put("payment", obj.getPayment());
-		/*map.put("pickup", obj.getPickup()==1?"接送":"不接送");
-		BnsCompany accept =CompanyController.Obj(obj.getAcceptUser());
-		map.put("acceptUser", accept.getCompany());
-		map.put("acceptAddress", accept.getAddress());
-		map.put("acceptMobile", accept.getMobile());
-		map.put("state", obj.getState());
-		map.put("remark", obj.getRemark());*/
-		map.put("createdTime", new SimpleDateFormat("yyyy-MM-dd").format(obj.getCreatedTime()));
-		return map;
-	}
-	
 	//根据订单编号获取订单
 	public static void DirectNotify(String code){
 		BnsOrder order =orderService.findByCode(code);
 		if(order!=null&&order.getState()==OrderStatus.Wait_Pay.ordinal()){
-			order.setState(OrderStatus.Wait_Receive.ordinal());
+			order.setState(OrderStatus.Just_Doing.ordinal());
 			orderService.saveOrder(order);
 		}
 	}

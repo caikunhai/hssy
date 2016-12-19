@@ -24,7 +24,7 @@
 	* template reference : 
 	* - name      : DomainEntityJPA2Annotation
 	* - file name : DomainEntityJPA2Annotation.vm
-	* - time      : 2016/12/13 ��Ԫ at 23:26:34 CST
+	* - time      : 2016/12/20 ��Ԫ at 00:23:43 CST
 */
 package entities;
 
@@ -51,9 +51,6 @@ import javax.persistence.Table;
 @Table (name="bns_order_child")
 @NamedQueries({
 	 @NamedQuery(name="BnsOrderChild.findAll", query="SELECT bnsorderchild FROM BnsOrderChild bnsorderchild")
-	,@NamedQuery(name="BnsOrderChild.findByOrderId", query="SELECT bnsorderchild FROM BnsOrderChild bnsorderchild WHERE bnsorderchild.orderId = :orderId")
-	,@NamedQuery(name="BnsOrderChild.findByOrderIdContaining", query="SELECT bnsorderchild FROM BnsOrderChild bnsorderchild WHERE bnsorderchild.orderId like :orderId")
-
 	,@NamedQuery(name="BnsOrderChild.findByCustomer", query="SELECT bnsorderchild FROM BnsOrderChild bnsorderchild WHERE bnsorderchild.customer = :customer")
 	,@NamedQuery(name="BnsOrderChild.findByCustomerContaining", query="SELECT bnsorderchild FROM BnsOrderChild bnsorderchild WHERE bnsorderchild.customer like :customer")
 
@@ -79,6 +76,9 @@ import javax.persistence.Table;
 	,@NamedQuery(name="BnsOrderChild.findByRemark", query="SELECT bnsorderchild FROM BnsOrderChild bnsorderchild WHERE bnsorderchild.remark = :remark")
 	,@NamedQuery(name="BnsOrderChild.findByRemarkContaining", query="SELECT bnsorderchild FROM BnsOrderChild bnsorderchild WHERE bnsorderchild.remark like :remark")
 
+	,@NamedQuery(name="BnsOrderChild.findByImgs", query="SELECT bnsorderchild FROM BnsOrderChild bnsorderchild WHERE bnsorderchild.imgs = :imgs")
+	,@NamedQuery(name="BnsOrderChild.findByImgsContaining", query="SELECT bnsorderchild FROM BnsOrderChild bnsorderchild WHERE bnsorderchild.imgs like :imgs")
+
 	,@NamedQuery(name="BnsOrderChild.findByCreatedTime", query="SELECT bnsorderchild FROM BnsOrderChild bnsorderchild WHERE bnsorderchild.createdTime = :createdTime")
 
 })
@@ -89,8 +89,6 @@ public class BnsOrderChild implements Serializable {
 	public static final Integer __DEFAULT_PICKUP = Integer.valueOf(0);
 
     public static final String FIND_ALL = "BnsOrderChild.findAll";
-    public static final String FIND_BY_ORDERID = "BnsOrderChild.findByOrderId";
-    public static final String FIND_BY_ORDERID_CONTAINING ="BnsOrderChild.findByOrderIdContaining";
     public static final String FIND_BY_CUSTOMER = "BnsOrderChild.findByCustomer";
     public static final String FIND_BY_CUSTOMER_CONTAINING ="BnsOrderChild.findByCustomerContaining";
     public static final String FIND_BY_IDCARD = "BnsOrderChild.findByIdcard";
@@ -107,17 +105,12 @@ public class BnsOrderChild implements Serializable {
     public static final String FIND_BY_PICKUP = "BnsOrderChild.findByPickup";
     public static final String FIND_BY_REMARK = "BnsOrderChild.findByRemark";
     public static final String FIND_BY_REMARK_CONTAINING ="BnsOrderChild.findByRemarkContaining";
+    public static final String FIND_BY_IMGS = "BnsOrderChild.findByImgs";
+    public static final String FIND_BY_IMGS_CONTAINING ="BnsOrderChild.findByImgsContaining";
     public static final String FIND_BY_CREATEDTIME = "BnsOrderChild.findByCreatedTime";
 	
     @Id @Column(name="id" ,length=64) 
     private String id;
-
-//MP-MANAGED-ADDED-AREA-BEGINNING @order_id-field-annotation@
-//MP-MANAGED-ADDED-AREA-ENDING @order_id-field-annotation@
-//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @ATTRIBUTE-order_id@
-    @Column(name="order_id"  , length=64 , nullable=true , unique=false)
-    private String orderId; 
-//MP-MANAGED-UPDATABLE-ENDING
 
 //MP-MANAGED-ADDED-AREA-BEGINNING @customer-field-annotation@
 //MP-MANAGED-ADDED-AREA-ENDING @customer-field-annotation@
@@ -182,6 +175,13 @@ public class BnsOrderChild implements Serializable {
     private String remark; 
 //MP-MANAGED-UPDATABLE-ENDING
 
+//MP-MANAGED-ADDED-AREA-BEGINNING @imgs-field-annotation@
+//MP-MANAGED-ADDED-AREA-ENDING @imgs-field-annotation@
+//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @ATTRIBUTE-imgs@
+    @Column(name="imgs"  , length=100 , nullable=true , unique=false)
+    private String imgs; 
+//MP-MANAGED-UPDATABLE-ENDING
+
 //MP-MANAGED-ADDED-AREA-BEGINNING @created_time-field-annotation@
 //MP-MANAGED-ADDED-AREA-ENDING @created_time-field-annotation@
 //MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @ATTRIBUTE-created_time@
@@ -200,7 +200,6 @@ public class BnsOrderChild implements Serializable {
 	*/
     public BnsOrderChild(
        String id,
-       String orderId,
        String customer,
        String idcard,
        String mobile,
@@ -210,11 +209,11 @@ public class BnsOrderChild implements Serializable {
        String hotel,
        Integer pickup,
        String remark,
+       String imgs,
        Timestamp createdTime) {
        //primary keys
        setId (id);
        //attributes
-       setOrderId (orderId);
        setCustomer (customer);
        setIdcard (idcard);
        setMobile (mobile);
@@ -224,6 +223,7 @@ public class BnsOrderChild implements Serializable {
        setHotel (hotel);
        setPickup (pickup);
        setRemark (remark);
+       setImgs (imgs);
        setCreatedTime (createdTime);
        //parents
     }
@@ -231,7 +231,6 @@ public class BnsOrderChild implements Serializable {
 	public BnsOrderChild flat() {
 	   return new BnsOrderChild(
           getId(),
-          getOrderId(),
           getCustomer(),
           getIdcard(),
           getMobile(),
@@ -241,6 +240,7 @@ public class BnsOrderChild implements Serializable {
           getHotel(),
           getPickup(),
           getRemark(),
+          getImgs(),
           getCreatedTime()
 	   );
 	}
@@ -253,17 +253,6 @@ public class BnsOrderChild implements Serializable {
         this.id =  id;
     }
     
-//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @GETTER-SETTER-order_id@
-    public String getOrderId() {
-        return orderId;
-    }
-	
-    public void setOrderId (String orderId) {
-        this.orderId =  orderId;
-    }
-	
-//MP-MANAGED-UPDATABLE-ENDING
-
 //MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @GETTER-SETTER-customer@
     public String getCustomer() {
         return customer;
@@ -359,6 +348,17 @@ public class BnsOrderChild implements Serializable {
 	
     public void setRemark (String remark) {
         this.remark =  remark;
+    }
+	
+//MP-MANAGED-UPDATABLE-ENDING
+
+//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @GETTER-SETTER-imgs@
+    public String getImgs() {
+        return imgs;
+    }
+	
+    public void setImgs (String imgs) {
+        this.imgs =  imgs;
     }
 	
 //MP-MANAGED-UPDATABLE-ENDING

@@ -12,12 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
-import com.thoughtworks.xstream.XStream;
-
-import bean.CashCheckForm;
-import bean.CashForm;
-import entities.BnsCash;
-import entities.BnsUser;
 import play.data.Form;
 import play.libs.Json;
 import play.mvc.Result;
@@ -26,6 +20,12 @@ import services.CashService;
 import system.log.Logger;
 import utils.BnsUtils;
 import utils.CryptTool;
+import bean.CashCheckForm;
+import bean.CashForm;
+
+import com.thoughtworks.xstream.XStream;
+
+import entities.BnsCash;
 
 @Controller
 public class CashController extends play.mvc.Controller {

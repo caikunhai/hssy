@@ -55,7 +55,7 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public BnsOrderChild detail(String orderId) {
 		// TODO 自动生成的方法存根
-		return orderChildRepository.findByOrderId(orderId);
+		return orderChildRepository.findOne(orderId);
 	}
 
 	@Override

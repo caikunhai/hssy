@@ -24,7 +24,7 @@
 	* template reference : 
 	* - name      : DomainEntityJPA2Annotation
 	* - file name : DomainEntityJPA2Annotation.vm
-	* - time      : 2016/12/13 ��Ԫ at 23:26:34 CST
+	* - time      : 2016/12/20 ��Ԫ at 00:23:43 CST
 */
 package entities;
 
@@ -76,7 +76,8 @@ import javax.persistence.Table;
 	,@NamedQuery(name="BnsOrder.findByPayment", query="SELECT bnsorder FROM BnsOrder bnsorder WHERE bnsorder.payment = :payment")
 	,@NamedQuery(name="BnsOrder.findByPaymentContaining", query="SELECT bnsorder FROM BnsOrder bnsorder WHERE bnsorder.payment like :payment")
 
-	,@NamedQuery(name="BnsOrder.findByPaid", query="SELECT bnsorder FROM BnsOrder bnsorder WHERE bnsorder.paid = :paid")
+	,@NamedQuery(name="BnsOrder.findByDoUser", query="SELECT bnsorder FROM BnsOrder bnsorder WHERE bnsorder.doUser = :doUser")
+	,@NamedQuery(name="BnsOrder.findByDoUserContaining", query="SELECT bnsorder FROM BnsOrder bnsorder WHERE bnsorder.doUser like :doUser")
 
 	,@NamedQuery(name="BnsOrder.findByState", query="SELECT bnsorder FROM BnsOrder bnsorder WHERE bnsorder.state = :state")
 
@@ -87,7 +88,7 @@ import javax.persistence.Table;
 public class BnsOrder implements Serializable {
     private static final long serialVersionUID = 1L;
 	public static final java.math.BigDecimal __DEFAULT_MONEY = java.math.BigDecimal.valueOf(0.00);
-	public static final Integer __DEFAULT_PAID = Integer.valueOf(0);
+	public static final String __DEFAULT_DO_USER = new String("0");
 	public static final Integer __DEFAULT_STATE = Integer.valueOf(0);
 
     public static final String FIND_ALL = "BnsOrder.findAll";
@@ -107,7 +108,8 @@ public class BnsOrder implements Serializable {
     public static final String FIND_BY_MONEY = "BnsOrder.findByMoney";
     public static final String FIND_BY_PAYMENT = "BnsOrder.findByPayment";
     public static final String FIND_BY_PAYMENT_CONTAINING ="BnsOrder.findByPaymentContaining";
-    public static final String FIND_BY_PAID = "BnsOrder.findByPaid";
+    public static final String FIND_BY_DOUSER = "BnsOrder.findByDoUser";
+    public static final String FIND_BY_DOUSER_CONTAINING ="BnsOrder.findByDoUserContaining";
     public static final String FIND_BY_STATE = "BnsOrder.findByState";
     public static final String FIND_BY_CREATEDTIME = "BnsOrder.findByCreatedTime";
 	
@@ -177,11 +179,11 @@ public class BnsOrder implements Serializable {
     private String payment; 
 //MP-MANAGED-UPDATABLE-ENDING
 
-//MP-MANAGED-ADDED-AREA-BEGINNING @paid-field-annotation@
-//MP-MANAGED-ADDED-AREA-ENDING @paid-field-annotation@
-//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @ATTRIBUTE-paid@
-    @Column(name="paid"   , nullable=true , unique=false)
-    private Integer paid; 
+//MP-MANAGED-ADDED-AREA-BEGINNING @do_user-field-annotation@
+//MP-MANAGED-ADDED-AREA-ENDING @do_user-field-annotation@
+//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @ATTRIBUTE-do_user@
+    @Column(name="do_user"  , length=100 , nullable=true , unique=false)
+    private String doUser; 
 //MP-MANAGED-UPDATABLE-ENDING
 
 //MP-MANAGED-ADDED-AREA-BEGINNING @state-field-annotation@
@@ -218,7 +220,7 @@ public class BnsOrder implements Serializable {
        String acceptUserName,
        java.math.BigDecimal money,
        String payment,
-       Integer paid,
+       String doUser,
        Integer state,
        Timestamp createdTime) {
        //primary keys
@@ -233,7 +235,7 @@ public class BnsOrder implements Serializable {
        setAcceptUserName (acceptUserName);
        setMoney (money);
        setPayment (payment);
-       setPaid (paid);
+       setDoUser (doUser);
        setState (state);
        setCreatedTime (createdTime);
        //parents
@@ -251,7 +253,7 @@ public class BnsOrder implements Serializable {
           getAcceptUserName(),
           getMoney(),
           getPayment(),
-          getPaid(),
+          getDoUser(),
           getState(),
           getCreatedTime()
 	   );
@@ -364,13 +366,13 @@ public class BnsOrder implements Serializable {
 	
 //MP-MANAGED-UPDATABLE-ENDING
 
-//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @GETTER-SETTER-paid@
-    public Integer getPaid() {
-        return paid;
+//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @GETTER-SETTER-do_user@
+    public String getDoUser() {
+        return doUser;
     }
 	
-    public void setPaid (Integer paid) {
-        this.paid =  paid;
+    public void setDoUser (String doUser) {
+        this.doUser =  doUser;
     }
 	
 //MP-MANAGED-UPDATABLE-ENDING
@@ -404,7 +406,7 @@ public class BnsOrder implements Serializable {
     @javax.persistence.PrePersist
     public void prePersist_ () {
         if (money==null) money=__DEFAULT_MONEY;
-        if (paid==null) paid=__DEFAULT_PAID;
+        if (doUser==null) doUser=__DEFAULT_DO_USER;
         if (state==null) state=__DEFAULT_STATE;
     }
 //MP-MANAGED-UPDATABLE-ENDING
@@ -413,7 +415,7 @@ public class BnsOrder implements Serializable {
     @javax.persistence.PreUpdate
     public void preUpdate_ () {
         if (money==null) money=__DEFAULT_MONEY;
-        if (paid==null) paid=__DEFAULT_PAID;
+        if (doUser==null) doUser=__DEFAULT_DO_USER;
         if (state==null) state=__DEFAULT_STATE;
     }
 //MP-MANAGED-UPDATABLE-ENDING

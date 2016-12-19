@@ -24,7 +24,7 @@
 	* template reference : 
 	* - name      : DomainEntityJPA2Metamodel
 	* - file name : DomainEntityJPA2Metamodel.vm
-	* - time      : 2016/12/13 ��Ԫ at 23:26:35 CST
+	* - time      : 2016/12/20 ��Ԫ at 00:23:44 CST
 */
 package entities;
 
@@ -48,7 +48,7 @@ public class BnsOrder_ {
     public static volatile SingularAttribute<BnsOrder, String> acceptUserName;
     public static volatile SingularAttribute<BnsOrder, java.math.BigDecimal> money;
     public static volatile SingularAttribute<BnsOrder, String> payment;
-    public static volatile SingularAttribute<BnsOrder, Integer> paid;
+    public static volatile SingularAttribute<BnsOrder, String> doUser;
     public static volatile SingularAttribute<BnsOrder, Integer> state;
     public static volatile SingularAttribute<BnsOrder, Timestamp> createdTime;
 

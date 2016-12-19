@@ -59,19 +59,18 @@ public class WalletController extends play.mvc.Controller {
 	 * @param money
 	 * @return
 	 */
-	public static BnsWallet walletPlus(String userId,BigDecimal money){
-		BnsWallet wallet = walletService.get(userId);
+	public static BnsWallet walletPlus(String company,BigDecimal money){
+		BnsWallet wallet = walletService.get(company);
 		if(wallet==null){
 			return null;
 		}
-		//wallet.setHistory(wallet.getHistory().add(money));
 		wallet.setMoney(wallet.getMoney().add(money));
 		walletService.save(wallet);
 		return wallet;
 	}
 	
-	public static Boolean walletMinus(String userId,BigDecimal money){
-		BnsWallet wallet = walletService.get(userId);
+	public static Boolean walletMinus(String company,BigDecimal money){
+		BnsWallet wallet = walletService.get(company);
 		if(wallet==null){
 			return false;
 		}

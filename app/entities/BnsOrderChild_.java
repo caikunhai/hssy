@@ -24,7 +24,7 @@
 	* template reference : 
 	* - name      : DomainEntityJPA2Metamodel
 	* - file name : DomainEntityJPA2Metamodel.vm
-	* - time      : 2016/12/13 ��Ԫ at 23:26:35 CST
+	* - time      : 2016/12/20 ��Ԫ at 00:23:44 CST
 */
 package entities;
 
@@ -39,7 +39,6 @@ public class BnsOrderChild_ {
 
     public static volatile SingularAttribute<BnsOrderChild, String> id;
 
-    public static volatile SingularAttribute<BnsOrderChild, String> orderId;
     public static volatile SingularAttribute<BnsOrderChild, String> customer;
     public static volatile SingularAttribute<BnsOrderChild, String> idcard;
     public static volatile SingularAttribute<BnsOrderChild, String> mobile;
@@ -49,6 +48,7 @@ public class BnsOrderChild_ {
     public static volatile SingularAttribute<BnsOrderChild, String> hotel;
     public static volatile SingularAttribute<BnsOrderChild, Integer> pickup;
     public static volatile SingularAttribute<BnsOrderChild, String> remark;
+    public static volatile SingularAttribute<BnsOrderChild, String> imgs;
     public static volatile SingularAttribute<BnsOrderChild, Timestamp> createdTime;
 
 

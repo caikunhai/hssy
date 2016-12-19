@@ -136,16 +136,6 @@ public class CompanyController extends play.mvc.Controller {
 	
 	@Security.Authenticated(Secured.class)
 	public static Result search(String city){
-		/*Form<SearchForm> form = form(SearchForm.class).bindFromRequest();
-		if (form.hasErrors()) {
-			Logger.error("查询公司", form.toString());
-			return status(403,Json.toJson(form.toString()));
-		}
-		SearchForm data =form.get();
-		XStream xstream = new XStream();
-		xstream.alias("request", SearchForm.class);*/
-	//	Logger.info("查询公司", xstream.toXML(data));
-		Logger.info("查询公司", "========="+city);
 		return ok(Json.toJson(companyService.listByCity(city)));
 	}
 	

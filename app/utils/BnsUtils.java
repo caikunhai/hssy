@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import bean.OrderStatus;
+import enumeration.OrderStatus;
 import play.mvc.Http.RequestHeader;
 
 public class BnsUtils {
@@ -138,20 +138,11 @@ public class BnsUtils {
 	
 	public static String stateName(int state){
 		String name="";
-		if(state==OrderStatus.Wait_Receive.ordinal()){
-			name ="待接单";
-		}
 		if(state==OrderStatus.Just_Doing.ordinal()){
 			name ="拍摄中";
 		}
-		if(state==OrderStatus.Wait_Download.ordinal()){
-			name ="待下载";
-		}
 		if(state==OrderStatus.Game_Over.ordinal()){
 			name ="完成";
-		}
-		if(state==OrderStatus.Game_Close.ordinal()){
-			name ="交易结束";
 		}
 		if(state==OrderStatus.Wait_Pay.ordinal()){
 			name ="待支付";
