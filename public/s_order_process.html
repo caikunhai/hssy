@@ -10,6 +10,7 @@
     <script type="text/javascript" src="js/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="js/core.js"></script>
     <script type="text/javascript" src="js/bns.js"></script>
+    <script type="text/javascript" src="js/util.date.js"></script>
 </head>
 <body>
 	<div style="height:auto;border: 1px solid #95B8E7;margin-bottom: 10px;">
@@ -31,7 +32,7 @@
 				<th field="money" width="80px">支付金额</th>
 				<th field="doUser" width="150px">执行人</th>
 				<th field="createdTime" width="100px">创建时间</th>
-				<th field="operation" width="100px">操作</th>
+				<th field="operation">操作</th>
 			</tr>
 		</thead>
 	</table>
@@ -46,7 +47,7 @@
 	function order_find_html(data){
 		var xhrObj = JSON.parse(data);
 		for(var i=0;i<xhrObj.length;i++){
-			var operation_html ='<a href=javascript:newOpen("查看详情","order_view.html?id='+xhrObj[i].id+'");>查看详情</a>';
+			var operation_html ='<a href=javascript:newOpen("查看详情","order_view.html??identity=server&&progress=progress&&id='+xhrObj[i].id+'");>查看详情</a>';
 			operation_html +='&nbsp;&nbsp;<a href=javascript:newOpen("上传照片","upload.html?id='+xhrObj[i].id+'");>上传照片</a>';
 			rows.push({
 				takeTime:time.formatterDate2(xhrObj[i].takeTime),

@@ -40,6 +40,7 @@
 		</p>
 		<div style="text-align:center;padding:20px 0">
 			<!-- <input type="button" value="关闭" class="inputBtn" onclick="javascript:top.jQuery('#tabs').tabs('close','查看详情');" id="btn"> -->
+			<input type="button" value="编辑执行人" class="inputBtn" id="zxr">
 			<input type="button" value="下载照片" class="inputBtn" id="imgs">
 			<input type="button" value="完成交易" class="inputBtn" id="ok">
 		</div>
@@ -60,7 +61,20 @@
 		$("#hotel").textbox('setValue',xhrObj.hotel);
 		$("#pickup").textbox('setValue',xhrObj.pickup==0?'不接送':'接送');
 		$("#remark").textbox('setValue',xhrObj.remark);
-		
+		var identity=getQueryParam("identity");
+		var progress=getQueryParam("progress");
+		//是否显示下载照片
+		if(xhrObj.imgs!=''&&xhrObj.imgs.length>0){
+			$("#imgs").show();
+		}
+		//服务方编辑执行人
+		if(identity=='server'&&progress=='progress'){
+			$("#zxr").show();
+		}
+		//下单方确认完成订单
+		if(identity=='host'&&progress=='progress'){
+			$("#ok").show();
+		}
 	}
 	
 	</script>
