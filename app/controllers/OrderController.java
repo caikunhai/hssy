@@ -23,15 +23,16 @@ import system.log.Logger;
 import utils.BnsUtils;
 import utils.CryptTool;
 import bean.OrderAddForm;
-import bean.OrderImgForm;
-import bean.OrderNextForm;
 
 import com.thoughtworks.xstream.XStream;
 
 import entities.BnsCompany;
 import entities.BnsOrder;
 import entities.BnsOrderChild;
+import entities.BnsWallet;
 import enumeration.OrderStatus;
+import external.alipay.alipaydirect.util.AlipaydirectBean;
+import external.alipay.alipaydirect.util.AlipaydirectHtmlText;
 
 @Controller
 public class OrderController extends play.mvc.Controller {
@@ -97,55 +98,57 @@ public class OrderController extends play.mvc.Controller {
 	}
 	
 	@Security.Authenticated(Secured.class)
-	public static Result next(){
+	public static Result payment(String id,String type){
 		Map<String,Object> vo =new HashMap<String,Object>();
 		vo.put("code", 0);
-		Form<OrderNextForm> form = form(OrderNextForm.class).bindFromRequest();
-		if (form.hasErrors()) {
-			Logger.error("更新状态", form.toString());
-			return status(403,Json.toJson(form.toString()));
+		vo.put("type", type);
+		BnsOrder order =orderService.get(id);
+		if("余额".equals(type)){
+			order.setPayment(type);
+			order.setState(OrderStatus.Just_Doing.ordinal());
+			BnsWallet wallet =WalletController.getWallet(order.getAcceptUser());
+			if(wallet.getMoney().compareTo(order.getMoney())==-1){
+				vo.put("message", "余额不足");
+				return ok(Json.toJson(vo));
+			}
+			wallet.setMoney(wallet.getMoney().subtract(order.getMoney()));
+			WalletController.walletService.save(wallet);
 		}
-		OrderNextForm data =form.get();
-		XStream xstream = new XStream();
-		xstream.alias("request", OrderNextForm.class);
-		Logger.info("更新状态", xstream.toXML(data));
-		BnsOrder order =orderService.get(data.getId());
-		if(order==null){
-			vo.put("message", "查无此订单");
-			return ok(Json.toJson(vo));
+		if("支付宝".equals(type)){
+			order.setPayment(type);
+			order.setState(OrderStatus.Wait_Pay.ordinal());
+			AlipaydirectBean bean =new AlipaydirectBean();
+			bean.setExter_invoke_ip(BnsUtils.getClientIP(request()));
+			bean.setOut_trade_no(order.getCode());
+			bean.setTotal_fee(String.valueOf(order.getMoney()));
+			bean.setSubject("服务费用");
+			bean.setBody("服务费用");
+			vo.put("message", new AlipaydirectHtmlText().getAlipaydirectHtmlText(bean));
 		}
-		order.setState(data.getState());
-		xstream.alias("order", BnsOrder.class);
-		Logger.info("order", xstream.toXML(order));
-		orderService.saveOrder(order);
 		vo.put("code", 1);
-		vo.put("message", "操作成功");
+		orderService.saveOrder(order);
 		return ok(Json.toJson(vo));
 	}
 	
 	@Security.Authenticated(Secured.class)
-	public static Result imgs(){
+	public static Result file(String id){
+		BnsOrderChild  children =orderService.detail(id);
+		if(children.getImgs()==null||"".equals(children.getImgs())){
+			//附件名称跟订单ID订单子表ID相同
+			children.setImgs(id);
+			orderService.saveOrderChildren(children);
+		}
+		return ok();
+	}
+	
+	@Security.Authenticated(Secured.class)
+	public static Result zxr(String id,String doUser){
 		Map<String,Object> vo =new HashMap<String,Object>();
-		vo.put("code", 0);
-		Form<OrderImgForm> form = form(OrderImgForm.class).bindFromRequest();
-		if (form.hasErrors()) {
-			Logger.error("添加照片", form.toString());
-			return status(403,Json.toJson(form.toString()));
-		}
-		OrderImgForm data =form.get();
-		XStream xstream = new XStream();
-		xstream.alias("request", OrderImgForm.class);
-		Logger.info("添加照片", xstream.toXML(data));
-		BnsOrder order =orderService.get(data.getId());
-		if(order==null){
-			vo.put("message", "查无此订单");
-			return ok(Json.toJson(vo));
-		}
-		xstream.alias("order", BnsOrder.class);
-		Logger.info("order", xstream.toXML(order));
+		BnsOrder order =orderService.get(id);
+		order.setDoUser(doUser);
 		orderService.saveOrder(order);
 		vo.put("code", 1);
-		vo.put("message", "添加成功");
+		vo.put("message", "保存成功");
 		return ok(Json.toJson(vo));
 	}
 	
@@ -194,17 +197,17 @@ public class OrderController extends play.mvc.Controller {
 	
 	
 	@Security.Authenticated(Secured.class)
-	public static Result over(String orderId){
+	public static Result over(String id){
 		Map<String,Object> vo =new HashMap<String,Object>();
 		vo.put("code", 0);
 		String token = request().getHeader("token");
-		String id =BnsUtils.getId(token);
-		BnsOrder obj =orderService.get(orderId);
+		BnsCompany company =CompanyController.getByToken(token);
+		BnsOrder obj =orderService.get(id);
 		if(obj==null){
 			vo.put("message", "查无此订单");
 			return ok(Json.toJson(vo));
 		}
-		if(!obj.getCreatedUser().equals(id)){
+		if(!obj.getCreatedUser().equals(company.getId())){
 			vo.put("message", "无效操作");
 			return ok(Json.toJson(vo));
 		}
@@ -212,9 +215,14 @@ public class OrderController extends play.mvc.Controller {
 		obj.setState(OrderStatus.Game_Over.ordinal());
 		orderService.saveOrder(obj);
 		//服务公司成交订单+1
-		CompanyController.companyHistoryOrderPlus(obj.getAcceptUser());
-		//账户金额累加
-		WalletController.walletPlus(obj.getAcceptUser(), obj.getMoney());
+		BnsCompany acceptCompany =CompanyController.companyService.get(obj.getAcceptUser());
+		acceptCompany.setHistory(acceptCompany.getHistory()+1);
+		CompanyController.companyService.save(acceptCompany);
+		//更新服务公司账户金额
+		BnsWallet wallet = WalletController.walletService.get(obj.getAcceptUser());
+		wallet.setHistory(wallet.getHistory().add(obj.getMoney()));
+		wallet.setMoney(wallet.getMoney().add(obj.getMoney()));
+		WalletController.walletService.save(wallet);
 		vo.put("code", 1);
 		vo.put("message", "操作成功");
 		return ok(Json.toJson(vo));

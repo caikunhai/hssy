@@ -16,24 +16,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
-import com.thoughtworks.xstream.XStream;
-
-import bean.CompanyForm;
-import bean.SearchForm;
-import entities.BnsCompany;
 import play.data.Form;
 import play.libs.Json;
 import play.mvc.Result;
 import play.mvc.Security;
 import services.CompanyService;
-import system.init.SetupManager;
 import system.log.Logger;
 import utils.CryptTool;
+import bean.CompanyForm;
+
+import com.thoughtworks.xstream.XStream;
+
+import entities.BnsCompany;
 
 @Controller
 public class CompanyController extends play.mvc.Controller {
 	
-	private static CompanyService companyService;
+	public static CompanyService companyService;
 	
 	@Autowired
 	@Qualifier("companyService")
@@ -185,15 +184,6 @@ public class CompanyController extends play.mvc.Controller {
 		return map;
 	}
 	
-	
-	public static BnsCompany companyHistoryOrderPlus(String id){
-		BnsCompany comapny =companyService.get(id);
-		if(comapny ==null){
-			return null;
-		}
-		//comapny.setHistory(comapny.getHistory()+1);
-		return companyService.save(comapny);
-	}
 	
 	//根据token获取机构对象
 	public static BnsCompany getByToken(String token){

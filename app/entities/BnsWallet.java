@@ -24,7 +24,7 @@
 	* template reference : 
 	* - name      : DomainEntityJPA2Annotation
 	* - file name : DomainEntityJPA2Annotation.vm
-	* - time      : 2016/12/13 ��Ԫ at 23:26:35 CST
+	* - time      : 2016/12/22 ��Ԫ at 22:51:09 CST
 */
 package entities;
 
@@ -53,8 +53,6 @@ import javax.persistence.Table;
 	 @NamedQuery(name="BnsWallet.findAll", query="SELECT bnswallet FROM BnsWallet bnswallet")
 	,@NamedQuery(name="BnsWallet.findByHistory", query="SELECT bnswallet FROM BnsWallet bnswallet WHERE bnswallet.history = :history")
 
-	,@NamedQuery(name="BnsWallet.findByTotal", query="SELECT bnswallet FROM BnsWallet bnswallet WHERE bnswallet.total = :total")
-
 	,@NamedQuery(name="BnsWallet.findByMoney", query="SELECT bnswallet FROM BnsWallet bnswallet WHERE bnswallet.money = :money")
 
 	,@NamedQuery(name="BnsWallet.findByVice", query="SELECT bnswallet FROM BnsWallet bnswallet WHERE bnswallet.vice = :vice")
@@ -65,14 +63,12 @@ import javax.persistence.Table;
 
 public class BnsWallet implements Serializable {
     private static final long serialVersionUID = 1L;
-	public static final Integer __DEFAULT_HISTORY = Integer.valueOf(0);
-	public static final java.math.BigDecimal __DEFAULT_TOTAL = java.math.BigDecimal.valueOf(0.00);
+	public static final java.math.BigDecimal __DEFAULT_HISTORY = java.math.BigDecimal.valueOf(0.00);
 	public static final java.math.BigDecimal __DEFAULT_MONEY = java.math.BigDecimal.valueOf(0.00);
 	public static final java.math.BigDecimal __DEFAULT_VICE = java.math.BigDecimal.valueOf(0.00);
 
     public static final String FIND_ALL = "BnsWallet.findAll";
     public static final String FIND_BY_HISTORY = "BnsWallet.findByHistory";
-    public static final String FIND_BY_TOTAL = "BnsWallet.findByTotal";
     public static final String FIND_BY_MONEY = "BnsWallet.findByMoney";
     public static final String FIND_BY_VICE = "BnsWallet.findByVice";
     public static final String FIND_BY_CREATEDTIME = "BnsWallet.findByCreatedTime";
@@ -84,14 +80,7 @@ public class BnsWallet implements Serializable {
 //MP-MANAGED-ADDED-AREA-ENDING @history-field-annotation@
 //MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @ATTRIBUTE-history@
     @Column(name="history"   , nullable=true , unique=false)
-    private Integer history; 
-//MP-MANAGED-UPDATABLE-ENDING
-
-//MP-MANAGED-ADDED-AREA-BEGINNING @total-field-annotation@
-//MP-MANAGED-ADDED-AREA-ENDING @total-field-annotation@
-//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @ATTRIBUTE-total@
-    @Column(name="total"   , nullable=true , unique=false)
-    private java.math.BigDecimal total; 
+    private java.math.BigDecimal history; 
 //MP-MANAGED-UPDATABLE-ENDING
 
 //MP-MANAGED-ADDED-AREA-BEGINNING @money-field-annotation@
@@ -126,8 +115,7 @@ public class BnsWallet implements Serializable {
 	*/
     public BnsWallet(
        String id,
-       Integer history,
-       java.math.BigDecimal total,
+       java.math.BigDecimal history,
        java.math.BigDecimal money,
        java.math.BigDecimal vice,
        Timestamp createdTime) {
@@ -135,7 +123,6 @@ public class BnsWallet implements Serializable {
        setId (id);
        //attributes
        setHistory (history);
-       setTotal (total);
        setMoney (money);
        setVice (vice);
        setCreatedTime (createdTime);
@@ -146,7 +133,6 @@ public class BnsWallet implements Serializable {
 	   return new BnsWallet(
           getId(),
           getHistory(),
-          getTotal(),
           getMoney(),
           getVice(),
           getCreatedTime()
@@ -162,23 +148,12 @@ public class BnsWallet implements Serializable {
     }
     
 //MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @GETTER-SETTER-history@
-    public Integer getHistory() {
+    public java.math.BigDecimal getHistory() {
         return history;
     }
 	
-    public void setHistory (Integer history) {
+    public void setHistory (java.math.BigDecimal history) {
         this.history =  history;
-    }
-	
-//MP-MANAGED-UPDATABLE-ENDING
-
-//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @GETTER-SETTER-total@
-    public java.math.BigDecimal getTotal() {
-        return total;
-    }
-	
-    public void setTotal (java.math.BigDecimal total) {
-        this.total =  total;
     }
 	
 //MP-MANAGED-UPDATABLE-ENDING
@@ -223,7 +198,6 @@ public class BnsWallet implements Serializable {
     @javax.persistence.PrePersist
     public void prePersist_ () {
         if (history==null) history=__DEFAULT_HISTORY;
-        if (total==null) total=__DEFAULT_TOTAL;
         if (money==null) money=__DEFAULT_MONEY;
         if (vice==null) vice=__DEFAULT_VICE;
     }
@@ -233,7 +207,6 @@ public class BnsWallet implements Serializable {
     @javax.persistence.PreUpdate
     public void preUpdate_ () {
         if (history==null) history=__DEFAULT_HISTORY;
-        if (total==null) total=__DEFAULT_TOTAL;
         if (money==null) money=__DEFAULT_MONEY;
         if (vice==null) vice=__DEFAULT_VICE;
     }

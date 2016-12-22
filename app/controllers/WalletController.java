@@ -16,7 +16,7 @@ import services.WalletService;
 @Controller
 public class WalletController extends play.mvc.Controller {
 	
-	private static WalletService walletService;
+	public static WalletService walletService;
 	
 	@Autowired
 	@Qualifier("walletService")
@@ -37,9 +37,8 @@ public class WalletController extends play.mvc.Controller {
 	public static void createWallet(String company){
 		BnsWallet wallet =new BnsWallet();
 		wallet.setId(company);
-		//wallet.setHistory(new BigDecimal(0));
+		wallet.setHistory(new BigDecimal(0));
 		wallet.setMoney(new BigDecimal(0));
-		//wallet.setState(0);
 		wallet.setCreatedTime(new Timestamp(System.currentTimeMillis()));
 		walletService.save(wallet);
 	}
@@ -49,24 +48,8 @@ public class WalletController extends play.mvc.Controller {
 	 * @param request
 	 * @return
 	 */
-	public static BnsWallet getWallet(String userId){
-		return walletService.get(userId);
-	}
-	
-	/**
-	 * 更新钱包
-	 * @param userId
-	 * @param money
-	 * @return
-	 */
-	public static BnsWallet walletPlus(String company,BigDecimal money){
-		BnsWallet wallet = walletService.get(company);
-		if(wallet==null){
-			return null;
-		}
-		wallet.setMoney(wallet.getMoney().add(money));
-		walletService.save(wallet);
-		return wallet;
+	public static BnsWallet getWallet(String id){
+		return walletService.get(id);
 	}
 	
 	public static Boolean walletMinus(String company,BigDecimal money){

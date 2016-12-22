@@ -47,7 +47,9 @@ public class NotifyController extends play.mvc.Controller {
 		notify.setTotalFee(data.getTotal_fee());
 		notify.setCreatedTime(new Timestamp(System.currentTimeMillis()));
 		notifyService.saveDirect(notify);
+		//订单支付后回调
 		OrderController.DirectNotify(data.getOut_trade_no());
+		//充值后回调
 		RechargeController.DirectNotify(data.getOut_trade_no());
 		return ok();
 	}

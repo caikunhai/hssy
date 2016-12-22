@@ -16,7 +16,7 @@ public class AlipaydirectHtmlText {
         sParaTemp.put("_input_charset", AlipayConfig.input_charset);
         //默认值为：1（商品购买）。
 		sParaTemp.put("payment_type", "1");
-		sParaTemp.put("notify_url", Const.NotifyUrl+"/notify/alipay/direct");
+		sParaTemp.put("notify_url", Const.NotifyUrl+"/notify/direct");
 		sParaTemp.put("return_url", Const.NotifyUrl+"/pc_pay.html");
 		sParaTemp.put("seller_email", "huangyz8@gdtel.com.cn");
 		sParaTemp.put("out_trade_no", bean.getOut_trade_no());
