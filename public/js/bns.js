@@ -400,24 +400,6 @@ var bns = {};
 	    bns.ajax_private(params, callback);
 	};
 	
-	//订单状态变更
-	bns.order_next = function (data,callback) {
-	    var params =new Object();
-	    params.url=core.host + '/order/next';
-	    params.method='POST';
-	    params.data=data;
-	    bns.ajax_private(params, callback);
-	};
-	
-	//订单上传附件
-	bns.order_imgs = function (data,callback) {
-	    var params =new Object();
-	    params.url=core.host + '/order/imgs';
-	    params.method='POST';
-	    params.data=data;
-	    bns.ajax_private(params, callback);
-	};
-	
 	//订单查找
 	bns.order_find = function (identity,progress,callback) {
 	    var params =new Object();
@@ -470,5 +452,23 @@ var bns = {};
 	    params.method='POST';
 	    params.data=data;
 	    bns.ajax_public(params, callback);
+	};
+	
+	//订单添加附件
+	bns.upload = function (id,callback) {
+	    var params =new Object();
+	    params.url=core.host + '/order/file?id='+id;
+	    params.method='GET';
+	    params.data=null;
+	    bns.ajax_private(params, callback);
+	};
+	
+	//保存执行人
+	bns.save_zxr = function (id,doUser,callback) {
+	    var params =new Object();
+	    params.url=core.host + '/order/zxr?id='+id+'&&doUser='+doUser;
+	    params.method='GET';
+	    params.data=null;
+	    bns.ajax_private(params, callback);
 	};
 	

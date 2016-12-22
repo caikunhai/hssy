@@ -4,11 +4,8 @@ var core = {
 core.qiniu='http://7xr5um.com1.z0.glb.clouddn.com/';
 core.cache_menu=window.localStorage.getItem("menu");
 core.menu_list='';
-core.Wait_Receive=0;
 core.Just_Doing=1;
-core.Wait_Download=2;
 core.Game_Over=3;
-core.Game_Close=4;
 core.Wait_Pay=5;
 
 core.notify_direct_url=core.host+"/notify/direct";
