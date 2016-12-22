@@ -57,11 +57,12 @@ GET     /recharge/list    		   controllers.RechargeController.list()
 GET     /recharge/all    		   controllers.RechargeController.all()
 #Order
 POST    /order/save			   	   controllers.OrderController.save()
-POST    /order/next				   controllers.OrderController.next()
-POST    /order/imgs			   	   controllers.OrderController.imgs()
 GET     /order/find			       controllers.OrderController.find(identity:String,progress:String)
 GET     /order/detail			   controllers.OrderController.detail(id:String)
-GET     /order/over			       controllers.OrderController.over(orderId:String)
+GET     /order/over			       controllers.OrderController.over(id:String)
+GET     /order/file			       controllers.OrderController.file(id:String)
+GET     /order/payment			   controllers.OrderController.payment(id:String,type:String)
+GET     /order/zxr  			   controllers.OrderController.zxr(id:String,doUser:String)
 
 #Notify
 POST    /notify/direct		  	   controllers.NotifyController.direct()
