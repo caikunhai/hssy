@@ -10,6 +10,7 @@
     <script type="text/javascript" src="js/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="js/core.js"></script>
     <script type="text/javascript" src="js/bns.js"></script>
+    <script type="text/javascript" src="js/util.date.js"></script>
 </head>
 <body>
 	<table style="width:100%" id="dg" data-options="
@@ -23,7 +24,7 @@
 				<th field="takeTime" width="110px">拍摄日期</th>
 				<th field="code" width="140px">订单编号</th>
 				<th field="city" width="80px">拍摄城市</th>
-				<th field="acceptUserName" width="120px">服务机构</th>
+				<th field="createdUserName" width="120px">下单机构</th>
 				<th field="money" width="80px">支付金额</th>
 				<th field="doUser" width="150px">执行人</th>
 				<th field="createdTime" width="100px">下单时间</th>
@@ -49,7 +50,7 @@
 				takeTime:time.formatterDate2(xhrObj[i].takeTime),
 				code:xhrObj[i].code,
 				city:xhrObj[i].city,
-				acceptUserName:xhrObj[i].acceptUserName,
+				createdUserName:xhrObj[i].createdUserName,
 				money:xhrObj[i].money,
 				doUser:xhrObj[i].doUser,
 				createdTime:time.formatterDate2(xhrObj[i].createdTime),

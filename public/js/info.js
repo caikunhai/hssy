@@ -61,13 +61,14 @@ $(function() {
 				return;
 			}
 			obj.num =num;
+			obj.logo=$("input[name=logo]").val();
 			console.log('============='+JSON.stringify(obj));
 			bns.company_save(JSON.stringify(obj),common_html);
 		});
     var uploader = Qiniu.uploader({
         runtimes: 'html5,flash,html4',
-        browse_button: 'pickfiles',
-        max_file_size: '100mb',
+        browse_button: 'logo',
+        max_file_size: '10mb',
         flash_swf_url: 'qiniu/bower_components/plupload/js/Moxie.swf',
         dragdrop: true,
         chunk_size: '4mb',
@@ -81,22 +82,27 @@ $(function() {
         log_level: 5,
         init: {
         	'Key': function(up, file) {
-        		return uuid()+'.jpg';
+        		return randomCode()+'.jpg';
         	},
             'FileUploaded': function(up, file, info) {
             	var res = $.parseJSON(info);
-            	var img_src=core.qiniu+res.key+'?imageView2/1/w/100/h/100';
+            	$("input[name=logo]").val(res.key);
+            	var img_src=core.qiniu+res.key+'?imageView2/1/w/120/h/100';
             	$("#logo").attr("src",img_src);
             }
         }
     });
 
 
+    $("#gj").click(function() {
+    	window.location.href='apply.html?company='+$("input[name=id]").val();
+    });
 
 });
 
 
 function company_info_html(result){
+	console.log('============='+result);
 		if(result==''){
 			return;
 		}
@@ -110,8 +116,6 @@ function company_info_html(result){
 			});
 			return;
 		}
-		console.log(JSON.stringify(xhrObj));
-		$("input[name=id]").val(xhrObj.id);
 		$("#city").textbox('setValue',xhrObj.city);
 		$("#state").combobox('setValue',xhrObj.state);
 		$("#rank").textbox('setValue',xhrObj.rank_);
@@ -123,6 +127,15 @@ function company_info_html(result){
 		$("#mobile").textbox('setValue',xhrObj.mobile);
 		$("#gos").textbox('setValue',xhrObj.gos);
 		$("#num").textbox('setValue',xhrObj.num);
+		$("input[name=logo]").val(xhrObj.logo);
+		$("input[name=id]").val(xhrObj.id);
+		if(xhrObj.logo!=''&&xhrObj.logo!=null){
+			var img_src=core.qiniu+xhrObj.logo+'?imageView2/1/w/120/h/100';
+			$("#logo").attr("src",img_src);
+		}
+		if(xhrObj.rank!=2){
+			$("#gj").show();
+		}
 	}
 
 

@@ -26,8 +26,6 @@
 				<th field="money" width="10%">提现金额</th>
 				<th field="type" width="10%">类别</th>
 				<th field="createdTime" width="10%">提现时间</th>
-				<th field="checkedUser" width="10%">提现审核人</th>
-				<th field="updateTime" width="10%">审核时间</th>
 				<th field="operation">操作</th>
 			</tr>
 		</thead>
@@ -49,9 +47,7 @@
 			    createdUser: xhrObj[i].createdUser,
 				money: xhrObj[i].money,
 				type:xhrObj[i].type==0?'待审核':(xhrObj[i].type==1?'成功':'失败'),
-				createdTime:time.formatterDate(new Date(xhrObj[i].createdTime)),
-				checkedUser: xhrObj[i].checkedUser,
-				updateTime: xhrObj[i].updateTime,
+				createdTime:time.formatterDateTime(new Date(xhrObj[i].createdTime)),
 				operation:operation_html
 			});
 		}

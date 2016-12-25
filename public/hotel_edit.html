@@ -12,7 +12,9 @@
     <script type="text/javascript" src="js/core.js"></script>
     <script type="text/javascript" src="js/bns.js"></script>
     <script type="text/javascript" src="js/area.js"></script>
-    <script type="text/javascript" src="uploadify/scripts/jquery.uploadify.js"></script>
+    <script type="text/javascript" src="qiniu/bower_components/plupload/js/moxie.js"></script>
+	<script type="text/javascript" src="qiniu/bower_components/plupload/js/plupload.dev.js"></script>
+	<script type="text/javascript" src="qiniu/src/qiniu.js"></script>
 </head>
 <body>
 	<div class="easyui-panel" style="width:100%;padding:30px 60px;">
@@ -50,41 +52,47 @@
 			<div style="margin-bottom:20px">
 				<input class="easyui-textbox" id="remark" data-options="label:'备注信息:',required:true" style="width: 240px;">
 			</div>
-			<ul style="padding:5px 0;" id="logo_"></ul>
+			<div style="margin-bottom:20px">
+				<label style="margin-left:3px;line-height: 100px;height:100px;">LOGO</label>
+				<span style="margin-left:42px;"></span>
+				<img src="images/none.png" id="logo" style="width:120px;height:100px;cursor: pointer;" title="点击更换">
+			</div>
 		</form>
 		<div style="padding:5px 0;clear: both;">
 			<a href="javascript:void(0)" class="easyui-linkbutton" style="width:80px">提交保存</a>
 		</div>
 	</div>
+	<input type="hidden" name="logo">
 	<script>
 	$(function(){
 		list_city(0);
-		$("#logo").uploadify({
-		  'swf' : 'uploadify/scripts/uploadify.swf',
-		  'uploader': core.file_upload_url,
-		  'queueID': 'fileQueue',
-		  'removeCompleted' : 'false',
-		  'auto': true,
-		  'buttonText': 'Logo上传',
-		  'simUploadLimit' : 1,
-		  'progressData' : 'speed',
-		  'queueSizeLimit' : 1,
-		  'fileObjName' : 'filedata',
-		  'fileExt': '*.jpg;*.gif;*.jpeg;*.png;*.bmp;*.zip;*.rar;*.7z',
-		  onUploadSuccess: function(file, data, response) {
-		  	if(data.indexOf('.jpg')!=-1){
-		  		if($("input[name=logo]").val()==''){
-		  			$("input[name=logo]").val(data+',');
-		  		}else{
-		  			$("input[name=logo]").val($("input[name=logo]").val()+data+',');
-		  		}
-		  		$("#logo_").append('<li class="left" title='+data+'><img src="uploads/'+data+'" width=120px height=100px>');
-		  	}
-		  },
-		  onError: function(event, queueID, fileObj) {
-		      alert("文件:" + fileObj.name + "上传失败");
-		  }
-		});
+		var uploader = Qiniu.uploader({
+	        runtimes: 'html5,flash,html4',
+	        browse_button: 'logo',
+	        max_file_size: '10mb',
+	        flash_swf_url: 'qiniu/bower_components/plupload/js/Moxie.swf',
+	        dragdrop: true,
+	        chunk_size: '4mb',
+	        multi_selection: !(mOxie.Env.OS.toLowerCase()==="ios"),
+	        uptoken_url: '/sys/uptoken',
+	        domain: core.qiniu,
+	        get_new_uptoken: false,
+	        unique_names: false,
+	        save_key: false,
+	        auto_start: true,
+	        log_level: 5,
+	        init: {
+	        	'Key': function(up, file) {
+	        		return randomCode()+'.jpg';
+	        	},
+	            'FileUploaded': function(up, file, info) {
+	            	var res = $.parseJSON(info);
+	            	$("input[name=logo]").val(res.key);
+	            	var img_src=core.qiniu+res.key+'?imageView2/1/w/120/h/100';
+	            	$("#logo").attr("src",img_src);
+	            }
+	        }
+	    });
 		
 		
 		var id =getQueryParam("id");
@@ -129,6 +137,7 @@
 			if(remark!=''){
 				obj.remark =remark;
 			}
+			obj.logo=$("input[name=logo]").val();
 			console.log('============='+JSON.stringify(obj));
 			bns.hotel_save(JSON.stringify(obj),common_html);
 		});
@@ -146,6 +155,11 @@
 		$('#type').combobox('setValue',xhrObj.type);
 		$("#state").combobox('setValue',xhrObj.state);
 		$("#remark").textbox('setValue',xhrObj.remark);
+		$("input[name=logo]").val(xhrObj.logo);
+		if(xhrObj.logo!=''&&xhrObj.logo!=null){
+			var img_src=core.qiniu+xhrObj.logo+'?imageView2/1/w/120/h/100';
+			$("#logo").attr("src",img_src);
+		}
 	}
 	
 	</script>

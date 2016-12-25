@@ -117,7 +117,13 @@
 	function list_html(data){
 		var xhrObj = JSON.parse(data);
 		for(var i=0;i<xhrObj.length;i++){
+			var operation_html='';
 			var url ='company_edit.html?id='+xhrObj[i].id;
+			operation_html+='<a href=javascript:newOpen("机构详情","'+url+'")>机构详情</a>';
+			if(xhrObj[i].rank==1){
+				var url2 ='apply_view.html?company='+xhrObj[i].id;
+				operation_html+='&nbsp;<a href=javascript:newOpen("申请资料","'+url2+'")>申请资料</a>';
+			}
 			rows.push({
 				city: xhrObj[i].city,
 				name:xhrObj[i].name,
@@ -127,7 +133,7 @@
 				history:xhrObj[i].history,
 				state:xhrObj[i].state_,
 				rank:xhrObj[i].rank_,
-				operation:'&nbsp;<a href=javascript:newOpen("机构详情","'+url+'")>机构详情</a>'
+				operation:operation_html
 	        });
 		}
         //console.log(JSON.stringify(rows));

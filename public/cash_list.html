@@ -25,6 +25,7 @@
 				<th field="money" width="10%">提现金额</th>
 				<th field="type" width="10%">类别</th>
 				<th field="createdTime" width="20%">提现时间</th>
+				<th field="operation" width="20%">操作</th>
 			</tr>
 		</thead>
 	</table>
@@ -39,11 +40,13 @@
 		var xhrObj = JSON.parse(data);
 		var rows = [];
 		for(var i=0;i<xhrObj.length;i++){
+			var operation_html ='<a href=javascript:bns.cash_del("'+xhrObj[i].id+'",refresh_href);>删除</a>';
 			rows.push({
 			    code: xhrObj[i].code,
 				money: xhrObj[i].money,
 				type:xhrObj[i].type==0?'待审核':(xhrObj[i].type==1?'成功':'失败'),
-				createdTime:time.formatterDate(new Date(xhrObj[i].createdTime))
+				createdTime:time.formatterDateTime(new Date(xhrObj[i].createdTime)),
+				operation:operation_html
 			});
 		}
         $('#dg').datagrid({loadFilter:pagerFilter}).datagrid('loadData', rows);

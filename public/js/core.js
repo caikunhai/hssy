@@ -32,13 +32,6 @@ function newOpen(title,url){
         }    
 } 
 
-//uuid
-function uuid() {
-    function S4() {
-       return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
-    }
-    return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
-}
 
 //弹出信息窗口 title:标题 msgString:提示信息 msgType:信息类型 [error,info,question,warning]
 function msgShow(title, msgString, msgType) {
@@ -125,8 +118,8 @@ function company_html(data){
 	company_data.push({text:"请选择",value:"-1"});
 	for(var i=0;i<result.length;i++){
 		var obj =new Object();
-		obj.text =result[i].company;
-		obj.value=result[i].id;
+		obj.text =result[i].name;
+		obj.value=result[i].name;
 		company_data.push(obj);
 	}
 	console.log(JSON.stringify(company_data));
@@ -135,28 +128,14 @@ function company_html(data){
 }
 
 
-//状态转化
-function state_text(state){
-	if(state==0){
-		return '待接单';
-	}
-	if(state==1){
-		return '进行中';
-	}
-	if(state==2){
-		return '待下载';
-	}
-	if(state==3){
-		return '交易完成';
-	}
-	if(state==4){
-		return '关闭交易';
-	}
-	if(state==5){
-		return '待支付';
-	}
-}
-
 function img_src(name){
 	return core.file_get_url+'?name='+name;
 }
+
+function randomCode(){
+	var timestamp = new Date().getTime();
+	var str=Math.random().toString(36).substr(2);
+	alert((timestamp+str).length);
+	return str+timestamp;
+}
+

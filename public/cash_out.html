@@ -50,9 +50,11 @@
 	});
 	
 	function wallet(data){
+		console.log(data);
 		var xhrObj = JSON.parse(data);
 		if(xhrObj.code==1){
-			$("#moeny").textbox('setValue',xhrObj.money);
+			var obj =xhrObj.message;
+			$("#money").textbox('setValue',obj.money);
 		}
 	}
 	
@@ -90,12 +92,13 @@
 			return;
 		}
 		var obj = new Object();
-		obj.money=money;
+		obj.money=apply;
 		obj.code =code;
 		var sq_html= function(data){
 			var xhrObj = JSON.parse(data);
 			if(xhrObj.code==1){
-				newOpen('提现记录','cash_list.html')
+				window.location.href='cash_list.html';
+				//newOpen('提现记录','cash_list.html')
 			}
 		}
 		bns.cash_save(JSON.stringify(obj),sq_html);

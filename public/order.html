@@ -212,7 +212,7 @@
 		$("#takeTime").datebox({
 			onChange: function (now,old) {
 				console.log('---------'+now+'=========='+old);
-				company_html();
+				//company_html();
 			}
 		});
 		
@@ -506,11 +506,7 @@
 	function pay(){
 		var id =$("input[name=id]").val();
 		var payment =$('#payment').combobox('getValue');
-		var obj = new Object();
-		obj.id =id;
-		obj.payment =payment;
-		console.log('============='+JSON.stringify(obj));
-		bns.order_pay(JSON.stringify(obj),order_pay_html);
+		bns.order_pay(id,payment,order_pay_html);
 	}
 	
 	function order_pay_html(data){

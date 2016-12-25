@@ -254,8 +254,8 @@ FileProgress.prototype.setComplete = function(up, info) {
             url += imageView
         }
         $(img).attr('src', url);
-        alert(url);
-        alert(res.key);
+        //alert(url);
+       // alert(res.key);
 
         var height_space = 340;
         $(img).on('load', function() {

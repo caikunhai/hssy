@@ -319,6 +319,15 @@ var bns = {};
 	    bns.ajax_private(params, callback);
 	};
 	
+	//提现记录删除
+	bns.cash_del = function (id,callback) {
+	    var params =new Object();
+	    params.url=core.host + '/cash/delete?id='+id;
+	    params.method='GET';
+	    params.data=null;
+	    bns.ajax_private(params, callback);
+	};
+	
 	//我的钱包
 	bns.wallet_get = function (callback) {
 	    var params =new Object();
@@ -337,15 +346,6 @@ var bns = {};
 	    bns.ajax_private(params, callback);
 	};
 	
-	//充值到账
-	bns.recharge_save = function (data,callback) {
-	    var params =new Object();
-	    params.url=core.host + '/recharge/save';
-	    params.method='POST';
-	    params.data=data;
-	    bns.ajax_private(params, callback);
-	};
-	
 	//我的充值
 	bns.recharge_list = function (callback) {
 	    var params =new Object();
@@ -355,14 +355,6 @@ var bns = {};
 	    bns.ajax_private(params, callback);
 	};
 	
-	//全部充值
-	bns.recharge_all = function (callback) {
-	    var params =new Object();
-	    params.url=core.host + '/recharge/all';
-	    params.method='GET';
-	    params.data=null;
-	    bns.ajax_private(params, callback);
-	};
 	
 	//保存订单
 	bns.order_save = function (data,callback) {
@@ -374,11 +366,11 @@ var bns = {};
 	};
 	
 	//订单支付
-	bns.order_pay = function (data,callback) {
+	bns.order_pay = function (id,type,callback) {
 	    var params =new Object();
-	    params.url=core.host + '/order/pay';
-	    params.method='POST';
-	    params.data=data;
+	    params.url=core.host + '/order/payment?id='+id+'&&type='+type;
+	    params.method='GET';
+	    params.data=null;
 	    bns.ajax_private(params, callback);
 	};
 	
@@ -467,6 +459,60 @@ var bns = {};
 	bns.save_zxr = function (id,doUser,callback) {
 	    var params =new Object();
 	    params.url=core.host + '/order/zxr?id='+id+'&&doUser='+doUser;
+	    params.method='GET';
+	    params.data=null;
+	    bns.ajax_private(params, callback);
+	};
+	
+	//保存规则
+	bns.save_rule = function (data,callback) {
+	    var params =new Object();
+	    params.url=core.host + '/rule/save';
+	    params.method='POST';
+	    params.data=data;
+	    bns.ajax_private(params, callback);
+	};
+	
+	//规则列表
+	bns.rule_list = function (callback) {
+	    var params =new Object();
+	    params.url=core.host + '/rule/list';
+	    params.method='GET';
+	    params.data=null;
+	    bns.ajax_private(params, callback);
+	};
+	
+	//规则列表
+	bns.rule_del = function (id,callback) {
+	    var params =new Object();
+	    params.url=core.host + '/rule/delete?id='+id;
+	    params.method='GET';
+	    params.data=null;
+	    bns.ajax_private(params, callback);
+	};
+	
+	//机构申请附件
+	bns.apply_info = function (company,callback) {
+	    var params =new Object();
+	    params.url=core.host + '/file/list?company='+company;
+	    params.method='GET';
+	    params.data=null;
+	    bns.ajax_private(params, callback);
+	};
+	
+	//删除一个附件
+	bns.apply_del = function (id,callback) {
+	    var params =new Object();
+	    params.url=core.host + '/file/delete?id='+id;
+	    params.method='GET';
+	    params.data=null;
+	    bns.ajax_private(params, callback);
+	};
+	
+	//新增一个附件
+	bns.save_file = function (filename,callback) {
+	    var params =new Object();
+	    params.url=core.host + '/file/upload?filename='+filename;
 	    params.method='GET';
 	    params.data=null;
 	    bns.ajax_private(params, callback);
