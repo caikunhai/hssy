@@ -24,13 +24,13 @@
 	* template reference : 
 	* - name      : DomainEntityJPA2Annotation
 	* - file name : DomainEntityJPA2Annotation.vm
-	* - time      : 2016/11/11 ��Ԫ at 11:01:58 CST
+	* - time      : 2016/12/24 ��Ԫ at 15:07:42 CST
 */
 package entities;
 
-import java.io.Serializable;
 //MP-MANAGED-ADDED-AREA-BEGINNING @import@
 //MP-MANAGED-ADDED-AREA-ENDING @import@
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -53,32 +53,45 @@ import javax.persistence.Table;
 	 @NamedQuery(name="BnsCash.findAll", query="SELECT bnscash FROM BnsCash bnscash")
 	,@NamedQuery(name="BnsCash.findByCode", query="SELECT bnscash FROM BnsCash bnscash WHERE bnscash.code = :code")
 	,@NamedQuery(name="BnsCash.findByCodeContaining", query="SELECT bnscash FROM BnsCash bnscash WHERE bnscash.code like :code")
-
+//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
+//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
 	,@NamedQuery(name="BnsCash.findByMoney", query="SELECT bnscash FROM BnsCash bnscash WHERE bnscash.money = :money")
-
+//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
+//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
 	,@NamedQuery(name="BnsCash.findByType", query="SELECT bnscash FROM BnsCash bnscash WHERE bnscash.type = :type")
-
+//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
+//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
+	,@NamedQuery(name="BnsCash.findByState", query="SELECT bnscash FROM BnsCash bnscash WHERE bnscash.state = :state")
+//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
+//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
 	,@NamedQuery(name="BnsCash.findByUpdateTime", query="SELECT bnscash FROM BnsCash bnscash WHERE bnscash.updateTime = :updateTime")
-
+//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
+//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
 	,@NamedQuery(name="BnsCash.findByCheckedUser", query="SELECT bnscash FROM BnsCash bnscash WHERE bnscash.checkedUser = :checkedUser")
 	,@NamedQuery(name="BnsCash.findByCheckedUserContaining", query="SELECT bnscash FROM BnsCash bnscash WHERE bnscash.checkedUser like :checkedUser")
-
+//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
+//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
 	,@NamedQuery(name="BnsCash.findByCreatedUser", query="SELECT bnscash FROM BnsCash bnscash WHERE bnscash.createdUser = :createdUser")
 	,@NamedQuery(name="BnsCash.findByCreatedUserContaining", query="SELECT bnscash FROM BnsCash bnscash WHERE bnscash.createdUser like :createdUser")
-
+//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
+//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
 	,@NamedQuery(name="BnsCash.findByCreatedTime", query="SELECT bnscash FROM BnsCash bnscash WHERE bnscash.createdTime = :createdTime")
-
+//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
+//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
 })
-
+//MP-MANAGED-ADDED-AREA-BEGINNING @custom-annotations@
+//MP-MANAGED-ADDED-AREA-ENDING @custom-annotations@
 public class BnsCash implements Serializable {
     private static final long serialVersionUID = 1L;
 	public static final Integer __DEFAULT_TYPE = Integer.valueOf(0);
+	public static final Integer __DEFAULT_STATE = Integer.valueOf(0);
 
     public static final String FIND_ALL = "BnsCash.findAll";
     public static final String FIND_BY_CODE = "BnsCash.findByCode";
     public static final String FIND_BY_CODE_CONTAINING ="BnsCash.findByCodeContaining";
     public static final String FIND_BY_MONEY = "BnsCash.findByMoney";
     public static final String FIND_BY_TYPE = "BnsCash.findByType";
+    public static final String FIND_BY_STATE = "BnsCash.findByState";
     public static final String FIND_BY_UPDATETIME = "BnsCash.findByUpdateTime";
     public static final String FIND_BY_CHECKEDUSER = "BnsCash.findByCheckedUser";
     public static final String FIND_BY_CHECKEDUSER_CONTAINING ="BnsCash.findByCheckedUserContaining";
@@ -108,6 +121,13 @@ public class BnsCash implements Serializable {
 //MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @ATTRIBUTE-type@
     @Column(name="type"   , nullable=true , unique=false)
     private Integer type; 
+//MP-MANAGED-UPDATABLE-ENDING
+
+//MP-MANAGED-ADDED-AREA-BEGINNING @state-field-annotation@
+//MP-MANAGED-ADDED-AREA-ENDING @state-field-annotation@
+//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @ATTRIBUTE-state@
+    @Column(name="state"   , nullable=true , unique=false)
+    private Integer state; 
 //MP-MANAGED-UPDATABLE-ENDING
 
 //MP-MANAGED-ADDED-AREA-BEGINNING @update_time-field-annotation@
@@ -152,6 +172,7 @@ public class BnsCash implements Serializable {
        String code,
        java.math.BigDecimal money,
        Integer type,
+       Integer state,
        Timestamp updateTime,
        String checkedUser,
        String createdUser,
@@ -162,6 +183,7 @@ public class BnsCash implements Serializable {
        setCode (code);
        setMoney (money);
        setType (type);
+       setState (state);
        setUpdateTime (updateTime);
        setCheckedUser (checkedUser);
        setCreatedUser (createdUser);
@@ -175,6 +197,7 @@ public class BnsCash implements Serializable {
           getCode(),
           getMoney(),
           getType(),
+          getState(),
           getUpdateTime(),
           getCheckedUser(),
           getCreatedUser(),
@@ -219,6 +242,17 @@ public class BnsCash implements Serializable {
 	
     public void setType (Integer type) {
         this.type =  type;
+    }
+	
+//MP-MANAGED-UPDATABLE-ENDING
+
+//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @GETTER-SETTER-state@
+    public Integer getState() {
+        return state;
+    }
+	
+    public void setState (Integer state) {
+        this.state =  state;
     }
 	
 //MP-MANAGED-UPDATABLE-ENDING
@@ -274,6 +308,7 @@ public class BnsCash implements Serializable {
     @javax.persistence.PrePersist
     public void prePersist_ () {
         if (type==null) type=__DEFAULT_TYPE;
+        if (state==null) state=__DEFAULT_STATE;
     }
 //MP-MANAGED-UPDATABLE-ENDING
 
@@ -281,6 +316,7 @@ public class BnsCash implements Serializable {
     @javax.persistence.PreUpdate
     public void preUpdate_ () {
         if (type==null) type=__DEFAULT_TYPE;
+        if (state==null) state=__DEFAULT_STATE;
     }
 //MP-MANAGED-UPDATABLE-ENDING
 

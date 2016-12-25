@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -11,30 +12,43 @@ import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
-import entities.BnsOrder;
-import exporter.ExporterOrder;
-import play.Play;
+import play.libs.Json;
 import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
+import play.mvc.Security;
+import services.SystemService;
 import system.init.Const;
 import system.log.Logger;
 import utils.BnsUtils;
 import utils.CryptTool;
+import entities.BnsFile;
+import entities.BnsOrder;
+import exporter.ExporterOrder;
 
 @Controller
 public class SysController extends play.mvc.Controller {
 	
 	private static ByteArrayOutputStream baos;
 	
+	private static SystemService systemService;
+	
+	@Autowired
+	@Qualifier("systemService")
+	public void setSystemService(SystemService systemService) {
+		SysController.systemService = systemService;
+	}
+
 	/**
 	 * 附件上传
 	 * @return
 	 * @throws IOException
 	 */
-	public static Result upload() throws IOException{
+	public static Result upload1() throws IOException{
 		MultipartFormData body = request().body().asMultipartFormData();
 		if (body != null) {
 			List<FilePart> pictures = body.getFiles();
@@ -55,6 +69,31 @@ public class SysController extends play.mvc.Controller {
 		return ok();
 	}
 	
+	@Security.Authenticated(Secured.class)
+	public static Result upload(String filename){
+		String token = request().getHeader("token");
+		String company =CompanyController.getByToken(token).getId();
+		BnsFile obj=new BnsFile();
+		obj.setFather(company);
+		obj.setFilename(filename);
+		obj.setSyn(0);
+		obj.setCreatedTime(new Timestamp(System.currentTimeMillis()));
+		systemService.saveFile(obj);
+		return ok(Json.toJson(obj));
+	}
+	
+	@Security.Authenticated(Secured.class)
+	public static Result listFile(String company){
+		return ok(Json.toJson(systemService.listFile(company)));
+	}
+	
+	@Security.Authenticated(Secured.class)
+	public static Result delFile(Long id){
+		systemService.delFile(id);
+		return ok();
+	}
+	
+	@Security.Authenticated(Secured.class)
 	public static Result get(String name) throws IOException{
 		return ok(new File(Const.FileUrl +name));
 	}

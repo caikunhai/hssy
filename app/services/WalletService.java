@@ -8,4 +8,6 @@ public interface WalletService {
 	
 	public BnsWallet get(String id);
 
+	public BnsWallet getWalletByToken(String token);
+
 }

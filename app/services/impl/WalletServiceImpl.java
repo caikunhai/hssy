@@ -25,4 +25,10 @@ public class WalletServiceImpl implements WalletService {
 		return walletRepository.findOne(id);
 	}
 
+	@Override
+	public BnsWallet getWalletByToken(String token) {
+		// TODO 自动生成的方法存根
+		return walletRepository.findWalletByToken(token);
+	}
+
 }

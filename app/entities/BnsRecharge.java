@@ -24,7 +24,7 @@
 	* template reference : 
 	* - name      : DomainEntityJPA2Annotation
 	* - file name : DomainEntityJPA2Annotation.vm
-	* - time      : 2016/12/13 ��Ԫ at 23:26:34 CST
+	* - time      : 2016/12/24 ��Ԫ at 10:04:07 CST
 */
 package entities;
 
@@ -53,25 +53,27 @@ import javax.persistence.Table;
 	 @NamedQuery(name="BnsRecharge.findAll", query="SELECT bnsrecharge FROM BnsRecharge bnsrecharge")
 	,@NamedQuery(name="BnsRecharge.findByCode", query="SELECT bnsrecharge FROM BnsRecharge bnsrecharge WHERE bnsrecharge.code = :code")
 	,@NamedQuery(name="BnsRecharge.findByCodeContaining", query="SELECT bnsrecharge FROM BnsRecharge bnsrecharge WHERE bnsrecharge.code like :code")
-
+//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
+//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
 	,@NamedQuery(name="BnsRecharge.findByActual", query="SELECT bnsrecharge FROM BnsRecharge bnsrecharge WHERE bnsrecharge.actual = :actual")
-
+//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
+//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
 	,@NamedQuery(name="BnsRecharge.findByAllowance", query="SELECT bnsrecharge FROM BnsRecharge bnsrecharge WHERE bnsrecharge.allowance = :allowance")
-
+//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
+//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
 	,@NamedQuery(name="BnsRecharge.findByState", query="SELECT bnsrecharge FROM BnsRecharge bnsrecharge WHERE bnsrecharge.state = :state")
-
-	,@NamedQuery(name="BnsRecharge.findByCheckedUser", query="SELECT bnsrecharge FROM BnsRecharge bnsrecharge WHERE bnsrecharge.checkedUser = :checkedUser")
-	,@NamedQuery(name="BnsRecharge.findByCheckedUserContaining", query="SELECT bnsrecharge FROM BnsRecharge bnsrecharge WHERE bnsrecharge.checkedUser like :checkedUser")
-
+//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
+//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
 	,@NamedQuery(name="BnsRecharge.findByCreatedUser", query="SELECT bnsrecharge FROM BnsRecharge bnsrecharge WHERE bnsrecharge.createdUser = :createdUser")
 	,@NamedQuery(name="BnsRecharge.findByCreatedUserContaining", query="SELECT bnsrecharge FROM BnsRecharge bnsrecharge WHERE bnsrecharge.createdUser like :createdUser")
-
-	,@NamedQuery(name="BnsRecharge.findByUpdateTime", query="SELECT bnsrecharge FROM BnsRecharge bnsrecharge WHERE bnsrecharge.updateTime = :updateTime")
-
+//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
+//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
 	,@NamedQuery(name="BnsRecharge.findByCreatedTime", query="SELECT bnsrecharge FROM BnsRecharge bnsrecharge WHERE bnsrecharge.createdTime = :createdTime")
-
+//MP-MANAGED-ADDED-AREA-BEGINNING @custom-queries@
+//MP-MANAGED-ADDED-AREA-ENDING @custom-queries@
 })
-
+//MP-MANAGED-ADDED-AREA-BEGINNING @custom-annotations@
+//MP-MANAGED-ADDED-AREA-ENDING @custom-annotations@
 public class BnsRecharge implements Serializable {
     private static final long serialVersionUID = 1L;
 	public static final java.math.BigDecimal __DEFAULT_ACTUAL = java.math.BigDecimal.valueOf(0.00);
@@ -84,11 +86,8 @@ public class BnsRecharge implements Serializable {
     public static final String FIND_BY_ACTUAL = "BnsRecharge.findByActual";
     public static final String FIND_BY_ALLOWANCE = "BnsRecharge.findByAllowance";
     public static final String FIND_BY_STATE = "BnsRecharge.findByState";
-    public static final String FIND_BY_CHECKEDUSER = "BnsRecharge.findByCheckedUser";
-    public static final String FIND_BY_CHECKEDUSER_CONTAINING ="BnsRecharge.findByCheckedUserContaining";
     public static final String FIND_BY_CREATEDUSER = "BnsRecharge.findByCreatedUser";
     public static final String FIND_BY_CREATEDUSER_CONTAINING ="BnsRecharge.findByCreatedUserContaining";
-    public static final String FIND_BY_UPDATETIME = "BnsRecharge.findByUpdateTime";
     public static final String FIND_BY_CREATEDTIME = "BnsRecharge.findByCreatedTime";
 	
     @Id @Column(name="id" ,length=64) 
@@ -122,25 +121,11 @@ public class BnsRecharge implements Serializable {
     private Integer state; 
 //MP-MANAGED-UPDATABLE-ENDING
 
-//MP-MANAGED-ADDED-AREA-BEGINNING @checked_user-field-annotation@
-//MP-MANAGED-ADDED-AREA-ENDING @checked_user-field-annotation@
-//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @ATTRIBUTE-checked_user@
-    @Column(name="checked_user"  , length=64 , nullable=true , unique=false)
-    private String checkedUser; 
-//MP-MANAGED-UPDATABLE-ENDING
-
 //MP-MANAGED-ADDED-AREA-BEGINNING @created_user-field-annotation@
 //MP-MANAGED-ADDED-AREA-ENDING @created_user-field-annotation@
 //MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @ATTRIBUTE-created_user@
     @Column(name="created_user"  , length=64 , nullable=true , unique=false)
     private String createdUser; 
-//MP-MANAGED-UPDATABLE-ENDING
-
-//MP-MANAGED-ADDED-AREA-BEGINNING @update_time-field-annotation@
-//MP-MANAGED-ADDED-AREA-ENDING @update_time-field-annotation@
-//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @ATTRIBUTE-update_time@
-    @Column(name="update_time"   , nullable=true , unique=false)
-    private Timestamp updateTime; 
 //MP-MANAGED-UPDATABLE-ENDING
 
 //MP-MANAGED-ADDED-AREA-BEGINNING @created_time-field-annotation@
@@ -165,9 +150,7 @@ public class BnsRecharge implements Serializable {
        java.math.BigDecimal actual,
        java.math.BigDecimal allowance,
        Integer state,
-       String checkedUser,
        String createdUser,
-       Timestamp updateTime,
        Timestamp createdTime) {
        //primary keys
        setId (id);
@@ -176,9 +159,7 @@ public class BnsRecharge implements Serializable {
        setActual (actual);
        setAllowance (allowance);
        setState (state);
-       setCheckedUser (checkedUser);
        setCreatedUser (createdUser);
-       setUpdateTime (updateTime);
        setCreatedTime (createdTime);
        //parents
     }
@@ -190,9 +171,7 @@ public class BnsRecharge implements Serializable {
           getActual(),
           getAllowance(),
           getState(),
-          getCheckedUser(),
           getCreatedUser(),
-          getUpdateTime(),
           getCreatedTime()
 	   );
 	}
@@ -249,17 +228,6 @@ public class BnsRecharge implements Serializable {
 	
 //MP-MANAGED-UPDATABLE-ENDING
 
-//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @GETTER-SETTER-checked_user@
-    public String getCheckedUser() {
-        return checkedUser;
-    }
-	
-    public void setCheckedUser (String checkedUser) {
-        this.checkedUser =  checkedUser;
-    }
-	
-//MP-MANAGED-UPDATABLE-ENDING
-
 //MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @GETTER-SETTER-created_user@
     public String getCreatedUser() {
         return createdUser;
@@ -267,17 +235,6 @@ public class BnsRecharge implements Serializable {
 	
     public void setCreatedUser (String createdUser) {
         this.createdUser =  createdUser;
-    }
-	
-//MP-MANAGED-UPDATABLE-ENDING
-
-//MP-MANAGED-UPDATABLE-BEGINNING-DISABLE @GETTER-SETTER-update_time@
-    public Timestamp getUpdateTime() {
-        return updateTime;
-    }
-	
-    public void setUpdateTime (Timestamp updateTime) {
-        this.updateTime =  updateTime;
     }
 	
 //MP-MANAGED-UPDATABLE-ENDING

@@ -36,7 +36,7 @@ import enumeration.ComRole;
 @Controller
 public class UserController extends play.mvc.Controller {
 	
-	private static UserService userService;
+	public static UserService userService;
 	
 	@Autowired
 	@Qualifier("userService")
@@ -211,23 +211,6 @@ public class UserController extends play.mvc.Controller {
 		vo.put("code", 1);
 		vo.put("message", "修改成功");
 		return ok(Json.toJson(vo));
-	}
-	
-	/**
-	 * 验证支付密码
-	 * @param userId
-	 * @param code
-	 * @return
-	 */
-	public static Boolean checkCode(String userId,String code){
-		BnsUser user =userService.get(userId);
-		if(user==null){
-			return false;
-		}
-		if(!user.getSecret().equals(MD5Util.encode(code))){
-			return false;
-		}
-		return true;
 	}
 	
 	@Security.Authenticated(Secured.class)

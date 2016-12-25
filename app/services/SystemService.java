@@ -1,14 +1,23 @@
 package services;
 
+import java.util.List;
+
+import entities.BnsFile;
 import entities.SysMenu;
 import entities.SysMenuRole;
 
 public interface SystemService {
 
-	void removeMenuRole(int role);
+	public void removeMenuRole(int role);
 
-	SysMenuRole saveMenuRole(SysMenuRole obj);
+	public SysMenuRole saveMenuRole(SysMenuRole obj);
 
-	Iterable<SysMenu> listMenu();
+	public Iterable<SysMenu> listMenu();
+	
+	public BnsFile saveFile(BnsFile obj);
+	
+	public List<BnsFile> listFile(String father);
+	
+	public void delFile(Long id);
 
 }

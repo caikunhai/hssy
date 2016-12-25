@@ -2,16 +2,18 @@ package controllers;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
-import entities.BnsWallet;
 import play.libs.Json;
 import play.mvc.Result;
 import play.mvc.Security;
 import services.WalletService;
+import entities.BnsWallet;
 
 @Controller
 public class WalletController extends play.mvc.Controller {
@@ -26,8 +28,17 @@ public class WalletController extends play.mvc.Controller {
 
 	@Security.Authenticated(Secured.class)
 	public static Result myWallet(){
+		Map<String,Object> vo =new HashMap<String,Object>();
+		vo.put("code", 0);
 		String token = request().getHeader("token");
-		return ok(Json.toJson(getWallet(token.substring(0,64))));
+		BnsWallet wallet =walletService.getWalletByToken(token);
+		if(wallet==null){
+			vo.put("message", "查无此账户");
+			return ok(Json.toJson(vo));
+		}
+		vo.put("code", 1);
+		vo.put("message", wallet);
+		return ok(Json.toJson(vo));
 	}
 	
 	/**
@@ -43,26 +54,4 @@ public class WalletController extends play.mvc.Controller {
 		walletService.save(wallet);
 	}
 	
-	/**
-	 * 获取钱包信息
-	 * @param request
-	 * @return
-	 */
-	public static BnsWallet getWallet(String id){
-		return walletService.get(id);
-	}
-	
-	public static Boolean walletMinus(String company,BigDecimal money){
-		BnsWallet wallet = walletService.get(company);
-		if(wallet==null){
-			return false;
-		}
-		if(wallet.getMoney().compareTo(money)==-1){
-			return false;
-		}
-		wallet.setMoney(wallet.getMoney().subtract(money));
-		walletService.save(wallet);
-		return true;
-	}
-
 }

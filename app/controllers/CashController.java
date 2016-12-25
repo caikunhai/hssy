@@ -2,10 +2,7 @@ package controllers;
 import static play.data.Form.form;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +17,15 @@ import services.CashService;
 import system.log.Logger;
 import utils.BnsUtils;
 import utils.CryptTool;
+import utils.MD5Util;
 import bean.CashCheckForm;
 import bean.CashForm;
 
 import com.thoughtworks.xstream.XStream;
 
 import entities.BnsCash;
+import entities.BnsUser;
+import entities.BnsWallet;
 
 @Controller
 public class CashController extends play.mvc.Controller {
@@ -52,20 +52,31 @@ public class CashController extends play.mvc.Controller {
 		XStream xstream = new XStream();
 		xstream.alias("request", CashForm.class);
 		Logger.info("提现申请", xstream.toXML(data));
-		if(!UserController.checkCode(BnsUtils.getId(token), data.getCode())){
-			vo.put("message", "密码不对");
+		//验证支付密码
+		BnsUser userObj =UserController.userService.findByToken(token);
+		if(userObj==null){
+			vo.put("message", "非法操作");
 			return ok(Json.toJson(vo));
 		}
-		if(!WalletController.walletMinus(BnsUtils.getId(token), data.getMoney())){
-			vo.put("message", "提现失败");
+		if(!userObj.getSecret().equals(MD5Util.encode(data.getCode()))){
+			vo.put("message", "支付密码错误");
 			return ok(Json.toJson(vo));
 		}
+		//调出对应机构钱包
+		BnsWallet wallet =WalletController.walletService.get(userObj.getCompany());
+		if(data.getMoney().compareTo(wallet.getMoney())==1){
+			vo.put("message", "提取金额不足");
+			return ok(Json.toJson(vo));
+		}
+		wallet.setMoney(wallet.getMoney().subtract(data.getMoney()));
+		WalletController.walletService.save(wallet);
+		//插入提现记录
 		BnsCash obj =new BnsCash();
 		obj.setId(CryptTool.getUUID());
 		obj.setCode(CryptTool.getCode("C"));
 		obj.setMoney(data.getMoney());
 		obj.setType(0);
-		obj.setCreatedUser(BnsUtils.getId(token));
+		obj.setCreatedUser(userObj.getCompany());
 		obj.setCreatedTime(new Timestamp(System.currentTimeMillis()));
 		cashService.save(obj);
 		vo.put("code", 1);
@@ -76,31 +87,12 @@ public class CashController extends play.mvc.Controller {
 	@Security.Authenticated(Secured.class)
 	public static Result list(){
 		String token = request().getHeader("token");
-		List<Object> list =new ArrayList<Object>();
-		Iterable<BnsCash> itr =cashService.list();
-		Iterator<BnsCash> it =itr.iterator();
-		while(it.hasNext()){
-			BnsCash obj =it.next();
-			if(obj.getCreatedUser().equals(BnsUtils.getId(token))){
-				list.add(obj);
-			}
-		}
-		return ok(Json.toJson(list));
+		return ok(Json.toJson(cashService.listByToken(token)));
 	}
 	
 	@Security.Authenticated(Secured.class)
 	public static Result all(){
-		//Map<String, BnsUser> map =UserController.userMap();
-		List<Object> list =new ArrayList<Object>();
-		Iterable<BnsCash> itr =cashService.list();
-		Iterator<BnsCash> it =itr.iterator();
-		while(it.hasNext()){
-			BnsCash obj =it.next();
-		//	obj.setCreatedUser(map.get(obj.getCreatedUser()).getUsername());
-		//	obj.setCheckedUser(obj.getCheckedUser()==null?"":map.get(obj.getCheckedUser()).getUsername());
-			list.add(obj);
-		}
-		return ok(Json.toJson(list));
+		return ok(Json.toJson(cashService.listByAdmin()));
 	}
 	
 	@Security.Authenticated(Secured.class)
@@ -122,12 +114,26 @@ public class CashController extends play.mvc.Controller {
 			vo.put("message", "查无此记录");
 			return ok(Json.toJson(vo));
 		}
+		obj.setType(data.getType());
+		//提现审核人存储用户ID
 		obj.setCheckedUser(BnsUtils.getId(token));
 		obj.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 		cashService.save(obj);
+		//审核失败对应机构账户提现金额回滚
+		if(data.getType()==2){
+			BnsWallet wallet =WalletController.walletService.get(obj.getCreatedUser());
+			wallet.setMoney(wallet.getMoney().add(obj.getMoney()));
+			WalletController.walletService.save(wallet);
+		}
 		vo.put("code", 1);
 		vo.put("message", "操作成功");
 		return ok(Json.toJson(vo));
+	}
+	
+	@Security.Authenticated(Secured.class)
+	public static Result delete(String id){
+		cashService.delete(id);
+		return ok();
 	}
 	
 

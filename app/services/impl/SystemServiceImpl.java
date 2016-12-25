@@ -1,13 +1,17 @@
 package services.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import entities.SysMenu;
-import entities.SysMenuRole;
+import repositories.BnsFileRepository;
 import repositories.SysMenuRepository;
 import repositories.SysMenuRoleRepository;
 import services.SystemService;
+import entities.BnsFile;
+import entities.SysMenu;
+import entities.SysMenuRole;
 
 @Service("systemService")
 public class SystemServiceImpl implements SystemService {
@@ -17,6 +21,9 @@ public class SystemServiceImpl implements SystemService {
 	
 	@Autowired
 	private SysMenuRepository menuRepository;
+	
+	@Autowired
+	private BnsFileRepository fileRepository;
 
 	@Override
 	public void removeMenuRole(int role) {
@@ -34,6 +41,26 @@ public class SystemServiceImpl implements SystemService {
 	public Iterable<SysMenu> listMenu() {
 		// TODO Auto-generated method stub
 		return menuRepository.findAll();
+	}
+
+	@Override
+	public BnsFile saveFile(BnsFile obj) {
+		// TODO 自动生成的方法存根
+		return fileRepository.save(obj);
+	}
+
+	@Override
+	public List<BnsFile> listFile(String father) {
+		// TODO 自动生成的方法存根
+		return fileRepository.listByFather(father);
+	}
+
+	@Override
+	public void delFile(Long id) {
+		// TODO 自动生成的方法存根
+		if(fileRepository.exists(id)){
+			fileRepository.delete(id);
+		}
 	}
 
 }

@@ -13,6 +13,7 @@ public class CompanyForm {
 	private String gos;
 	private Integer num;
 	private Integer state;
+	private Integer rank;
 	public String getCity() {
 		return city;
 	}
@@ -84,6 +85,12 @@ public class CompanyForm {
 	}
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
+	}
+	public Integer getRank() {
+		return rank;
+	}
+	public void setRank(Integer rank) {
+		this.rank = rank;
 	}
 	
 	

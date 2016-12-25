@@ -24,7 +24,7 @@
 	* template reference : 
 	* - name      : DomainEntityJPA2Metamodel
 	* - file name : DomainEntityJPA2Metamodel.vm
-	* - time      : 2016/12/24 ��Ԫ at 10:04:07 CST
+	* - time      : 2016/12/24 ��Ԫ at 23:37:41 CST
 */
 package entities;
 
@@ -34,17 +34,15 @@ import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
 
-@StaticMetamodel(BnsRecharge.class)
-public class BnsRecharge_ {
+@StaticMetamodel(BnsFile.class)
+public class BnsFile_ {
 
-    public static volatile SingularAttribute<BnsRecharge, String> id;
+    public static volatile SingularAttribute<BnsFile, Long> id;
 
-    public static volatile SingularAttribute<BnsRecharge, String> code;
-    public static volatile SingularAttribute<BnsRecharge, java.math.BigDecimal> actual;
-    public static volatile SingularAttribute<BnsRecharge, java.math.BigDecimal> allowance;
-    public static volatile SingularAttribute<BnsRecharge, Integer> state;
-    public static volatile SingularAttribute<BnsRecharge, String> createdUser;
-    public static volatile SingularAttribute<BnsRecharge, Timestamp> createdTime;
+    public static volatile SingularAttribute<BnsFile, String> father;
+    public static volatile SingularAttribute<BnsFile, String> filename;
+    public static volatile SingularAttribute<BnsFile, Integer> syn;
+    public static volatile SingularAttribute<BnsFile, Timestamp> createdTime;
 
 
 

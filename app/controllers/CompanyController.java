@@ -108,6 +108,9 @@ public class CompanyController extends play.mvc.Controller {
 		if(data.getNum()!=null){
 			obj.setNum(data.getNum());
 		}
+		if(data.getRank()!=null){
+			obj.setRank(data.getRank());
+		}
 		Logger.info("保存公司", Json.toJson(obj)+"");
 		companyService.save(obj);
 		vo.put("code", 1);

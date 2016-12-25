@@ -7,6 +7,7 @@ public class SiteForm {
 	private String id;
 	private String city;
 	private String area;
+	private String address;
 	private String name;
 	private String logo;
 	private Integer type;
@@ -74,6 +75,12 @@ public class SiteForm {
 	}
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 }

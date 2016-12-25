@@ -106,7 +106,7 @@ public class OrderController extends play.mvc.Controller {
 		if("余额".equals(type)){
 			order.setPayment(type);
 			order.setState(OrderStatus.Just_Doing.ordinal());
-			BnsWallet wallet =WalletController.getWallet(order.getAcceptUser());
+			BnsWallet wallet =WalletController.walletService.get(order.getAcceptUser());
 			if(wallet.getMoney().compareTo(order.getMoney())==-1){
 				vo.put("message", "余额不足");
 				return ok(Json.toJson(vo));
