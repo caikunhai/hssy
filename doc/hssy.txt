@@ -88,10 +88,8 @@ CREATE TABLE bns_recharge(
   code varchar(30) NULL COMMENT '充值单号',
   actual decimal(6,2) DEFAULT 0 COMMENT '实充金额',
   allowance decimal(6,2) DEFAULT 0 COMMENT '补贴金额',
-  money decimal(6,2) DEFAULT 0 COMMENT '到账金额',
-  state int(1) DEFAULT 0 COMMENT '状态[0：进行中；1：完成]',
-  checked_user varchar(64) NULL COMMENT '审核人',
-  created_user varchar(64) NULL COMMENT '创建人',
+  state int(1) DEFAULT 0 COMMENT '状态[0：未到账；1：到账]',
+  created_user varchar(64) NULL COMMENT '创建机构',
   created_time timestamp DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -198,6 +196,18 @@ CREATE TABLE bns_order_img(
   PRIMARY KEY(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- ----------------------------------------------------------
+-- Table structure for bns_file (附件表)
+-- ----------------------------------------------------------
+CREATE TABLE bns_file(
+  id bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  father varchar(64) DEFAULT NULL COMMENT '主表ID',
+  filename varchar(100) DEFAULT NULL COMMENT '附件名称',
+  syn int(1) DEFAULT 0 COMMENT '是否同步[0：否：1：是]',
+  created_time timestamp DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 -- ----------------------------------------------------------
 -- Table structure for bns_bill (账单表)
@@ -254,3 +264,13 @@ CREATE TABLE sys_menu_role(
   PRIMARY KEY(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- -------------------------------------------------
+-- Table structure for bns_rule (充值赠送规则表)
+-- -------------------------------------------------
+CREATE TABLE bns_rule(
+  id bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  cz decimal(6,2) DEFAULT 0 COMMENT '实充金额',
+  zs decimal(6,2) DEFAULT 0 COMMENT '赠送金额',
+  created_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (id)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
