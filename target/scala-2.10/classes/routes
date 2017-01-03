@@ -1,0 +1,76 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+#
+GET     /                          controllers.Application.index()
+GET     /sys/uptoken		  	   controllers.Application.uptoken()
+POST    /menu/role			  	   controllers.Application.role()
+GET     /menu/list			  	   controllers.Application.listMenu()
+GET     /file/upload			   controllers.SysController.upload(filename:String)
+GET     /file/list				   controllers.SysController.listFile(company:String)
+GET     /file/delete			   controllers.SysController.delFile(id:Long)
+GET     /file/get				   controllers.SysController.get(name:String)
+GET     /file/download  		   controllers.SysController.download(id:String)
+GET     /file/doing		  		   controllers.SysController.unFinish(token:String)
+
+#Site
+GET     /site/list  			   controllers.SiteController.list()
+GET     /site/all   			   controllers.SiteController.all()
+GET     /site/get			       controllers.SiteController.site(id:String)
+POST    /site/save			       controllers.SiteController.save()
+#Hotel
+GET     /hotel/list			       controllers.HotelController.list()
+GET     /hotel/all			       controllers.HotelController.all()
+GET     /hotel/get			       controllers.HotelController.hotel(id:String)
+POST    /hotel/save			       controllers.HotelController.save()
+#Cloth
+GET     /cloth/list			       controllers.ClothController.list()
+GET     /cloth/all			       controllers.ClothController.all()
+GET     /cloth/get			       controllers.ClothController.cloth(id:String)
+POST    /cloth/save			       controllers.ClothController.save()
+#User
+GET     /user/menu		  		   controllers.UserController.menu()
+POST    /user/login				   controllers.UserController.login()
+POST    /user/password			   controllers.UserController.password()
+POST    /user/code				   controllers.UserController.code()
+POST    /user/save				   controllers.UserController.save()
+GET     /user/list				   controllers.UserController.list()
+GET     /user/get				   controllers.UserController.get(id:String)
+#Company
+POST    /company/save			   controllers.CompanyController.save()
+GET     /company/list			   controllers.CompanyController.list()
+GET     /company/simple			   controllers.CompanyController.simple()
+GET     /company/search			   controllers.CompanyController.search(city:String)
+GET     /company/get			   controllers.CompanyController.get(id:String)
+GET     /company/info			   controllers.CompanyController.info()
+GET     /company/change			   controllers.CompanyController.change(id:String)
+#Cash
+POST    /cash/save				   controllers.CashController.save()
+GET     /cash/list				   controllers.CashController.list()
+GET     /cash/all				   controllers.CashController.all()
+POST    /cash/check				   controllers.CashController.check()
+GET     /cash/delete			   controllers.CashController.delete(id:String)
+#Wallet
+GET     /wallet/get  			   controllers.WalletController.myWallet()
+#Charge
+POST    /recharge/create		   controllers.RechargeController.create()
+GET     /recharge/list    		   controllers.RechargeController.list()
+#Rule
+GET     /rule/list	    		   controllers.RechargeController.rule()
+POST    /rule/save	    		   controllers.RechargeController.saveRule()
+GET     /rule/delete	    	   controllers.RechargeController.delRule(id:Long)
+#Order
+POST    /order/save			   	   controllers.OrderController.save()
+GET     /order/find			       controllers.OrderController.find(identity:String,progress:String)
+GET     /order/detail			   controllers.OrderController.detail(id:String)
+GET     /order/over			       controllers.OrderController.over(id:String)
+GET     /order/file			       controllers.OrderController.file(id:String)
+GET     /order/payment			   controllers.OrderController.payment(id:String,type:String)
+GET     /order/zxr  			   controllers.OrderController.zxr(id:String,doUser:String)
+
+#Notify
+POST    /notify/direct		  	   controllers.NotifyController.direct()
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /*file               controllers.Assets.at(path="/public", file)

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>管理平台</title>
+	<link rel="stylesheet" type="text/css" href="css/css.css" />
+	<link rel="stylesheet" type="text/css" href="js/themes/default/easyui.css" />
+	<link rel="stylesheet" type="text/css" href="css/icon.css">
+	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="js/core.js"></script>
+    <script type="text/javascript" src="js/bns.js"></script>
+</head>
+<body>
+	<div class="easyui-panel" style="width:100%;padding:30px 60px;">
+		<div style="margin-bottom:20px">
+			<input class="easyui-textbox" id="money" data-options="label:'可用余额:'" value="0" style="width: 320px;" readonly="readonly">
+		</div>
+		<div style="margin-bottom:20px">
+			<input class="easyui-textbox" id="apply" data-options="label:'申请提现:',required:true" style="width: 320px;">
+		</div>
+		<div style="margin-bottom:20px">
+			<input class="easyui-textbox" id="code" data-options="label:'提现密码:',required:true" style="width: 320px;">
+		</div>
+		<div style="padding:5px 0">
+			<input type="button" value="提交申请" class="inputBtn" onclick="sq()">
+			<input type="button" value="修改密码" class="inputBtn" onclick="javascript:$('#w').window('open');">
+		</div>
+	</div>
+	
+    
+    <!--修改交易密码窗口-->
+    <div id="w" class="easyui-window" title="修改交易密码 " collapsible="false" minimizable="false" closed="true"
+        maximizable="false" icon="icon-save"  style="width: 300px; height: 230px; padding: 5px;background: #fafafa;">
+        <div class="easyui-layout" fit="true">
+            <div region="center" border="false" style="padding: 10px; background: #fff; border: 1px solid #ccc;">
+            	<p><input type="password" class="easyui-textbox" id="old" data-options="label:'旧密码:'" style="width: 220px;"></p>
+            	<p><input type="password" class="easyui-textbox" id="now" data-options="label:'新密码:'" style="width: 220px;"></p>
+            	<p><input type="password" class="easyui-textbox" id="nw" data-options="label:'再次输入:'" style="width: 220px;"></p>
+            </div>
+            <div region="south" border="false" style="text-align: center; height: 30px; line-height: 30px;">
+                <a class="easyui-linkbutton" icon="icon-ok" href="javascript:xg()" >确定</a> 
+            </div>
+        </div>
+    </div>
+	
+	<script>
+	$(function(){
+		bns.wallet_get(wallet);
+	});
+	
+	function wallet(data){
+		console.log(data);
+		var xhrObj = JSON.parse(data);
+		if(xhrObj.code==1){
+			var obj =xhrObj.message;
+			$("#money").textbox('setValue',obj.money);
+		}
+	}
+	
+	
+	function xg(){
+		var old =$("#old").val();
+		if(old==''){
+			msgShow("系统提示","旧密码不能为空","warning");
+			return;
+		}
+		var now =$("#now").val();
+		if(now==''){
+			msgShow("系统提示","新密码不能为空","warning");
+			return;
+		}
+		var nw =$("#nw").val();
+		if(now!=nw){
+			msgShow("系统提示","两次交易密码不一致","warning");
+			return;
+		}
+		
+		bns.user_code(JSON.stringify({old: old,now:now}),common_html);
+	}
+	
+	function sq(){
+		var money =$("#money").textbox('getValue');
+		var apply =$("#apply").textbox('getValue');
+		var code =$("#code").textbox('getValue');
+		if(apply==''){
+			msgShow("系统提示","提现金额不能为空","warning");
+			return;
+		}
+		if(apply*1>money*1){
+			msgShow("系统提示","提现金额不能超过总金额","warning");
+			return;
+		}
+		var obj = new Object();
+		obj.money=apply;
+		obj.code =code;
+		var sq_html= function(data){
+			var xhrObj = JSON.parse(data);
+			if(xhrObj.code==1){
+				window.location.href='cash_list.html';
+				//newOpen('提现记录','cash_list.html')
+			}
+		}
+		bns.cash_save(JSON.stringify(obj),sq_html);
+	}
+	
+	</script>
+</body>
+</html>

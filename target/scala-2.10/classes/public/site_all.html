@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>管理平台</title>
+	<link rel="stylesheet" type="text/css" href="css/css.css" />
+	<link rel="stylesheet" type="text/css" href="js/themes/default/easyui.css" />
+	<link rel="stylesheet" type="text/css" href="css/icon.css">
+	<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="js/core.js"></script>
+    <script type="text/javascript" src="js/bns.js"></script>
+    <script type="text/javascript" src="js/util.date.js"></script>
+</head>
+<body>
+	<div style="margin-top: 20px;">
+		<select class="easyui-combobox" panelHeight="auto" style="width:200px" id="company" data-options="label:'所属机构:',editable:false,panelHeight:'auto'"></select>
+		<a href="javascript:;" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+	</div><br/>
+	<table style="width:100%" id="dg" data-options="
+                rownumbers:true,
+                singleSelect:true,
+                autoRowHeight:false,
+                pagination:true,
+                pageSize:10">
+                <thead>
+		<thead>
+			<tr>
+				<th field="company" width="100px">所属机构</th>
+				<th field="name" width="100px">景点名称</th>
+				<th field="description" width="120px">景点简介</th>
+				<th field="type" width="60px">景点类型</th>
+				<th field="money" width="60px">景点门票</th>
+				<th field="createdTime" width="80px">创建时间</th>
+			</tr>
+		</thead>
+	</table>
+	
+<script>
+	var rows = [];
+	$(function(){
+		bns.site_all(list_html);
+		
+		//查询
+		$("a[iconCls=icon-search]").click(function() {
+			var company=$('#company').combobox('getText');
+			if(company=='请选择'){
+				$('#dg').datagrid({loadFilter:pagerFilter}).datagrid('loadData', rows);
+				return;
+			}
+			var data=[];
+			$.each(rows, function(index,obj){
+				var flag =true;
+				if(company!='请选择'&&company!=obj.company){
+					flag = false;
+				}
+				if(flag){
+					data.push(obj);
+				}
+			}); 
+			$('#dg').datagrid({loadFilter:pagerFilter}).datagrid('loadData', data);
+		});
+		
+	});
+	
+	//景点列表数据
+	function list_html(data){
+		var xhrObj = JSON.parse(data);
+		for(var i=0;i<xhrObj.length;i++){
+			rows.push({
+				company:xhrObj[i][0],
+				name:xhrObj[i][1],
+				description:xhrObj[i][2],
+				type:xhrObj[i][3]==0?'免费':'收费',
+				money:xhrObj[i][4],
+				createdTime:time.formatterDate2(xhrObj[i][5])
+	        });
+		}
+        $('#dg').datagrid({loadFilter:pagerFilter}).datagrid('loadData', rows);
+        bns.company_simple(company_html);
+	}
+	
+</script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- 新 Bootstrap 核心 CSS 文件 -->
+		<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+		<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+		<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+		<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+		<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src='js/core.js'> </script>
+		<script type="text/javascript" src='js/bns.js'> </script>
+		<title>婚纱摄影互助平台</title>
+		<style type="text/css">
+			.container,.row{padding: 0;}
+		</style>
+	</head>
+	<body>
+		
+		<!-- Navbar -->
+		<nav class="navbar navbar-default">
+			<div class="container">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="javascript:;">婚纱摄影互助平台</a>
+				</div>
+				<div class="navbar-header navbar-right">
+			      <ul class="nav navbar-nav">
+			        <li><a href="index.html">首&nbsp;&nbsp;页</a></li>
+			        <li><a href="Javascript:;" id="loginOut">安全退出</a></li>
+			      </ul>
+				</div>
+			</div>
+		</nav>
+		
+		<div class="container" style="border: 1px solid #e7e7e7;margin-bottom: 15px;">
+			<nav class="navbar navbar-nav">
+			  <div class="container-fluid">
+			    <div class="collapse navbar-collapse">
+			      <ul class="nav navbar-nav" id="menu">
+r			        <li class="dropdown">
+			          <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">Page 1 <span class="caret"></span></a>
+			          <ul class="dropdown-menu">
+			            <li><a href="javascript:;">Page 1-1</a></li>
+			            <li><a href="javascript:;">Page 1-2</a></li>
+			            <li><a href="javascript:;">Page 1-3</a></li>
+			          </ul>
+			        </li>
+			      </ul>
+			    </div>
+			  </div>
+			</nav>
+		</div>
+		
+		<div class="container">
+			<iframe src="info.html" name="iframe" id="iframe" width="100%" height="600px" onload="changeFrameHeight()" frameborder="no" border="0" scrolling="no" allowtransparency="yes"></iframe>
+		</div>
+
+</body>
+</html>
+<script>
+	$(function(){
+		bns.user_menu(menu_html);
+		$('#loginOut').click(function() {
+           	window.localStorage.clear();
+            window.parent.location.href="login.html";
+        });
+	});
+	function menu_html(data){
+		console.log('-----------'+data);
+		var xhrObj = JSON.parse(data);
+		var datahtml='';
+		for(var i=0;i<xhrObj.length;i++){
+			var subObj=xhrObj[i].sub;
+			datahtml+='<li class="dropdown">';
+			datahtml+='<a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">'+xhrObj[i].name+'<span class="caret"></span></a>';
+			datahtml+='<ul class="dropdown-menu">';
+			for(var j=0;j<subObj.length;j++){
+				datahtml+='<li><a href="'+subObj[j].url+'" target="iframe">'+subObj[j].name+'</a></li>';
+			}
+			datahtml+='</ul>';
+			datahtml+='</li>';
+		}
+		console.log('-----------'+datahtml);
+		$("#menu").empty().append(datahtml);
+	}
+	function changeFrameHeight(){
+	    var ifm= document.getElementById("iframe"); 
+	    ifm.height=document.documentElement.clientHeight;
+	}
+	window.onresize=function(){  
+	     changeFrameHeight();  
+	} 
+</script>

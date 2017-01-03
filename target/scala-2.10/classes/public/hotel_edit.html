@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>管理平台</title>
+	<link rel="stylesheet" type="text/css" href="css/css.css" />
+	<link rel="stylesheet" type="text/css" href="js/themes/default/easyui.css" />
+	<link rel="stylesheet" type="text/css" href="uploadify/css/uploadify.css" media="screen"/>
+	<link rel="stylesheet" type="text/css" href="css/icon.css">
+	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="js/core.js"></script>
+    <script type="text/javascript" src="js/bns.js"></script>
+    <script type="text/javascript" src="js/area.js"></script>
+    <script type="text/javascript" src="qiniu/bower_components/plupload/js/moxie.js"></script>
+	<script type="text/javascript" src="qiniu/bower_components/plupload/js/plupload.dev.js"></script>
+	<script type="text/javascript" src="qiniu/src/qiniu.js"></script>
+</head>
+<body>
+	<div class="easyui-panel" style="width:100%;padding:30px 60px;">
+		<form id="ff" class="easyui-form" method="post" data-options="novalidate:true">
+			<div style="margin-bottom:20px">
+				<select class="easyui-combobox" id="city" label="所在城市" style="width: 240px;" data-options="editable:false,panelHeight:'auto'"></select>
+			</div>
+			<div style="margin-bottom:20px">
+				<input class="easyui-textbox" id="name" data-options="label:'住宿名称:',required:true" style="width: 240px;">
+			</div>
+			<div style="margin-bottom:20px">
+				<input class="easyui-textbox" id="description" data-options="label:'住宿介绍:',required:true" style="width: 240px;">
+			</div>
+			<div style="margin-bottom:20px">
+				<input class="easyui-textbox" id="address" data-options="label:'详细地址:',required:true" style="width: 240px;">
+			</div>
+			<div style="margin-bottom:20px">
+				<input class="easyui-textbox" id="price" data-options="label:'住宿价格:',required:true" style="width: 240px;">
+			</div>
+			<div style="margin-bottom:20px">
+				<input class="easyui-textbox" id="star" data-options="label:'信誉评级:',required:true" style="width: 240px;">
+			</div>
+			<div style="margin-bottom:20px">
+				<select class="easyui-combobox" id="type" label="住宿类型" style="width: 240px;" data-options="editable:false,panelHeight:'auto'">
+					<option value="0">免费</option>
+					<option value="1">收费</option>
+				</select>
+			</div>
+			<div style="margin-bottom:20px">
+				<select class="easyui-combobox" id="state" label="住宿状态" style="width: 240px;" data-options="editable:false,panelHeight:'auto'">
+					<option value="0">启用</option>
+					<option value="1">禁用</option>
+				</select>
+			</div>
+			<div style="margin-bottom:20px">
+				<input class="easyui-textbox" id="remark" data-options="label:'备注信息:',required:true" style="width: 240px;">
+			</div>
+			<div style="margin-bottom:20px">
+				<label style="margin-left:3px;line-height: 100px;height:100px;">LOGO</label>
+				<span style="margin-left:42px;"></span>
+				<img src="images/none.png" id="logo" style="width:120px;height:100px;cursor: pointer;" title="点击更换">
+			</div>
+		</form>
+		<div style="padding:5px 0;clear: both;">
+			<a href="javascript:void(0)" class="easyui-linkbutton" style="width:80px">提交保存</a>
+		</div>
+	</div>
+	<input type="hidden" name="logo">
+	<script>
+	$(function(){
+		list_city(0);
+		var uploader = Qiniu.uploader({
+	        runtimes: 'html5,flash,html4',
+	        browse_button: 'logo',
+	        max_file_size: '10mb',
+	        flash_swf_url: 'qiniu/bower_components/plupload/js/Moxie.swf',
+	        dragdrop: true,
+	        chunk_size: '4mb',
+	        multi_selection: !(mOxie.Env.OS.toLowerCase()==="ios"),
+	        uptoken_url: '/sys/uptoken',
+	        domain: core.qiniu,
+	        get_new_uptoken: false,
+	        unique_names: false,
+	        save_key: false,
+	        auto_start: true,
+	        log_level: 5,
+	        init: {
+	        	'Key': function(up, file) {
+	        		return randomCode()+'.jpg';
+	        	},
+	            'FileUploaded': function(up, file, info) {
+	            	var res = $.parseJSON(info);
+	            	$("input[name=logo]").val(res.key);
+	            	var img_src=core.qiniu+res.key+'?imageView2/1/w/120/h/100';
+	            	$("#logo").attr("src",img_src);
+	            }
+	        }
+	    });
+		
+		
+		var id =getQueryParam("id");
+		console.log('====id========='+id);
+		if(id!=''){
+			bns.hotel_get(id,init_html);
+		}
+		
+		$("a").click(function() {
+			if($(this).text()!='提交保存'){
+				return;
+			}
+			var obj = new Object();
+			if(id!=''){
+				obj.id =id;
+			}
+			
+			obj.city =$('#city').combobox('getValue');
+			var name = $("#name").textbox('getValue');
+			if(name!=''){
+				obj.name =name;
+			}
+			var description = $("#description").textbox('getValue');
+			if(description!=''){
+				obj.description =description;
+			}
+			var address = $("#address").textbox('getValue');
+			if(address!=''){
+				obj.address =address;
+			}
+			var price = $("#price").textbox('getValue');
+			if(price!=''){
+				obj.price =price;
+			}
+			var star = $("#star").textbox('getValue');
+			if(star!=''){
+				obj.star =star;
+			}
+			obj.type =$('#type').combobox('getValue');
+			obj.state =$('#state').combobox('getValue');
+			var remark = $("#remark").textbox('getValue');
+			if(remark!=''){
+				obj.remark =remark;
+			}
+			obj.logo=$("input[name=logo]").val();
+			console.log('============='+JSON.stringify(obj));
+			bns.hotel_save(JSON.stringify(obj),common_html);
+		});
+		
+	});
+	
+	function init_html(data){
+		var xhrObj = JSON.parse(data);
+		$("#city").combobox('setValue',xhrObj.city);
+		$("#name").textbox('setValue',xhrObj.name);
+		$("#description").textbox('setValue',xhrObj.description);
+		$("#price").textbox('setValue',xhrObj.price);
+		$("#address").textbox('setValue',xhrObj.address);
+		$("#star").textbox('setValue',xhrObj.star);
+		$('#type').combobox('setValue',xhrObj.type);
+		$("#state").combobox('setValue',xhrObj.state);
+		$("#remark").textbox('setValue',xhrObj.remark);
+		$("input[name=logo]").val(xhrObj.logo);
+		if(xhrObj.logo!=''&&xhrObj.logo!=null){
+			var img_src=core.qiniu+xhrObj.logo+'?imageView2/1/w/120/h/100';
+			$("#logo").attr("src",img_src);
+		}
+	}
+	
+	</script>
+</body>
+</html>

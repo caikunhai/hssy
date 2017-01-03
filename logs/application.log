@@ -1,0 +1,24 @@
+2017-01-02 19:27:41,472 - [INFO] - from play in main 
+Listening for HTTP on /0:0:0:0:0:0:0:0:80
+
+2017-01-02 19:28:01,879 - [DEBUG] - from application in New I/O worker #1 
+Spring plugin initialized
+
+2017-01-02 19:28:02,367 - [DEBUG] - from application in New I/O worker #1 
+Spring Plugin Starting
+
+2017-01-02 19:28:02,367 - [DEBUG] - from application in New I/O worker #1 
+Loading application context: application-context.xml
+
+2017-01-02 19:28:02,367 - [DEBUG] - from application in New I/O worker #1 
+Starting Spring application context from file:/D:/workspace/hssy/target/scala-2.10/classes/application-context.xml
+
+2017-01-02 19:28:02,651 - [DEBUG] - from application in New I/O worker #1 
+Application context is namespace aware
+
+2017-01-02 19:28:02,651 - [DEBUG] - from application in New I/O worker #1 
+Adding PropertyPlaceholderConfigurer with Play properties
+
+2017-01-02 19:28:08,131 - [INFO] - from play in New I/O worker #1 
+Application started (Dev)
+

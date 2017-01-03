@@ -1,0 +1,57 @@
+﻿@charset "utf-8";
+/* 清理浮动 */
+.clean{clear:both;}
+a, a:hover{color: #000;text-decoration: none;}
+body .hidden{display:none;}
+body .left { float:left;}
+body .right { float:right;}
+body .txtAl{text-align: left;}
+body .txtAc{text-align: center;}
+body .txtAr{ text-align: right;}
+body .bold{font-weight: 700;}
+body .fz12{font-size: 12px;}
+body .txtEllipsis{ text-overflow:ellipsis; white-space:nowrap; overflow:hidden;}
+body .wd_full{ width: 100%;}
+
+body{overflow: hidden;}
+body .left20{margin-left:20px;}
+body .left30{margin-left:30px;}
+body .left34{margin-left:34px;}
+body .left40{margin-left:40px;}
+body .left50{margin-left:50px;}
+body .left60{margin-left:60px;}
+body .left80{margin-left:80px;}
+
+.divider {
+    clear: both;
+    display: block;
+    overflow: hidden;
+    text-indent: -1000px;
+    width: auto;
+    height: 1px;
+    padding: 4px 0;
+    margin-bottom: 10px;
+    border-style: dotted;
+    border-width: 0 0 1px 0;
+}
+
+.current{background:#E0ECFF;}
+
+
+.tab01{
+    border: 1px solid #95B8E7;
+}
+.tab01 th,td{
+	height: 32px;
+	line-height: 32px;
+    border-color: #ccc;
+    border-width: 1px 1px 0 0;
+    border-style: dotted;
+    margin: 0;
+    padding: 0;
+}
+.tab01 th{
+	background-color: #dddddd;
+}
+
+.inputBtn{width:100px;height:36px;line-height36px;border-radius:6px;border:1px solid #dcdfe5;font-size:14px;outline:medium;cursor:pointer;}

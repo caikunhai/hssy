@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>管理平台</title>
+	<link rel="stylesheet" type="text/css" href="css/css.css" />
+	<link rel="stylesheet" type="text/css" href="js/themes/default/easyui.css" />
+	<link rel="stylesheet" type="text/css" href="css/icon.css">
+	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="js/core.js"></script>
+    <script type="text/javascript" src="js/bns.js"></script>
+    <script type="text/javascript" src="js/area.js"></script>
+</head>
+<body>
+	<div class="easyui-panel"  style="width:1200px;padding:20px 60px;border:1px solid #fff;">
+		<p>
+			<select class="easyui-combobox" id="city" style="width: 320px;"  data-options="label:'所属城市:',editable:false,panelHeight:'auto'"></select>
+		</p>
+		<div class="divider"></div>
+		<p>
+			<input class="easyui-datebox" style="width:320px;" data-options="label:'拍摄日期:',editable:false" id="takeTime" >
+			<span class="left80"></span>
+			<input class="easyui-searchbox" style="width:320px;" searcher="doCompany" data-options="label:'所属公司:',editable:false" id="company">
+			<input type="hidden" name="company">
+		</p>
+		<div class="divider"></div>
+		<p style="margin-bottom:10px">
+			<input class="easyui-textbox" id="customer" data-options="label:'客户姓名:'" style="width: 320px;">
+			<span class="left80"></span>
+			<input class="easyui-textbox" id="idcard" data-options="label:'身份证号:'" style="width: 320px;">
+		</p>
+		<p style="margin-bottom:10px">
+			<input class="easyui-textbox" id="mobile" data-options="label:'联系电话:'" style="width: 320px;">
+			<span class="left80"></span>
+			<input class="easyui-textbox" id="people" data-options="label:'同行人数:'" style="width: 320px;">
+		</p>
+		<div class="divider"></div>
+		<p>
+			<input class="easyui-textbox" data-options="label:'拍摄风格:',editable:false" style="width: 664px;" id="cloth" readonly="readonly">
+			<input class="easyui-searchbox" style="width:56px;" searcher="doCloth" data-options="editable:false" value="选择">
+		</p>
+		<p>
+			<input class="easyui-textbox" data-options="label:'订购景点:',editable:false" style="width: 664px;" id="site" readonly="readonly">
+			<input class="easyui-searchbox" style="width:56px;" searcher="doSite" data-options="editable:false" value="选择">
+		</p>
+		<p>
+			<input class="easyui-textbox" data-options="label:'订购住宿:',editable:false" style="width: 664px;" id="hotel" readonly="readonly">
+			<input class="easyui-searchbox" style="width:56px;" searcher="doHotel" data-options="editable:false" value="选择">
+		</p>
+		<div class="divider"></div>
+		<p>
+			<select class="easyui-combobox" id="pickup" style="width: 320px;"  data-options="label:'是否接送:',editable:false,panelHeight:'auto'">
+				<option value="1">接送</option><option value="0">不接送</option>
+			</select>
+			<span class="left80"></span>
+			<input class="easyui-textbox" data-options="label:'备注信息:'" style="width: 320px;" id="remark">
+		</p>
+		
+		<div style="text-align:center;padding:20px 0">
+			<input type="button" value="保存下一步" class="inputBtn" onclick="ok()" id="btn">
+		</div>
+	</div>
+	
+	
+	
+	<!--机构选择框-->
+    <div id="companyWin" class="easyui-window" title="机构选择" collapsible="false" minimizable="false" closed="true"
+        maximizable="false"  style="width: 800px; height: 300px; padding: 5px;background: #fafafa;">
+        <div class="easyui-layout" fit="true">
+            <div region="center" border="false" style="padding: 10px; background: #fff; border: 1px solid #ccc;">
+                <table style="border-collapse:collapse;border-spacing:0;width: 100%;" id="companyTable">
+                    <tr style="border: 1px solid #ccc;height: 32px;cursor:pointer">
+                        <td>机构名称</td>
+                        <td>详细地址</td>
+                        <td>业务负责人</td>
+                        <td>负责人电话</td>
+                        <td>服务范围</td>
+                        <td>累计成交</td>
+                    </tr>
+                </table>
+            </div>
+            <div region="south" border="false" style="text-align: center; height: 36px;padding-top: 10px;">
+                <a class="easyui-linkbutton" href="javascript:void(0);" id="companyWinBtn">确定</a> 
+                <a class="easyui-linkbutton" href="javascript:$('#companyWin').window('close');">取消</a>
+            </div>
+        </div>
+    </div>
+    
+    
+	<!--服装选择框-->
+    <div id="clothWin" class="easyui-window" title="服饰选择" collapsible="false" minimizable="false" closed="true"
+        maximizable="false"  style="width: 800px; height: 300px; padding: 5px;background: #fafafa;">
+        <div class="easyui-layout" fit="true">
+            <div region="center" border="false" style="padding: 10px; background: #fff; border: 1px solid #ccc;">
+                <table style="border-collapse:collapse;border-spacing:0;width: 100%;" id="clothTable">
+                    <tr style="border: 1px solid #ccc;height: 32px;cursor:pointer">
+                        <td>服饰风格</td>
+                        <td>包含套数</td>
+                        <td>包含件数</td>
+                        <td>市场定价</td>
+                    </tr>
+                </table>
+            </div>
+            <div region="south" border="false" style="text-align: center; height: 50px;padding-top: 10px;">
+            	<span style="float: left;margin-left:5px;font-size: 24px;color: red;">计：<strong  id="clothMoney">0</strong>元</span>
+            	<input type="button" value="确定" class="inputBtn" id="clothWinBtn">
+            	<input type="button" value="取消" class="inputBtn" onclick="javascript:$('#clothWin').window('close');">
+            </div>
+        </div>
+    </div>  
+    
+    
+	<!--景点选择框-->
+    <div id="siteWin" class="easyui-window" title="景点选择" collapsible="false" minimizable="false" closed="true"
+        maximizable="false"  style="width: 800px; height: 300px; padding: 5px;background: #fafafa;">
+        <div class="easyui-layout" fit="true">
+            <div region="center" border="false" style="padding: 10px; background: #fff; border: 1px solid #ccc;">
+                <table style="border-collapse:collapse;border-spacing:0;width: 100%;" id="siteTable">
+                    <tr style="border: 1px solid #ccc;height: 32px;cursor:pointer">
+                        <td>景点名称</td>
+                        <td>景点描述</td>
+                        <td>详细地址</td>
+                        <td>景点门票</td>
+                        <td>订购数量</td>
+                    </tr>
+                </table>
+            </div>
+            <div region="south" border="false" style="text-align: center; height: 50px;padding-top: 10px;">
+                <span style="float: left;margin-left:5px;font-size: 24px;color: red;">计：<strong  id="siteMoney">0</strong>元</span>
+            	<input type="button" value="确定" class="inputBtn" id="siteWinBtn">
+            	<input type="button" value="取消" class="inputBtn" onclick="javascript:$('#siteWin').window('close');">
+            </div>
+        </div>
+    </div> 
+    
+    
+	<!--住宿选择框-->
+    <div id="hotelWin" class="easyui-window" title="住宿选择" collapsible="false" minimizable="false" closed="true"
+        maximizable="false"  style="width: 800px; height: 300px; padding: 5px;background: #fafafa;">
+        <div class="easyui-layout" fit="true">
+            <div region="center" border="false" style="padding: 10px; background: #fff; border: 1px solid #ccc;">
+                <table style="border-collapse:collapse;border-spacing:0;width: 100%;" id="hotelTable">
+                    <tr style="border: 1px solid #ccc;height: 32px;cursor:pointer">
+                        <td>住宿名称</td>
+                        <td>住宿描述</td>
+                        <td>星级</td>
+                        <td>详细地址</td>
+                        <td>住宿价格</td>
+                        <td>订购数量</td>
+                    </tr>
+                </table>
+            </div>
+            <div region="south" border="false" style="text-align: center; height: 50px;padding-top: 10px;">
+            	<span style="float: left;margin-left:5px;font-size: 24px;color: red;">计：<strong  id="hotelMoney">0</strong>元</span>
+            	<input type="button" value="确定" class="inputBtn" id="hotelWinBtn">
+            	<input type="button" value="取消" class="inputBtn" onclick="javascript:$('#hotelWin').window('close');">
+            </div>
+        </div>
+    </div> 
+    
+    <div id="pay" class="easyui-window" title="支付窗口" collapsible="false" minimizable="false" closed="true"
+        maximizable="false"  style="width: 320px; height: 230px; padding: 5px;background: #fafafa;">
+        <div class="easyui-layout" fit="true">
+            <div region="center" border="false" style="padding: 10px; background: #fff; border: 1px solid #ccc;">
+            	<input type="hidden" name="id">
+            	<div style="margin-bottom:20px">
+					<input class="easyui-textbox" data-options="label:'订单编号:'" id="code" style="width: 240px;" readonly="readonly">
+				</div>
+                <div style="margin-bottom:20px">
+					<input class="easyui-textbox" data-options="label:'支付金额:'" id="money" style="width: 240px;" readonly="readonly">
+				</div>
+				<div style="margin-bottom:20px">
+					<select class="easyui-combobox" label="支付方式" style="width: 240px;" id="payment" data-options="editable:false,panelHeight:'auto'">
+						<option value="支付宝">支付宝</option>
+						<option value="余额">余额</option>
+					</select>
+				</div>
+            </div>
+            <div region="south" border="false" style="text-align: center; height: 36px;padding-top: 10px;">
+                <a class="easyui-linkbutton" href="javascript:pay();" >去支付</a> 
+                <a class="easyui-linkbutton" href="javascript:$('#pay').window('close');">取消</a>
+            </div>
+        </div>
+    </div> 
+    
+    <div id="next"></div>
+    
+	<script>
+	$(function(){
+		list_city(0);
+		$("#takeTime").datebox({
+		    panelHeight: 240,
+		    panelWidth: 235
+		});
+		$('#takeTime').datebox({
+			formatter: function(date){ 
+				var years=date.getFullYear();//获取年
+				var months=date.getMonth()+1;//获取月
+				var dates=date.getDate();//获取日
+				
+				if(months<10){//当月份不满10的时候前面补0，例如09
+					months='0'+months;
+				}
+				
+				if(dates<10){//当日期不满10的时候前面补0，例如09
+					dates='0'+dates;
+				}
+				return years+"-"+months+"-"+dates;//根据自己需求进行改动
+			}
+		});
+		$("#takeTime").datebox({
+			onChange: function (now,old) {
+				console.log('---------'+now+'=========='+old);
+				//company_html();
+			}
+		});
+		
+		$("#city").combobox({
+			onChange: function (now,old) {
+				console.log('---------'+now+'=========='+old);
+				bns.company_search(now,company_html);
+			}
+		});
+		
+				
+	});
+	function doCompany(){
+		$("#companyWin").window('open');
+	}
+	function doCloth(){
+		$("#clothWin").window('open');
+	}
+	function doSite(){
+		$("#siteWin").window('open');
+	}
+	function doHotel(){
+		$("#hotelWin").window('open');
+	}
+	
+	function company_html(data){
+		console.log('--------data=========='+data);
+		var com=JSON.parse(data);
+		var com_html='<tr style="border: 1px solid #ccc;height: 32px;cursor:pointer;">';
+			com_html+='<td>机构名称</td><td>详细地址</td><td>业务负责人</td><td>负责人电话</td><td>服务范围</td><td>累计成交</td>';
+            com_html+='</tr>';
+		for(var i=0;i<com.length;i++){
+			com_html +='<tr style="border: 1px solid #ccc;height: 32px;cursor:pointer;" rel='+com[i].id+'>';
+			com_html +='<td>'+com[i].name+'</td>';
+			com_html +='<td>'+com[i].address+'</td>';
+			com_html +='<td>'+com[i].linkman+'</td>';
+			com_html +='<td>'+com[i].mobile+'</td>';
+			com_html +='<td>'+com[i].gos+'</td>';
+			com_html +='<td>'+com[i].num+'</td>';
+			com_html +='</tr>';
+		}
+		$("#companyTable").empty().append(com_html);
+		$("#companyWin tr").click(function() {
+			if($(this).index()==0){
+				return;
+			}
+			$("#companyWin tr").removeClass("current");
+			$(this).addClass("current");
+		});
+		$("#companyWinBtn").click(function() {
+			if(!$("#companyWin tr").hasClass("current")){
+				msgShow("系统提示","请选择公司","warning");
+				return;
+			}
+			var comObj =$("#companyWin .current");
+			$('#company').searchbox('setValue', comObj.find("td").eq(0).text());
+			$("input[name=company]").val(comObj.attr("rel"));
+			$("#companyWin").window('close');
+			bns.company_change(comObj.attr("rel"),company_change_html);
+		});
+	}
+	
+	
+	function company_change_html(data){
+		var xhrObj = JSON.parse(data);
+		cloth_search_html(xhrObj.cloth);
+		site_search_html(xhrObj.site);
+		hotel_search_html(xhrObj.hotel);
+	}
+	
+	
+	
+	
+	//景点选择
+	function site_search_html(xhrObj){
+		var site_html='<tr style="border: 1px solid #ccc;height: 32px;cursor:pointer;">';
+			site_html+='<td>景点名称</td><td>景点描述</td><td>详细地址</td><td>景点门票</td><td>订购数量</td>';
+            site_html+='</tr>';
+		for(var i=0;i<xhrObj.length;i++){
+			site_html +='<tr style="border: 1px solid #ccc;height: 32px;cursor:pointer;" rel='+xhrObj[i].id+'>';
+			site_html +='<td>'+xhrObj[i].name+'</td>';
+			site_html +='<td>'+xhrObj[i].description+'</td>';
+			site_html +='<td>'+xhrObj[i].address+'</td>';
+			site_html +='<td>'+xhrObj[i].money+'</td>';
+			site_html +='<td><input type="text" style="width:40px;" value=1></td>';
+			site_html +='</tr>';
+		}
+		$("#siteTable").empty().append(site_html);
+		$("#siteWin tr").click(function() {
+			if($(this).index()==0){
+				return;
+			}
+			//$("#siteWin tr").removeClass("current");
+			$(this).toggleClass("current");
+			if(isNaN($(this).find("input").val())){
+				$(this).find("input").val(1);
+			}
+			var site_money=0;
+			$('#siteWin .current').each(function(index, element) {
+				site_money+=($(element).find("td").eq(3).text()*1*$(element).find("input").val());
+			});
+			$("siteMoney").empty().append(site_money);
+		});
+		$("#siteWinBtn").click(function() {
+			if(!$("#siteWin tr").hasClass("current")){
+				msgShow("系统提示","请选择景点","warning");
+				return;
+			}
+			var onSite='';
+			$('#siteWin .current').each(function(index, element) {
+				onSite+=$(element).find("td").eq(0).text()+' x'+$(element).find("input").val()+'&';
+			});
+			$("#site").textbox('setValue',onSite);
+			$("#siteWin").window('close');
+		});
+	}
+	
+	//服饰选择
+	function cloth_search_html(xhrObj){
+		var cloth_html='<tr style="border: 1px solid #ccc;height: 32px;cursor:pointer;">';
+			cloth_html+='<td>服饰风格</td><td>包含套数</td><td>包含件数</td><td>市场定价</td>';
+            cloth_html+='</tr>';
+		for(var i=0;i<xhrObj.length;i++){
+			cloth_html +='<tr style="border: 1px solid #ccc;height: 32px;cursor:pointer;" rel='+xhrObj[i].id+'>';
+			cloth_html +='<td>'+xhrObj[i].name+'</td>';
+			cloth_html +='<td>'+xhrObj[i].unit+'</td>';
+			cloth_html +='<td>'+xhrObj[i].num+'</td>';
+			cloth_html +='<td>'+xhrObj[i].price+'</td>';
+			cloth_html +='</tr>';
+		}
+		$("#clothTable").empty().append(cloth_html);
+		$("#clothWin tr").click(function() {
+			if($(this).index()==0){
+				return;
+			}
+			$("#clothWin tr").removeClass("current");
+			$(this).addClass("current");
+			var clothObj =$("#clothWin .current");
+			$("#clothMoney").empty().append(clothObj.find("td").eq(3).text());
+		});
+		$("#clothWinBtn").click(function() {
+			if(!$("#clothWin tr").hasClass("current")){
+				msgShow("系统提示","请选择服饰","warning");
+				return;
+			}
+			var clothObj =$("#clothWin .current");
+			$("#cloth").textbox('setValue',clothObj.find("td").eq(0).text()+clothObj.find("td").eq(1).text()+'套'+clothObj.find("td").eq(2).text()+'件');
+			$("#clothWin").window('close');
+		});
+	}
+	
+	//住宿选择
+	function hotel_search_html(xhrObj){
+		var hotel_html='<tr style="border: 1px solid #ccc;height: 32px;cursor:pointer;">';
+			hotel_html+='<td>住宿名称</td><td>环境描述</td><td>星级</td><td>详细地址</td><td>住宿价格</td><td>订购数量</td>';
+            hotel_html+='</tr>';
+		for(var i=0;i<xhrObj.length;i++){
+			hotel_html +='<tr style="border: 1px solid #ccc;height: 32px;cursor:pointer;" rel='+xhrObj[i].id+'>';
+			hotel_html +='<td>'+xhrObj[i].name+'</td>';
+			hotel_html +='<td>'+xhrObj[i].description+'</td>';
+			hotel_html +='<td>'+xhrObj[i].star+'</td>';
+			hotel_html +='<td>'+xhrObj[i].address+'</td>';
+			hotel_html +='<td>'+xhrObj[i].price+'</td>';
+			hotel_html +='<td><input type="text" style="width:40px;" value=1></td>';
+			hotel_html +='</tr>';
+		}
+		$("#hotelTable").empty().append(hotel_html);
+		$("#hotelWin tr").click(function() {
+			if($(this).index()==0){
+				return;
+			}
+			//$("#hotelWin tr").removeClass("current");
+			$(this).toggleClass("current");
+			if(isNaN($(this).find("input").val())){
+				$(this).find("input").val(1);
+			}
+			var hotel_money=0;
+			$('#hotelWin .current').each(function(index, element) {
+				hotel_money+=($(element).find("td").eq(4).text()*1*$(element).find("input").val());
+			});
+			$("#hotelMoney").empty().append(hotel_money);
+		});
+		$("#hotelWinBtn").click(function() {
+			if(!$("#hotelWin tr").hasClass("current")){
+				msgShow("系统提示","请选择服饰","warning");
+				return;
+			}
+			var onHotel='';
+			$('#hotelWin .current').each(function(index, element) {
+				onHotel+=$(element).find("td").eq(0).text()+' x'+$(element).find("input").val()+'&';
+			});
+			$("#hotel").textbox('setValue',onHotel);
+			$("#hotelWin").window('close');
+		});
+	}
+	
+	function ok(){
+		var city =$('#city').combobox('getText');
+		var takeTime= $('#takeTime').datebox('getValue');
+		var company =$("input[name=company]").val();
+		var customer =$("#customer").textbox('getValue');
+		var idcard =$("#idcard").textbox('getValue');
+		var mobile =$("#mobile").textbox('getValue');
+		var people =$("#people").textbox('getValue');
+		var cloth =$("#cloth").textbox('getValue');
+		var site =$("#site").textbox('getValue');
+		var hotel =$("#hotel").textbox('getValue');
+		var pickup =$('#pickup').combobox('getValue');
+		var remark =$('#remark').textbox('getValue');
+		if(city=='请选择'){
+			msgShow("系统提示","请选择城市","warning");
+			return;
+		}
+		if(takeTime==''){
+			msgShow("系统提示","请选择时间","warning");
+			return;
+		}
+		if(company==''){
+			msgShow("系统提示","请选择公司","warning");
+			return;
+		}
+		if(customer==''){
+			msgShow("系统提示","请输入客户姓名","warning");
+			return;
+		}
+		if(idcard==''){
+			msgShow("系统提示","请输入身份证号","warning");
+			return;
+		}
+		if(mobile==''){
+			msgShow("系统提示","请输入身联系电话","warning");
+			return;
+		}
+		if(people==''){
+			msgShow("系统提示","请输入同行人数","warning");
+			return;
+		}
+		if(cloth==''){
+			msgShow("系统提示","请选择服饰风格","warning");
+			return;
+		}
+		if(site==''){
+			msgShow("系统提示","请选择景点","warning");
+			return;
+		}
+		if(hotel==''){
+			msgShow("系统提示","请选择住宿","warning");
+			return;
+		}
+		var obj = new Object();
+		obj.city =city;
+		obj.takeTime =takeTime;
+		obj.customer =customer;
+		obj.acceptUser =company;
+		obj.idcard=idcard;
+		obj.mobile=mobile;
+		obj.people =people;
+		obj.cloth=cloth;
+		obj.site =site;
+		obj.hotel =hotel;
+		obj.pickup =pickup;
+		obj.remark =remark;
+		obj.money =$("#clothMoney").text()*1+$("#siteMoney").text()*1+$("#hotelMoney").text()*1;
+		console.log('============='+JSON.stringify(obj));
+		bns.order_save(JSON.stringify(obj),order_save_html);
+	}
+	
+	function order_save_html(data){
+		var xhrObj = JSON.parse(data);
+		if(xhrObj.code==101){
+			$('#w').window('close');
+			$.messager.confirm('系统提示', xhrObj.message, function(r) {
+				if (r) {
+				    parent.$("#login").window('open');
+				}
+			});
+			return;
+		}
+		if(xhrObj.code==0){
+			msgShow("系统提示",xhrObj.message,"warning");
+			return;
+		}
+		if(xhrObj.code==1){
+			$("input[name=id]").val(xhrObj.id);
+			$("#code").textbox('setValue',xhrObj.orderCode);
+			$("#money").textbox('setValue',xhrObj.money);
+			$("#pay").window('open');
+		}
+	}
+	
+	function pay(){
+		var id =$("input[name=id]").val();
+		var payment =$('#payment').combobox('getValue');
+		bns.order_pay(id,payment,order_pay_html);
+	}
+	
+	function order_pay_html(data){
+		var xhrObj = JSON.parse(data);
+		var payment =$('#payment').combobox('getValue');
+		if(xhrObj.code==101){
+			$('#w').window('close');
+			$.messager.confirm('系统提示', xhrObj.message, function(r) {
+				if (r) {
+				    parent.$("#login").window('open');
+				}
+			});
+			return;
+		}
+		if(xhrObj.code==0){
+			msgShow("系统提示",xhrObj.message,"warning");
+			return;
+		}
+		if(xhrObj.code==1&&payment=='支付宝'){
+			$("#next").append(xhrObj.message);
+		}
+		if(xhrObj.code==1&&payment=='余额'){
+			$("#pay").window('close');
+			msgShow("系统提示",xhrObj.message,"info");
+			$("#btn").attr("disabled", true); 
+			newOpen("未完成订单","c_order_process.html");
+		}
+	}
+	
+	</script>
+</body>
+</html>

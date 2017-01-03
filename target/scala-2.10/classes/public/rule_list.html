@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>管理平台</title>
+	<link rel="stylesheet" type="text/css" href="css/css.css" />
+	<link rel="stylesheet" type="text/css" href="js/themes/default/easyui.css" />
+	<link rel="stylesheet" type="text/css" href="css/icon.css">
+	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="js/core.js"></script>
+    <script type="text/javascript" src="js/bns.js"></script>
+    <script type="text/javascript" src="js/util.date.js"></script>
+</head>
+<body>
+	<div style="height:auto;border: 1px solid #95B8E7;margin-bottom: 10px;">
+		<a href="javascript:$('#w').window('open');" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">新增规则</a>
+	</div>
+	<table style="width:100%" id="dg" data-options="
+                rownumbers:true,
+                singleSelect:true,
+                autoRowHeight:false,
+                pagination:true,
+                pageSize:10">
+		<thead>
+			<tr>
+				<th field="cz" width="100">充值金额</th>
+				<th field="zs" width="100">赠送金额</th>
+				<th field="createdTime" width="200">创建时间</th>
+				<th field="operation" width="200">操作</th>
+			</tr>
+		</thead>
+	</table>
+	
+	<div id="w" class="easyui-window" title="新增规则" collapsible="false" minimizable="false" closed="true"
+        maximizable="false"  style="width: 300px; height: 240px; padding: 5px;background: #fafafa;">
+        <div class="easyui-layout" fit="true">
+            <div region="center" border="false" style="padding: 10px; background: #fff; border: 1px solid #ccc;">
+                <div style="margin-bottom:14px">
+					<input class="easyui-textbox" data-options="label:'充值金额:'" id="cz" style="width: 240px;">
+				</div>
+				<div style="margin-bottom:14px">
+					<input class="easyui-textbox" data-options="label:'赠送金额:'" id="zs" style="width: 240px;">
+				</div>
+            </div>
+            <div region="south" border="false" style="text-align: center; height: 36px;padding-top: 10px;">
+                <a class="easyui-linkbutton" href="javascript:void(0);" id="save">提交保存</a> 
+                <a class="easyui-linkbutton" href="javascript:$('#w').window('close');">取消</a>
+            </div>
+        </div>
+    </div> 
+	
+<script>
+	$(function(){
+		bns.rule_list(list_html);
+		$("#save").click(function(){
+			var cz=$("#cz").textbox('getValue');
+			var zs =$("#zs").textbox('getValue');
+			if(cz==''){
+				msgShow("系统提示","充值金额不能为空","warning");
+				return;
+			}
+			if(zs==''){
+				msgShow("系统提示","赠送金额不能为空","warning");
+				return;
+			}
+			var param =JSON.stringify({
+				cz: cz,
+				zs: zs
+			});
+			bns.save_rule(param,refresh_href);
+		});
+	});
+	
+	//列表数据
+	function list_html(data){
+		var xhrObj = JSON.parse(data);
+		var rows = [];
+		for(var i=0;i<xhrObj.length;i++){
+			var operation_html ='<a href=javascript:bns.rule_del("'+xhrObj[i].id+'",refresh_href); >删除</a>';
+			rows.push({
+			    cz: xhrObj[i].cz,
+				zs: xhrObj[i].zs,
+				createdTime:time.formatterDateTime(new Date(xhrObj[i].createdTime)),
+				operation:operation_html
+			});
+		}
+        $('#dg').datagrid({loadFilter:pagerFilter}).datagrid('loadData', rows);
+	}
+	
+</script>
+</body>
+</html>
