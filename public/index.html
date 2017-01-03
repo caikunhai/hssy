@@ -1,238 +1,261 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head id="Head1">
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>管理平台</title>
-    <link rel="stylesheet" type="text/css" href="css/default.css"/>
-    <link rel="stylesheet" type="text/css" href="js/themes/default/easyui.css" />
-    <link rel="stylesheet" type="text/css" href="js/themes/icon.css" />
-    <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
-    <script type="text/javascript" src="js/jquery.easyui.min.js"></script>
-	<script type="text/javascript" src='js/core.js'> </script>
-	<script type="text/javascript" src='js/bns.js'> </script>
-	<script type="text/javascript" src='js/index.js'> </script>
-    <script type="text/javascript">
-        //设置登录窗口
-        function openPwd() {
-            $('#w').window({
-                title: '修改密码',
-                width: 300,
-                modal: true,
-                shadow: true,
-                closed: true,
-                height: 190,
-                resizable:false
-            });
-        }
-        //关闭登录窗口
-        function closePwd() {
-            $('#w').window('close');
-        }
-
-        //修改密码
-        function serverLogin() {
-        	var old = $('#old').val();
-            var $newpass = $('#txtNewPass');
-            var $rePass = $('#txtRePass');
-            
-            if (old == '') {
-                msgShow('系统提示', '请输入旧密码！', 'warning');
-                return false;
-            }
-
-            if ($newpass.val() == '') {
-                msgShow('系统提示', '请输入密码！', 'warning');
-                return false;
-            }
-            if ($rePass.val() == '') {
-                msgShow('系统提示', '请在一次输入密码！', 'warning');
-                return false;
-            }
-
-            if ($newpass.val() != $rePass.val()) {
-                msgShow('系统提示', '两次密码不一至！请重新输入', 'warning');
-                return false;
-            }
-
-            var obj = new Object();
-            obj.password=old;
-            obj.pwd =$newpass.val();
-            var update_html =function(data){
-            	var xhrObj = JSON.parse(data);
-				if(xhrObj.code==1){
-					msgShow('系统提示', '恭喜，密码修改成功！', 'info');
-					$newpass.val('');
-		            $rePass.val('');
-		            $('#old').val('')
-		            $('#w').window('close');
-				}
-            }
-            bns.user_password(JSON.stringify(obj),update_html);
-        }
-        
-        
-
-        $(function() {
-        	//获取菜单栏目
-			function callback(data){
-				var xhrObj = JSON.parse(data);
-				core.menu_list =xhrObj.message;
-				InitLeftMenu();
-			}
-			bns.user_menu(callback);
-			
-            openPwd();
-
-            $('#editpass').click(function() {
-                $('#w').window('open');
-            });
-
-            $('#btnEp').click(function() {
-                serverLogin();
-            });
-
-			$('#btnCancel').click(function(){closePwd();});
-
-            $('#loginOut').click(function() {
-                $.messager.confirm('系统提示', '您确定要退出本次登录吗?', function(r) {
-                    if (r) {
-                    	window.localStorage.clear();
-                        window.parent.location.href="login.html";
-                    }
-                });
-            });
-            
-            $('#doLogin').click(function() {
-            	var obj =new Object();
-                var username =$("#username").val();
-				var password =$("#password").val();
-				if(username==''){
-					return;
-				}
-				if(password==''){
-					return;
-				}
-				obj.username=username;
-				obj.password=password;
-				var login_html=function(data){
-					var xhrObj = JSON.parse(data);
-					if(xhrObj.code==0){
-						msgShow('系统提示', xhrObj.message, 'warning');
-						return;
-					}
-					window.localStorage.setItem("token",xhrObj.token);
-					$('#login').window('close');
-					msgShow('系统提示', '登录成功！', 'info');
-				}
-				bns.user_login(JSON.stringify(obj),login_html);
-            });
-            
-            
-        });
-
-    </script>
-
-</head>
-<body class="easyui-layout" style="overflow-y: hidden"  fit="true"   scroll="no">
-<noscript>
-<div style=" position:absolute; z-index:100000; height:2046px;top:0px;left:0px; width:100%; background:white; text-align:center;">
-    <img src="images/noscript.gif" alt='抱歉，请开启脚本支持！' />
-</div>
-</noscript>
-
-<div id="loading-mask" style="position:absolute;top:0px; left:0px; width:100%; height:100%; background:#D2E0F2; z-index:20000">
-<div id="pageloading" style="position:absolute; top:50%; left:50%; margin:-120px 0px 0px -120px; text-align:center;  border:2px solid #8DB2E3; width:200px; height:40px;  font-size:14px;padding:10px; font-weight:bold; background:#fff; color:#15428B;"> 
-    <img src="images/loading.gif" align="absmiddle" /> 正在加载中,请稍候...</div>
-</div>
-
-    <div region="north" split="true" border="false" style="overflow: hidden; height: 30px;
-        background: url(images/layout-browser-hd-bg.gif) #7f99be repeat-x center 50%;
-        line-height: 20px;color: #fff; font-family: Verdana, 微软雅黑,黑体">
-        <span style="float:right; padding-right:15px;" class="head"><a href="#" id="editpass" style="text-decoration: none;">修改密码</a> <a href="#" id="loginOut" style="text-decoration: none;">安全退出</a></span>
-        <span style="padding-left:20px; font-size: 16px; "><img src="images/blocks.gif" width="20" height="20" align="absmiddle" /> 管理平台</span>
-    </div>
-    <div region="south" split="true" style="height: 30px; background: #D2E0F2; ">
-        <div class="footer">Copyright &copy; 2016 ptbx团队 闽ICP备16093290号</div>
-    </div>
-    <div region="west" split="true"  title="导航菜单" style="width:180px;" id="west">
-			<div id="nav">
-		<!--  导航内容 -->
-				
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- 新 Bootstrap 核心 CSS 文件 -->
+		<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/bootstrap-switch.min.css">
+		<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+		<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+		<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+		<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src='js/core.js'> </script>
+		<script type="text/javascript" src='js/bns.js'> </script>
+		<script type="text/javascript" src='js/sHover.min.js'> </script>
+		<script type="text/javascript" src='js/bootstrap-switch.min.js'> </script>
+		<title>婚纱摄影互助平台</title>
+		<style type="text/css">
+			.container,.row{padding: 0;}
+.sIntro{background-color: rgb(235,137,112); text-align: center;}
+.sIntro h2{font-family: "arial"; font-size:36px; text-align: center; color: #FFF; border-bottom: 1px dashed #fff;margin:0px 20px; font-weight: bold;}
+.sIntro p{font-size:14px; text-align: center; color: #FFF; margin:0px 10px; color: #438199;font-weight: bold;}
+.sIntro button{font-family: "arial"; font-size:16px; color: white;  background-color: #0AB5DA; border:none; padding:4px 10px; }
+.areaOn{background-color: #eee;color: #fff;}
+.siteOn{border: 2px solid #255625;}
+		</style>
+	</head>
+	<body>
+		<!-- Navbar -->
+		<nav class="navbar navbar-default">
+			<div class="container">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="javascript:;">婚纱摄影互助平台</a>
+				</div>
+				<div class="navbar-header navbar-right">
+			      <ul class="nav navbar-nav" id="topnav"></ul>
+				</div>
 			</div>
-
-    </div>
-    <div id="mainPanle" region="center" style="background: #eee; overflow-y:hidden">
-        <div id="tabs" class="easyui-tabs"  fit="true" border="false" >
-			<div title="欢迎下单" style="padding:20px;overflow:hidden; color:red; " >
-				<iframe width="100%" height="100%" frameborder="0" scrolling="no" src="order.html"></iframe>
+		</nav>
+		
+		<div class="container" style="margin-top: -15px;">
+			<img src="img/top.jpg" width="100%"/>
+		</div>
+		
+		<div class="container" style="margin-top: 10px;">
+			<!--
+            	作者：caikunhai@126.com
+            	时间：2017-01-01
+            	描述：子系统菜单栏目
+            -->
+			<nav class="navbar navbar-default">
+			  <div class="container-fluid">
+			    <div class="navbar-header">
+			      <a class="navbar-brand" href="javascript:;">首页</a>
+			    </div>
+			    <ul class="nav navbar-nav">
+			      <li><a href="javascript:;">服装</a></li>
+			      <li><a href="javascript:;">修片</a></li>
+			    </ul>
+			  </div>
+			</nav>
+			<!--
+            	作者：caikunhai@126.com
+            	时间：2017-01-01
+            	描述：地区栏目
+            -->
+			<div class="jumbotron" style="padding: 20px 0;text-align: center;">
+			    <div style="margin-top: 15px;" id="area">
+			    	<button type="button" class="btn btn-default" style="padding: 10px 20px">厦门</button>
+			    	<button type="button" class="btn btn-default" style="padding: 10px 20px">丽江</button>
+			    	<button type="button" class="btn btn-default" style="padding: 10px 20px">大理</button>
+			    	<button type="button" class="btn btn-default" style="padding: 10px 20px">三亚</button>
+			    	<button type="button" class="btn btn-default" style="padding: 10px 20px">大连</button>
+			    </div> 
+			</div>
+			
+			<!--
+            	作者：caikunhai@126.com
+            	时间：2017-01-01
+            	描述：摄影机构栏目
+            -->
+			<div class="jumbotron" style="padding: 15px 20px;">
+				<div class="row">
+			    <div class="col-sm-3 site">
+			      <p><strong>珍爱网</strong></p>
+			      <img src="img/c001.jpg" alt="Random Name" width="255" height="255">
+			      <p style="margin-top: 15px;font-size: 16px;"><span class="glyphicon glyphicon-phone-alt" style="margin-right: 8px;"></span>1898888888</p>
+			      <p style="margin-top: 0px;font-size: 16px;"><span class="glyphicon glyphicon-map-marker" style="margin-right: 8px;"></span>厦门市环岛路XXXX</p>
+			      <p style="margin-top: 0px;font-size: 14px;">联系电每个人都懂憬过自己拍摄婚纱照时的模样，而专业的摄影能完美地留下那些瞬间。我们准备拍摄婚纱照时，已经是冬天了，天寒地冻时穿婚纱，想想真是美丽冻人，要是能到一个温暖的地方拍摄，那该有多舒服。</p>
+			    </div>
+			    <div class="col-sm-3 site">
+			      <p><strong>伯爵婚纱</strong></p>
+			      <img src="img/c002.jpg" alt="Random Name" width="255" height="255">
+			      <p style="margin-top: 15px;font-size: 16px;"><span class="glyphicon glyphicon-phone-alt" style="margin-right: 8px;"></span>1898888888</p>
+			      <p style="margin-top: 0px;font-size: 16px;"><span class="glyphicon glyphicon-map-marker" style="margin-right: 8px;"></span>厦门市环岛路XXXX</p>
+			      <p style="margin-top: 0px;font-size: 14px;">联系电每个人都懂憬过自己拍摄婚纱照时的模样，而专业的摄影能完美地留下那些瞬间。我们准备拍摄婚纱照时，已经是冬天了，天寒地冻时穿婚纱，想想真是美丽冻人，要是能到一个温暖的地方拍摄，那该有多舒服。</p>
+			    </div>
+			    <div class="col-sm-3 site">
+			      <p><strong>钟爱一生</strong></p>
+			      <img src="img/c003.jpg" alt="Random Name" width="255" height="255">
+			      <p style="margin-top: 15px;font-size: 16px;"><span class="glyphicon glyphicon-phone-alt" style="margin-right: 8px;"></span>1898888888</p>
+			      <p style="margin-top: 0px;font-size: 16px;"><span class="glyphicon glyphicon-map-marker" style="margin-right: 8px;"></span>厦门市环岛路XXXX</p>
+			      <p style="margin-top: 0px;font-size: 14px;">联系电每个人都懂憬过自己拍摄婚纱照时的模样，而专业的摄影能完美地留下那些瞬间。我们准备拍摄婚纱照时，已经是冬天了，天寒地冻时穿婚纱，想想真是美丽冻人，要是能到一个温暖的地方拍摄，那该有多舒服。</p>
+			    </div>
+			    <div class="col-sm-3 site">
+			      <p><strong>唯一视觉</strong></p>
+			      <img src="img/c004.jpg" alt="Random Name" width="255" height="255">
+			      <p style="margin-top: 15px;font-size: 16px;"><span class="glyphicon glyphicon-phone-alt" style="margin-right: 8px;"></span>1898888888</p>
+			      <p style="margin-top: 0px;font-size: 16px;"><span class="glyphicon glyphicon-map-marker" style="margin-right: 8px;"></span>厦门市环岛路XXXX</p>
+			      <p style="margin-top: 0px;font-size: 14px;">联系电每个人都懂憬过自己拍摄婚纱照时的模样，而专业的摄影能完美地留下那些瞬间。我们准备拍摄婚纱照时，已经是冬天了，天寒地冻时穿婚纱，想想真是美丽冻人，要是能到一个温暖的地方拍摄，那该有多舒服。</p>
+			    </div>
+			  </div>
+			</div>
+			
+			<div class="jumbotron" style="padding: 15px 20px;">
+				<div class="panel-group">
+				    <div class="panel panel-default">
+				      <div class="panel-heading">鼓浪屿</div>
+				      <div class="panel-body">
+				      	<span class="col-sm-3"><img src="img/j001.jpg" class="img-rounded"></span>
+				      	<span class="col-sm-5">
+				      		<p style="margin-top: 15px;font-size: 16px;"><span class="glyphicon glyphicon-usd" style="margin-right: 8px;"></span>189</p>
+				      		<p style="margin-top: 0px;font-size: 16px;"><span class="glyphicon glyphicon-map-marker" style="margin-right: 8px;"></span>厦门市环岛路XXXX</p>
+				      	</span>
+				      	<span class="col-sm-4" style="padding-top: 40px;"><input type="checkbox" checked /></span>
+				      </div>
+				      <div class="panel-body">
+				      	联系电每个人都懂憬过自己拍摄婚纱照时的模样，而专业的摄影能完美地留下那些瞬间。我们准备拍摄婚纱照时，已经是冬天了，天寒地冻时穿婚纱，想想真是美丽冻人，要是能到一个温暖的地方拍摄，那该有多舒服。
+				      </div>
+				    </div>
+				    <div class="panel panel-default">
+				      <div class="panel-heading">轮渡码头</div>
+				      <div class="panel-body">
+				      	<span class="col-sm-3"><img src="img/j002.jpg" class="img-rounded"></span>
+				      	<span class="col-sm-5">
+				      		<p style="margin-top: 15px;font-size: 16px;"><span class="glyphicon glyphicon-usd" style="margin-right: 8px;"></span>189</p>
+				      		<p style="margin-top: 0px;font-size: 16px;"><span class="glyphicon glyphicon-map-marker" style="margin-right: 8px;"></span>厦门市环岛路XXXX</p>
+				      	</span>
+				      	<span class="col-sm-4" style="padding-top: 40px;"><input type="checkbox" checked /></span>
+				      </div>
+				      <div class="panel-body">
+				      	联系电每个人都懂憬过自己拍摄婚纱照时的模样，而专业的摄影能完美地留下那些瞬间。我们准备拍摄婚纱照时，已经是冬天了，天寒地冻时穿婚纱，想想真是美丽冻人，要是能到一个温暖的地方拍摄，那该有多舒服。
+				      </div>
+				    </div>
+				    <div class="panel panel-default">
+				      <div class="panel-heading">环岛路</div>
+				      <div class="panel-body">
+				      	<span class="col-sm-3"><img src="img/j003.jpg" class="img-rounded"></span>
+				      	<span class="col-sm-5">
+				      		<p style="margin-top: 15px;font-size: 16px;"><span class="glyphicon glyphicon-usd" style="margin-right: 8px;"></span>189</p>
+				      		<p style="margin-top: 0px;font-size: 16px;"><span class="glyphicon glyphicon-map-marker" style="margin-right: 8px;"></span>厦门市环岛路XXXX</p>
+				      	</span>
+				      	<span class="col-sm-4" style="padding-top: 40px;"><input type="checkbox" checked /></span>
+				      </div>
+				      <div class="panel-body">
+				      	联系电每个人都懂憬过自己拍摄婚纱照时的模样，而专业的摄影能完美地留下那些瞬间。我们准备拍摄婚纱照时，已经是冬天了，天寒地冻时穿婚纱，想想真是美丽冻人，要是能到一个温暖的地方拍摄，那该有多舒服。
+				      </div>
+				    </div>
+				</div>
+			</div>
+			
+			<div class="jumbotron" style="padding: 15px 20px;">
+				<div class="panel-group">
+				    <div class="panel panel-default" style="position: relative;">
+				      <div class="panel-heading">如家酒店</div>
+				      <div class="panel-body">
+				      	<p style="margin-top: 15px;font-size: 16px;"><span class="glyphicon glyphicon-usd" style="margin-right: 8px;"></span>189</p>
+				      	<p style="margin-top: 0px;font-size: 16px;"><span class="glyphicon glyphicon-map-marker" style="margin-right: 8px;"></span>厦门市环岛路XXXX</p>
+				      	<p style="margin-top: 0px;font-size: 14px;">联系电每个人都懂憬过自己拍摄婚纱照时的模样，而专业的摄影能完美地留下那些瞬间。我们准备拍摄婚纱照时，已经是冬天了，天寒地冻时穿婚纱，想想真是美丽冻人，要是能到一个温暖的地方拍摄，那该有多舒服。</p>
+				      </div>
+				      <div class="panel-body">
+				      	<img src="img/j001.jpg"  width="255" height="180" class="img-rounded">
+				      	<img src="img/j002.jpg"  width="255" height="180" class="img-rounded">
+				      	<img src="img/j003.jpg"  width="255" height="180" class="img-rounded">
+				      	<img src="img/j004.jpg"  width="255" height="180" class="img-rounded">
+				      </div>
+				      <div style="position: absolute;right: 20px;top:70px" >
+						<input type="checkbox" checked />
+					  </div>
+				    </div>
+				    <div class="panel panel-default" style="position: relative;">
+				      <div class="panel-heading">如家酒店</div>
+				      <div class="panel-body">
+				      	<p style="margin-top: 15px;font-size: 16px;"><span class="glyphicon glyphicon-usd" style="margin-right: 8px;"></span>189</p>
+				      	<p style="margin-top: 0px;font-size: 16px;"><span class="glyphicon glyphicon-map-marker" style="margin-right: 8px;"></span>厦门市环岛路XXXX</p>
+				      	<p style="margin-top: 0px;font-size: 14px;">联系电每个人都懂憬过自己拍摄婚纱照时的模样，而专业的摄影能完美地留下那些瞬间。我们准备拍摄婚纱照时，已经是冬天了，天寒地冻时穿婚纱，想想真是美丽冻人，要是能到一个温暖的地方拍摄，那该有多舒服。</p>
+				      </div>
+				      <div class="panel-body">
+				      	<img src="img/j001.jpg"  width="255" height="180" class="img-rounded">
+				      	<img src="img/j002.jpg"  width="255" height="180" class="img-rounded">
+				      	<img src="img/j003.jpg"  width="255" height="180" class="img-rounded">
+				      	<img src="img/j004.jpg"  width="255" height="180" class="img-rounded">
+				      </div>
+				      <div style="position: absolute;right: 20px;top:70px">
+						<input type="checkbox" checked />
+					  </div>
+				    </div>
+				</div>
 			</div>
 		</div>
-    </div>
-    
-    
-    <!--修改密码窗口-->
-    <div id="w" class="easyui-window" title="修改密码" collapsible="false" minimizable="false" closed="true"
-        maximizable="false" icon="icon-save"  style="width: 300px; height: 190px; padding: 5px;background: #fafafa;">
-        <div class="easyui-layout" fit="true">
-            <div region="center" border="false" style="padding: 10px; background: #fff; border: 1px solid #ccc;">
-                <table cellpadding=3>
-                	<tr>
-                        <td>旧密码：</td>
-                        <td><input id="old" type="Password" class="txt01" /></td>
-                    </tr>
-                    <tr>
-                        <td>新密码：</td>
-                        <td><input id="txtNewPass" type="Password" class="txt01" /></td>
-                    </tr>
-                    <tr>
-                        <td>确认密码：</td>
-                        <td><input id="txtRePass" type="Password" class="txt01" /></td>
-                    </tr>
-                </table>
-            </div>
-            <div region="south" border="false" style="text-align: right; height: 30px; line-height: 30px;">
-                <a id="btnEp" class="easyui-linkbutton" icon="icon-ok" href="javascript:void(0)" >确定</a> 
-                <a id="btnCancel" class="easyui-linkbutton" icon="icon-cancel" href="javascript:void(0)">取消</a>
-            </div>
-        </div>
-    </div>
-
-	<div id="mm" class="easyui-menu" style="width:150px;">
-		<div id="tabupdate">刷新</div>
-		<div class="menu-sep"></div>
-		<div id="close">关闭</div>
-		<div id="closeall">全部关闭</div>
-		<div id="closeother">除此之外全部关闭</div>
-		<div class="menu-sep"></div>
-		<div id="closeright">当前页右侧全部关闭</div>
-		<div id="closeleft">当前页左侧全部关闭</div>
-		<div class="menu-sep"></div>
-		<div id="exit">退出</div>
-	</div>
-	
-	
-	<!--登录小窗口-->
-    <div id="login" class="easyui-window" title="用户登录" collapsible="false" minimizable="false" closed="true"
-        maximizable="false" icon="icon-save"  style="width: 300px; height: 170px; padding: 5px;background: #fafafa;">
-        <div class="easyui-layout" fit="true">
-            <div region="center" border="false" style="padding: 10px; background: #fff; border: 1px solid #ccc;">
-                <table cellpadding=3>
-                    <tr>
-                        <td>登录账户：</td>
-                        <td><input id="username" type="text" class="txt01" /></td>
-                    </tr>
-                    <tr>
-                        <td>登录密码：</td>
-                        <td><input id="password" type="Password" class="txt01" /></td>
-                    </tr>
-                </table>
-            </div>
-            <div region="south" border="false" style="text-align: center;padding-top: 10px; height: 40px; line-height: 30px;">
-                <a id="doLogin" class="easyui-linkbutton" icon="icon-ok" href="javascript:void(0)" >登录</a>
-            </div>
-        </div>
-    </div>
-
-
-</body>
+		
+		<div class="container" style="padding: 20px;text-align: right;">
+			<button type="button" class="btn btn-primary btn-block" style="height: 48px;line-height: 36px;">完善订单信息 </button>
+		</div>
+		
+		<footer class="container-fluid bg-4 text-center">
+		  <p style="height: 48px;line-height: 48px;">版权所有，盗版必究</p> 
+		</footer>
+	</body>
 </html>
+<script>
+	$(function(){
+		$('[type="checkbox"]').bootstrapSwitch({  
+	        onText:"选中",  
+	        offText:"取消",  
+	        onSwitchChange:function(event,state){  
+	            if(state==true){  
+	                $(this).val("1");  
+	            }else{  
+	                $(this).val("2");  
+	            }  
+	        }
+	    });
+    	$("#area button").click(function(){
+        	$("#area button").removeClass("areaOn");
+        	$(this).addClass("areaOn");
+        });
+        $(".site").click(function(){
+        	$(".site").removeClass("siteOn");
+        	$(this).addClass("siteOn");
+        });
+		//景点遮罩层
+		var a=new sHover("sHoverItem","sIntro");
+		 a.set({
+		 	slideSpeed:5,
+		 	opacityChange:true,
+		 	opacity:80
+		 });
+        //顶部菜单栏
+        var token =window.localStorage.getItem("token");
+        var nav_html='';
+        if(token!=null&&token!=''){
+        	nav_html+='<li><a href="center.html">商户中心</a></li>';
+        	nav_html+='<li><a href="login.html">申请代拍</a></li>';
+        	nav_html+='<li><a href="JavaScript:loginOut();">安全退出</a></li>';
+        }else{
+        	nav_html+='<li><a href="login.html">登录</a></li>';
+        	nav_html+='<li><a href="register.html">注册</a></li>';
+        	nav_html+='<li><a href="login.html">商户中心</a></li>';
+        	nav_html+='<li><a href="login.html">申请代拍</a></li>';
+        }
+        $("#topnav").empty().append(nav_html);
+	});
+	//安全退出
+	function loginOut(){
+		window.localStorage.clear();
+        window.parent.location.href="login.html";
+	}
+</script>
