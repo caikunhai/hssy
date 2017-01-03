@@ -76,7 +76,7 @@ public class UserController extends play.mvc.Controller {
 	}
 	
 	@Security.Authenticated(Secured.class)
-	public static Result menu(){
+	public static Result menu2(){
 		Map<String,Object> vo =new HashMap<String,Object>();
 		vo.put("code", 0);
 		String token = request().getHeader("token");
@@ -112,6 +112,42 @@ public class UserController extends play.mvc.Controller {
 		vo.put("message", menus);
 		return ok(Json.toJson(vo));
 	}
+	
+	@Security.Authenticated(Secured.class)
+	public static Result menu(){
+		Map<String,Object> vo =new HashMap<String,Object>();
+		vo.put("code", 0);
+		String token = request().getHeader("token");
+		BnsUser obj =userService.findByToken(token);
+		if(obj==null){
+			return ok();
+		}
+		//获取菜单
+		List<Object> menus =new ArrayList<Object>();
+		List<SysMenu> list =userService.findMenu(obj.getRole());
+		for(SysMenu o:list){
+			if(o.getParent()==0){
+				List<Object> submenus =new ArrayList<Object>();
+				for(SysMenu oo:list){
+					if(o.getId()==oo.getParent()){
+						Map<String,Object> sub =new HashMap<String,Object>();
+						sub.put("name", oo.getName());
+						sub.put("url", oo.getUrl());
+						submenus.add(sub);
+					}
+				}
+				Map<String,Object> main =new HashMap<String,Object>();
+				main.put("name", o.getName());
+				main.put("sub", submenus);
+				menus.add(main);
+			}
+		}
+		vo.put("code", 1);
+		vo.put("message", menus);
+		return ok(Json.toJson(menus));
+	}
+	
+	
 	
 	@Security.Authenticated(Secured.class)
 	public static Result save(){
