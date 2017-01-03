@@ -142,10 +142,11 @@ public class OrderController extends play.mvc.Controller {
 	}
 	
 	@Security.Authenticated(Secured.class)
-	public static Result zxr(String id,String doUser){
+	public static Result zxr(String id,String cameraman,String dresser){
 		Map<String,Object> vo =new HashMap<String,Object>();
 		BnsOrder order =orderService.get(id);
-		order.setDoUser(doUser);
+		order.setCameraman(cameraman);
+		order.setDresser(dresser);
 		orderService.saveOrder(order);
 		vo.put("code", 1);
 		vo.put("message", "保存成功");
