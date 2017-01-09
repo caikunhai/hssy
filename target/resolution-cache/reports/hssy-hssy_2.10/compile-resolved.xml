@@ -7,7 +7,7 @@
 		revision="1.0"
 		conf="compile"
 		confs="compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, sources, docs, pom"
-		date="20161225170620"/>
+		date="20170105222921"/>
 	<dependencies>
 		<module organisation="org.jdom" name="jdom">
 			<revision name="2.0.1" status="release" pubdate="20120428112856" resolver="public" artresolver="public" homepage="http://www.jdom.org" downloaded="false" searched="false" default="false" conf="default(compile), default, compile, runtime, master" position="119">

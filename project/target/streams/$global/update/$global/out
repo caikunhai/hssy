@@ -12868,7 +12868,7 @@
 [debug] 	[NOT REQUIRED] org.scala-sbt#cache;0.12.2!cache.jar
 [debug] 	[NOT REQUIRED] org.scala-sbt#test-agent;0.12.2!test-agent.jar
 [debug] 	[NOT REQUIRED] org.scala-tools.testing#test-interface;0.5!test-interface.jar
-[debug] :: resolution report :: resolve 14977ms :: artifacts dl 123ms
+[debug] :: resolution report :: resolve 17554ms :: artifacts dl 240ms
 [debug] Nbr of module to sort : 61
 [debug] Sort dependencies of : play#sbt-plugin;2.1.1 / Number of dependencies = 18
 [debug] Sort dependencies of : play#sbt-link;2.1.1 / Number of dependencies = 1
@@ -15053,5 +15053,5 @@
 [debug] 	report for default#default-846540;0.1-SNAPSHOT docs produced in D:\workspace\hssy\project\target\resolution-cache\reports\default-default-846540\docs-resolved.xml
 [debug] Nbr of module to sort : 0
 [debug] 	report for default#default-846540;0.1-SNAPSHOT pom produced in D:\workspace\hssy\project\target\resolution-cache\reports\default-default-846540\pom-resolved.xml
-[debug] 	resolve done (14977ms resolve - 123ms download)
+[debug] 	resolve done (17554ms resolve - 240ms download)
 [info] Done updating.

@@ -21,6 +21,7 @@ import play.libs.Json;
 import play.mvc.Result;
 import play.mvc.Security;
 import services.CompanyService;
+import services.ServService;
 import system.log.Logger;
 import utils.CryptTool;
 import bean.CompanyForm;
@@ -28,16 +29,25 @@ import bean.CompanyForm;
 import com.thoughtworks.xstream.XStream;
 
 import entities.BnsCompany;
+import entities.BnsService;
 
 @Controller
 public class CompanyController extends play.mvc.Controller {
 	
 	public static CompanyService companyService;
 	
+	public static ServService servService;
+	
 	@Autowired
 	@Qualifier("companyService")
 	public void setCompanyService(CompanyService companyService) {
 		CompanyController.companyService = companyService;
+	}
+	
+	@Autowired
+	@Qualifier("servService")
+	public void setServService(ServService servService) {
+		CompanyController.servService = servService;
 	}
 
 	@Security.Authenticated(Secured.class)
@@ -138,7 +148,26 @@ public class CompanyController extends play.mvc.Controller {
 	
 	@Security.Authenticated(Secured.class)
 	public static Result search(String city){
-		return ok(Json.toJson(companyService.listByCity(city)));
+		List<Object> vo = new ArrayList<Object>();
+		List<BnsCompany> list =companyService.listByCity(city);
+		for(BnsCompany obj:list){
+			Map<String,Object> map =new HashMap<String,Object>();
+			map.put("id", obj.getId());
+			map.put("name", obj.getName());
+			map.put("logo", obj.getLogo());
+			map.put("address", obj.getAddress());
+			map.put("frName", obj.getFrName());
+			map.put("frMobile", obj.getFrMobile());
+			map.put("linkman", obj.getLinkman());
+			map.put("mobile", obj.getMobile());
+			map.put("gos", obj.getGos());
+			List<BnsService> temp =servService.listByCompany(obj.getId());
+			map.put("serv", temp);
+			if(temp.size()>0){
+				vo.add(map);
+			}
+		}
+		return ok(Json.toJson(vo));
 	}
 	
 	@Security.Authenticated(Secured.class)

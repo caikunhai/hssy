@@ -1,6 +1,6 @@
 // @SOURCE:D:/workspace/hssy/conf/routes
-// @HASH:63031ce7cdbe1875883e7b7340d0bedf63bcb939
-// @DATE:Sun Dec 25 17:24:14 CST 2016
+// @HASH:349b003e7211a1983100107d562f3a12235f7e86
+// @DATE:Thu Jan 05 22:30:32 CST 2017
 
 import Routes.{prefix => _prefix, defaultPrefix => _defaultPrefix}
 import play.core._
@@ -381,12 +381,6 @@ def over(id:String): Call = {
 }
                                                 
 
-// @LINE:70
-def zxr(id:String, doUser:String): Call = {
-   Call("GET", _prefix + { _defaultPrefix } + "order/zxr" + queryString(List(Some(implicitly[QueryStringBindable[String]].unbind("id", id)), Some(implicitly[QueryStringBindable[String]].unbind("doUser", doUser)))))
-}
-                                                
-
 // @LINE:68
 def file(id:String): Call = {
    Call("GET", _prefix + { _defaultPrefix } + "order/file" + queryString(List(Some(implicitly[QueryStringBindable[String]].unbind("id", id)))))
@@ -408,6 +402,12 @@ def save(): Call = {
 // @LINE:66
 def detail(id:String): Call = {
    Call("GET", _prefix + { _defaultPrefix } + "order/detail" + queryString(List(Some(implicitly[QueryStringBindable[String]].unbind("id", id)))))
+}
+                                                
+
+// @LINE:70
+def zxr(id:String, cameraman:String, dresser:String): Call = {
+   Call("GET", _prefix + { _defaultPrefix } + "order/zxr" + queryString(List(Some(implicitly[QueryStringBindable[String]].unbind("id", id)), Some(implicitly[QueryStringBindable[String]].unbind("cameraman", cameraman)), Some(implicitly[QueryStringBindable[String]].unbind("dresser", dresser)))))
 }
                                                 
 
@@ -1092,17 +1092,6 @@ def over : JavascriptReverseRoute = JavascriptReverseRoute(
 )
                         
 
-// @LINE:70
-def zxr : JavascriptReverseRoute = JavascriptReverseRoute(
-   "controllers.OrderController.zxr",
-   """
-      function(id,doUser) {
-      return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "order/zxr" + _qS([(""" + implicitly[QueryStringBindable[String]].javascriptUnbind + """)("id", id), (""" + implicitly[QueryStringBindable[String]].javascriptUnbind + """)("doUser", doUser)])})
-      }
-   """
-)
-                        
-
 // @LINE:68
 def file : JavascriptReverseRoute = JavascriptReverseRoute(
    "controllers.OrderController.file",
@@ -1142,6 +1131,17 @@ def detail : JavascriptReverseRoute = JavascriptReverseRoute(
    """
       function(id) {
       return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "order/detail" + _qS([(""" + implicitly[QueryStringBindable[String]].javascriptUnbind + """)("id", id)])})
+      }
+   """
+)
+                        
+
+// @LINE:70
+def zxr : JavascriptReverseRoute = JavascriptReverseRoute(
+   "controllers.OrderController.zxr",
+   """
+      function(id,cameraman,dresser) {
+      return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "order/zxr" + _qS([(""" + implicitly[QueryStringBindable[String]].javascriptUnbind + """)("id", id), (""" + implicitly[QueryStringBindable[String]].javascriptUnbind + """)("cameraman", cameraman), (""" + implicitly[QueryStringBindable[String]].javascriptUnbind + """)("dresser", dresser)])})
       }
    """
 )
@@ -1723,12 +1723,6 @@ def over(id:String): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
 )
                       
 
-// @LINE:70
-def zxr(id:String, doUser:String): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
-   controllers.OrderController.zxr(id, doUser), HandlerDef(this, "controllers.OrderController", "zxr", Seq(classOf[String], classOf[String]), "GET", """""", _prefix + """order/zxr""")
-)
-                      
-
 // @LINE:68
 def file(id:String): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
    controllers.OrderController.file(id), HandlerDef(this, "controllers.OrderController", "file", Seq(classOf[String]), "GET", """""", _prefix + """order/file""")
@@ -1750,6 +1744,12 @@ def save(): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
 // @LINE:66
 def detail(id:String): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
    controllers.OrderController.detail(id), HandlerDef(this, "controllers.OrderController", "detail", Seq(classOf[String]), "GET", """""", _prefix + """order/detail""")
+)
+                      
+
+// @LINE:70
+def zxr(id:String, cameraman:String, dresser:String): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
+   controllers.OrderController.zxr(id, cameraman, dresser), HandlerDef(this, "controllers.OrderController", "zxr", Seq(classOf[String], classOf[String], classOf[String]), "GET", """""", _prefix + """order/zxr""")
 )
                       
 

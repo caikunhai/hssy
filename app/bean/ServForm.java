@@ -3,10 +3,11 @@ package bean;
 import java.math.BigDecimal;
 
 public class ServForm {
-	
+	private String id;
 	private String name;
 	private Integer unit;
 	private Integer num;
+	private Integer state;
 	private BigDecimal money;
 	private Integer additional;
 	private BigDecimal price;
@@ -53,6 +54,18 @@ public class ServForm {
 	}
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public Integer getState() {
+		return state;
+	}
+	public void setState(Integer state) {
+		this.state = state;
 	}
 
 }

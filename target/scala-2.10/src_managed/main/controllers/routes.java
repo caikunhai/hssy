@@ -1,6 +1,6 @@
 // @SOURCE:D:/workspace/hssy/conf/routes
-// @HASH:63031ce7cdbe1875883e7b7340d0bedf63bcb939
-// @DATE:Sun Dec 25 17:24:14 CST 2016
+// @HASH:349b003e7211a1983100107d562f3a12235f7e86
+// @DATE:Thu Jan 05 22:30:32 CST 2017
 
 package controllers;
 

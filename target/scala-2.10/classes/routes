@@ -67,7 +67,7 @@ GET     /order/detail			   controllers.OrderController.detail(id:String)
 GET     /order/over			       controllers.OrderController.over(id:String)
 GET     /order/file			       controllers.OrderController.file(id:String)
 GET     /order/payment			   controllers.OrderController.payment(id:String,type:String)
-GET     /order/zxr  			   controllers.OrderController.zxr(id:String,doUser:String)
+GET     /order/zxr  			   controllers.OrderController.zxr(id:String,cameraman:String,dresser:String)
 
 #Notify
 POST    /notify/direct		  	   controllers.NotifyController.direct()

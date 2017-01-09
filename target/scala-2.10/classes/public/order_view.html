@@ -35,10 +35,12 @@
 		<p>
 			<input class="easyui-textbox" data-options="label:'是否接送:'" style="width: 230px;" id="pickup" readonly="readonly">
 			<span class="left80"></span>
-			<input class="easyui-textbox" id="doUser" data-options="label:'执行人'" style="width: 230px;">
+			<input class="easyui-textbox" id="cameraman" data-options="label:'摄影师'" style="width: 230px;">
 		</p>
 		<p>
-			<input class="easyui-textbox" data-options="label:'备注信息:'" style="width: 546px;" id="remark">
+			<input class="easyui-textbox" id="dresser" data-options="label:'化妆师'" style="width: 230px;">
+			<span class="left80"></span>
+			<input class="easyui-textbox" data-options="label:'备注信息:'" style="width: 230px;" id="remark">
 		</p>
 		<div style="text-align:center;padding:20px 0">
 			<!-- <input type="button" value="关闭" class="inputBtn" onclick="javascript:top.jQuery('#tabs').tabs('close','查看详情');" id="btn"> -->
@@ -88,8 +90,10 @@
 		$("#hotel").textbox('setValue',xhrObj.hotel);
 		$("#pickup").textbox('setValue',xhrObj.pickup==0?'不接送':'接送');
 		$("#remark").textbox('setValue',xhrObj.remark);
-		//执行人
-		$("#doUser").textbox('setValue',getQueryParam("doUser"));
+		//摄影师
+		$("#cameraman").textbox('setValue',getQueryParam("cameraman"));
+		//化妆师
+		$("#dresser").textbox('setValue',getQueryParam("dresser"));
 		var identity=getQueryParam("identity").trim();
 		var progress=getQueryParam("progress").trim();
 		
