@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>上传文件</title>
+    <title>作品管理</title>
     <link href="favicon.ico" rel="shortcut icon">
     <link rel="stylesheet" href="qiniu/bower_components/bootstrap/bootstrap.css">
     <link rel="stylesheet" href="qiniu/styles/main.css">
@@ -19,10 +19,6 @@
 				<a class="btn btn-default btn-lg" id="pickfiles" href="javascript:;" >
 				<i class="glyphicon glyphicon-plus"></i>
 				<span>选择文件</span>
-				</a>
-				<a class="btn btn-default btn-lg" href="javascript:tjsq();" >
-				<i class="glyphicon glyphicon-ok"></i>
-				<span>提交申请</span>
 				</a>
 			 </div>
 		   </div>
@@ -87,28 +83,12 @@ $(function() {
             },
             'FileUploaded': function(up, file, info) {
             	var res = $.parseJSON(info);
-            	bns.save_file(res.key,save_html);
+            	bns.save_work(res.key,save_html);
             }
         }
     });
-    bns.apply_info(getQueryParam("company"),apply_html);
+    bns.list_work(getQueryParam("company"),work_html);
 });
-
-function tjsq(){
-	var obj = new Object();
-	obj.id =getQueryParam("company");
-	obj.rank=1;
-	bns.company_save(JSON.stringify(obj),tj_html);
-}
-
-function tj_html(data){
-	var xhrObj = JSON.parse(data);
-	if(xhrObj.code==0){
-		alert(xhrObj.message);
-		return;
-	}
-	alert("提交申请成功");
-}
 
 
 function save_html(data){
@@ -117,7 +97,7 @@ function save_html(data){
 	$("#success a").click(function(){
     	var id =$(this).attr("data");
     	$(this).parents("li").remove();
-    	bns.apply_del(id,function(){});
+    	bns.del_work(id,function(){});
     });
 }
 
@@ -134,7 +114,7 @@ function li_html(obj){
 }
 
 
-function apply_html(data){
+function work_html(data){
 	var html='';
 	var xhrObj = JSON.parse(data);
 	for(var i=0;i<xhrObj.length;i++){
@@ -144,7 +124,7 @@ function apply_html(data){
 	$("#success a").click(function(){
     	var id =$(this).attr("data");
     	$(this).parents("li").remove();
-    	bns.apply_del(id,function(){});
+    	bns.del_work(id,function(){});
     });
 }
 

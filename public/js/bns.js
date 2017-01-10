@@ -40,14 +40,6 @@ var bns = {};
 	    bns.ajax_private(params, callback);
 	};
 	
-	//景点查询（管理员）
-	bns.site_all = function (callback) {
-	    var params =new Object();
-	    params.url=core.host + '/site/all';
-	    params.method='GET';
-	    params.data=null;
-	    bns.ajax_private(params, callback);
-	};
 	
 	//景点详情
 	bns.site_get = function (id,callback) {
@@ -85,15 +77,6 @@ var bns = {};
 	    bns.ajax_private(params, callback);
 	};
 	
-	//住宿查询（管理员）
-	bns.hotel_all = function (callback) {
-	    var params =new Object();
-	    params.url=core.host + '/hotel/all';
-	    params.method='GET';
-	    params.data=null;
-	    bns.ajax_private(params, callback);
-	};
-	
 	//住宿详情
 	bns.hotel_get = function (id,callback) {
 	    var params =new Object();
@@ -125,15 +108,6 @@ var bns = {};
 	bns.cloth_list = function (callback) {
 	    var params =new Object();
 	    params.url=core.host + '/cloth/list';
-	    params.method='GET';
-	    params.data=null;
-	    bns.ajax_private(params, callback);
-	};
-	
-	//服饰查询（管理员）
-	bns.cloth_all = function (callback) {
-	    var params =new Object();
-	    params.url=core.host + '/cloth/all';
 	    params.method='GET';
 	    params.data=null;
 	    bns.ajax_private(params, callback);
@@ -513,6 +487,33 @@ var bns = {};
 	bns.save_file = function (filename,callback) {
 	    var params =new Object();
 	    params.url=core.host + '/file/upload?filename='+filename;
+	    params.method='GET';
+	    params.data=null;
+	    bns.ajax_private(params, callback);
+	};
+	
+	//保存作品
+	bns.save_work = function (filename,callback) {
+	    var params =new Object();
+	    params.url=core.host + '/work/save?filename='+filename;
+	    params.method='GET';
+	    params.data=null;
+	    bns.ajax_private(params, callback);
+	};
+	
+	//删除作品
+	bns.del_work = function (id,callback) {
+	    var params =new Object();
+	    params.url=core.host + '/work/delete?id='+id;
+	    params.method='GET';
+	    params.data=null;
+	    bns.ajax_private(params, callback);
+	};
+	
+	//查询作品
+	bns.list_work = function (company,callback) {
+	    var params =new Object();
+	    params.url=core.host + '/work/list?company='+company;
 	    params.method='GET';
 	    params.data=null;
 	    bns.ajax_private(params, callback);

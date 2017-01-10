@@ -63,7 +63,7 @@ $(function() {
         chunk_size: '10mb',
         multi_selection: !(mOxie.Env.OS.toLowerCase()==="ios"),
         //uptoken : 'ylqDh7YUUgHZ5MOIyC7FSYY3FQHchfTL2DE7Petp:yKLnNhOZqG26nSXZkLS7NPgbBtY=:eyJzY29wZSI6ImNhaWt1bmhhaSIsImRlYWRsaW5lIjoxNDgwOTA0OTQzfQ==', // uptoken是上传凭证，由其他程序生成
-        uptoken_url: '/sys/uptoken',
+        uptoken_url: '/qiniu/token',
         domain: core.qiniu,
         get_new_uptoken: false,
         auto_start: true,
