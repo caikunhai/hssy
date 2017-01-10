@@ -45,11 +45,6 @@ public class SiteController extends play.mvc.Controller {
 	}
 	
 	@Security.Authenticated(Secured.class)
-	public static Result all(){
-		return ok(Json.toJson(siteService.listAll()));
-	}
-	
-	@Security.Authenticated(Secured.class)
 	public static Result save() throws IllegalAccessException, InvocationTargetException{
 		Map<String,Object> vo =new HashMap<String,Object>();
 		vo.put("code", 0);

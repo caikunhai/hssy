@@ -16,6 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
+import com.thoughtworks.xstream.XStream;
+
+import bean.CompanyForm;
+import entities.BnsCompany;
+import entities.BnsService;
 import play.data.Form;
 import play.libs.Json;
 import play.mvc.Result;
@@ -24,12 +29,6 @@ import services.CompanyService;
 import services.ServService;
 import system.log.Logger;
 import utils.CryptTool;
-import bean.CompanyForm;
-
-import com.thoughtworks.xstream.XStream;
-
-import entities.BnsCompany;
-import entities.BnsService;
 
 @Controller
 public class CompanyController extends play.mvc.Controller {
@@ -173,7 +172,7 @@ public class CompanyController extends play.mvc.Controller {
 	@Security.Authenticated(Secured.class)
 	public static Result change(String id){
 		Map<String,Object> map =new HashMap<String,Object>();
-		map.put("cloth", ClothController.search(id));
+		map.put("work", WorksController.search(id));
 		map.put("hotel", HotelController.search(id));
 		map.put("site", SiteController.search(id));
 		return ok(Json.toJson(map));
@@ -190,7 +189,7 @@ public class CompanyController extends play.mvc.Controller {
 	@Security.Authenticated(Secured.class)
 	public static Result info(){
 		String token = request().getHeader("token");
-		BnsCompany obj=getByToken(token);
+		BnsCompany obj=companyService.getByToken(token);
 		return ok(Json.toJson(Map4Obj(obj)));
 	}
 	

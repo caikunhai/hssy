@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import entities.BnsCompany;
+import entities.BnsWorks;
 import repositories.BnsCompanyRepository;
+import repositories.BnsWorksRepository;
 import services.CompanyService;
 
 @Service("companyService")
@@ -14,6 +16,7 @@ public class CompanyServiceImpl implements CompanyService {
 	
 	@Autowired
 	private BnsCompanyRepository companyRepository;
+	
 
 	@Override
 	public BnsCompany save(BnsCompany obj) {
@@ -56,4 +59,5 @@ public class CompanyServiceImpl implements CompanyService {
 		// TODO 自动生成的方法存根
 		return companyRepository.findService();
 	}
+
 }

@@ -43,10 +43,6 @@ public class ClothController extends play.mvc.Controller {
 		return ok(Json.toJson(clothService.search(company)));
 	}
 	
-	@Security.Authenticated(Secured.class)
-	public static Result all(){
-		return ok(Json.toJson(clothService.listAll()));
-	}
 	
 	public static List<BnsClothes> search(String company){
 		return clothService.search(company);

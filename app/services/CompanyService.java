@@ -19,5 +19,5 @@ public interface CompanyService {
 	public void detele(BnsCompany obj);
 	
 	public List<BnsCompany> findService();
-
+	
 }
