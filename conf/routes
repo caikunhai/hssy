@@ -21,10 +21,6 @@ POST    /site/save			       controllers.SiteController.save()
 GET     /hotel/list			       controllers.HotelController.list()
 GET     /hotel/get			       controllers.HotelController.hotel(id:String)
 POST    /hotel/save			       controllers.HotelController.save()
-#Cloth
-GET     /cloth/list			       controllers.ClothController.list()
-GET     /cloth/get			       controllers.ClothController.cloth(id:String)
-POST    /cloth/save			       controllers.ClothController.save()
 #User
 GET     /user/menu		  		   controllers.UserController.menu()
 POST    /user/login				   controllers.UserController.login()
@@ -64,7 +60,6 @@ GET     /order/over			       controllers.OrderController.over(id:String)
 GET     /order/file			       controllers.OrderController.file(id:String)
 GET     /order/payment			   controllers.OrderController.payment(id:String,type:String)
 GET     /order/zxr  			   controllers.OrderController.zxr(id:String,cameraman:String,dresser:String)
-
 #Work
 GET     /work/save			       controllers.WorksController.save(filename:String)
 GET     /work/delete			   controllers.WorksController.delete(id:String)
