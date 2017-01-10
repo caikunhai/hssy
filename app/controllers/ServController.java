@@ -18,7 +18,6 @@ import play.mvc.Security;
 import services.ServService;
 import system.log.Logger;
 import utils.CryptTool;
-import bean.ClothesForm;
 import bean.ServForm;
 
 import com.thoughtworks.xstream.XStream;
@@ -54,7 +53,7 @@ public class ServController extends play.mvc.Controller {
 		}
 		ServForm data =form.get();
 		XStream xstream = new XStream();
-		xstream.alias("request", ClothesForm.class);
+		xstream.alias("request", ServForm.class);
 		Logger.info("保存套餐", xstream.toXML(data));
 		BnsService obj =data.getId()==null?null:servService.get(data.getId());
 		if(obj==null){
