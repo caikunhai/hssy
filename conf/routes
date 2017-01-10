@@ -4,7 +4,7 @@
 
 #
 GET     /                          controllers.Application.index()
-GET     /sys/uptoken		  	   controllers.Application.uptoken()
+GET     /qiniu/token		  	   controllers.Application.uptoken()
 POST    /menu/role			  	   controllers.Application.role()
 GET     /menu/list			  	   controllers.Application.listMenu()
 GET     /file/upload			   controllers.SysController.upload(filename:String)
@@ -12,21 +12,17 @@ GET     /file/list				   controllers.SysController.listFile(company:String)
 GET     /file/delete			   controllers.SysController.delFile(id:Long)
 GET     /file/get				   controllers.SysController.get(name:String)
 GET     /file/download  		   controllers.SysController.download(id:String)
-GET     /file/doing		  		   controllers.SysController.unFinish(token:String)
 
 #Site
 GET     /site/list  			   controllers.SiteController.list()
-GET     /site/all   			   controllers.SiteController.all()
 GET     /site/get			       controllers.SiteController.site(id:String)
 POST    /site/save			       controllers.SiteController.save()
 #Hotel
 GET     /hotel/list			       controllers.HotelController.list()
-GET     /hotel/all			       controllers.HotelController.all()
 GET     /hotel/get			       controllers.HotelController.hotel(id:String)
 POST    /hotel/save			       controllers.HotelController.save()
 #Cloth
 GET     /cloth/list			       controllers.ClothController.list()
-GET     /cloth/all			       controllers.ClothController.all()
 GET     /cloth/get			       controllers.ClothController.cloth(id:String)
 POST    /cloth/save			       controllers.ClothController.save()
 #User
@@ -68,6 +64,11 @@ GET     /order/over			       controllers.OrderController.over(id:String)
 GET     /order/file			       controllers.OrderController.file(id:String)
 GET     /order/payment			   controllers.OrderController.payment(id:String,type:String)
 GET     /order/zxr  			   controllers.OrderController.zxr(id:String,cameraman:String,dresser:String)
+
+#Work
+GET     /work/save			       controllers.WorksController.save(filename:String)
+GET     /work/delete			   controllers.WorksController.delete(id:String)
+GET     /work/list				   controllers.WorksController.list(company:String)
 
 #Notify
 POST    /notify/direct		  	   controllers.NotifyController.direct()
