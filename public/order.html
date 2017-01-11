@@ -6,8 +6,10 @@
     	<meta name="viewport" content="width=device-width, initial-scale=1">
 		<!-- 新 Bootstrap 核心 CSS 文件 -->
 		<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+		<!-- 是否切换插件样式 -->
 		<link rel="stylesheet" href="css/bootstrap-switch.min.css">
-		<link rel="stylesheet" href="css/carousel.css">
+		<!-- 日期选择样式 -->
+		<link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css"  media="screen">
 		<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
 		<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
 		<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
@@ -15,9 +17,11 @@
 		<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
 		<script type="text/javascript" src='js/core.js'> </script>
 		<script type="text/javascript" src='js/bns.js'> </script>
-		<script type="text/javascript" src='js/sHover.min.js'> </script>
+		<!-- 是否切换插件 -->
 		<script type="text/javascript" src='js/bootstrap-switch.min.js'> </script>
-		<script type="text/javascript" src='js/PicCarousel.js'> </script>
+		<!-- 日期选择样式 -->
+		<script type="text/javascript" src="js/bootstrap-datetimepicker.js"></script>
+		<script type="text/javascript" src="js/bootstrap-datetimepicker.fr.js"></script>
 		<title>婚纱摄影互助平台</title>
 		<style type="text/css">
 			.container,.row{padding: 0;}
@@ -49,19 +53,23 @@
 				<p class="tc">预约住宿：如家酒店x3</p>
 			   </div>
 			   <div style="position: absolute;right: 240px;top:100px;" >
+			   		<a href="javascript:history.go(-1);">
 			   		<button type="button" class="btn btn-default btn-lg">
 			          <span class="glyphicon glyphicon-repeat"></span> 返回重选
-			        </button>
+			        </button></a>
 			   </div>
 			</div>
-			
-			<div class="container">
-			  <form class="form-horizontal" role="form">
+		</div>
+		<div class="container">
+			  <form class="form-horizontal">
 			    <div class="form-group">
 			      <label class="control-label col-sm-2" for="email">拍摄日期:</label>
-			      <div class="col-sm-4">
-			        <input type="text" class="form-control" id="email" placeholder="Enter email">
-			      </div>
+				  <div class="input-group date form_date col-sm-4" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                    <input class="form-control" size="16" type="text" value="" readonly>
+					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                  </div>
+				  <input type="hidden" id="dtp_input2" value="" /><br/>
+				  
 			    </div>
 			    <div class="form-group">
 			      <label class="control-label col-sm-2" for="customer">客户姓名:</label>
@@ -100,7 +108,7 @@
 			      </div>
 			    </div>
 			  </form>
-			</div>
+		</div>
 		
 		<div class="container" style="padding: 20px;text-align: right;">
 			<button type="button" class="btn btn-primary btn-block" style="height: 48px;line-height: 36px;">提交订单 </button>
@@ -110,8 +118,8 @@
 <script>
 	$(function(){
 		$('[type="checkbox"]').bootstrapSwitch({  
-	        onText:"选中",  
-	        offText:"取消",  
+	        onText:"是",  
+	        offText:"否",  
 	        onSwitchChange:function(event,state){  
 	            if(state==true){  
 	                $(this).val("1");  
@@ -120,48 +128,15 @@
 	            }  
 	        }
 	    });
-    	$("#area button").click(function(){
-        	$("#area button").removeClass("areaOn");
-        	$(this).addClass("areaOn");
-        });
-		//景点遮罩层
-		var a=new sHover("sHoverItem","sIntro");
-		 a.set({
-		 	slideSpeed:5,
-		 	opacityChange:true,
-		 	opacity:80
-		 });
-        //顶部菜单栏
-        var token =window.localStorage.getItem("token");
-        var nav_html='';
-        if(token!=null&&token!=''){
-        	nav_html+='<li><a href="center.html">商户中心</a></li>';
-        	nav_html+='<li><a href="login.html">申请代拍</a></li>';
-        	nav_html+='<li><a href="JavaScript:loginOut();">安全退出</a></li>';
-        }else{
-        	nav_html+='<li><a href="login.html">登录</a></li>';
-        	nav_html+='<li><a href="register.html">注册</a></li>';
-        	nav_html+='<li><a href="login.html">商户中心</a></li>';
-        	nav_html+='<li><a href="login.html">申请代拍</a></li>';
-        }
-        $("#topnav").empty().append(nav_html);
-        
-        $(".A_Demo").PicCarousel({
-    		"width":1000,		//幻灯片的宽度
-    		"height":300,		//幻灯片的高度
-    		"posterWidth":520,	//幻灯片第一帧的宽度
-    		"posterHeight":300, //幻灯片第一张的高度
-    		"scale":0.9,		//记录显示比例关系
-    		"speed":1500,		//记录幻灯片滚动速度
-    		"autoPlay":true,	//是否开启自动播放
-    		"delay":1000,		//自动播放间隔
-    		"verticalAlign":"top"	//图片对齐位置
-    	});
-        
+		 $('.form_date').datetimepicker({
+		        //language:  'fr',
+		        weekStart: 1,
+		        todayBtn:  1,
+				autoclose: 1,
+				todayHighlight: 1,
+				startView: 2,
+				forceParse: 0,
+		        showMeridian: 1
+		    });
 	});
-	//安全退出
-	function loginOut(){
-		window.localStorage.clear();
-        window.parent.location.href="login.html";
-	}
 </script>

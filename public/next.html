@@ -6,8 +6,6 @@
     	<meta name="viewport" content="width=device-width, initial-scale=1">
 		<!-- 新 Bootstrap 核心 CSS 文件 -->
 		<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
-		<link rel="stylesheet" href="css/bootstrap-switch.min.css">
-		<link rel="stylesheet" href="css/carousel.css">
 		<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
 		<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
 		<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
@@ -15,18 +13,9 @@
 		<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
 		<script type="text/javascript" src='js/core.js'> </script>
 		<script type="text/javascript" src='js/bns.js'> </script>
-		<script type="text/javascript" src='js/sHover.min.js'> </script>
-		<script type="text/javascript" src='js/bootstrap-switch.min.js'> </script>
-		<script type="text/javascript" src='js/PicCarousel.js'> </script>
 		<title>婚纱摄影互助平台</title>
 		<style type="text/css">
 			.container,.row{padding: 0;}
-.sIntro{background-color: rgb(235,137,112); text-align: center;}
-.sIntro h2{font-family: "arial"; font-size:36px; text-align: center; color: #FFF; border-bottom: 1px dashed #fff;margin:0px 20px; font-weight: bold;}
-.sIntro p{font-size:14px; text-align: center; color: #FFF; margin:0px 10px; color: #438199;font-weight: bold;}
-.sIntro button{font-family: "arial"; font-size:16px; color: white;  background-color: #0AB5DA; border:none; padding:4px 10px; }
-.areaOn{background-color: #eee;color: #fff;}
-.siteOn{border: 2px solid #255625;}
 		</style>
 	</head>
 	<body>
@@ -64,9 +53,9 @@
 			  </div>
 			</nav>
 			
-			<div class="jumbotron" style="padding: 15px 20px;">
+			<div class="jumbotron" style="padding: 15px 20px;" id="site">
 				<div class="row">
-			    <div class="col-sm-4 site">
+			    <div class="col-sm-4">
 			      <p><strong>珍珠湾</strong></p>
 			      <img src="img/c001.jpg" alt="Random Name" width="312" height="172">
 			      <p style="margin-top: 15px;font-size: 16px;"><span class="glyphicon glyphicon-usd" style="margin-right: 8px;"></span>189</p>
@@ -76,14 +65,14 @@
 			      	<div class="col-sm-3" style="line-height:32px;text-align:center;font-size:15px;">预定门票</div>
 					<div class="col-sm-6">
 					   <div class="input-group">
-					     <span class="input-group-btn"><button class="btn btn-default" type="button">-</button></span>
-					     <input type="text" class="form-control" placeholder="0" readonly="readonly">
-					     <span class="input-group-btn"><button class="btn btn-default" type="button">+</button></span>
+					     <span class="input-group-btn"><button class="btn btn-default minus" type="button">-</button></span>
+					     <input type="text" class="form-control" placeholder="0" value="1" readonly="readonly">
+					     <span class="input-group-btn"><button class="btn btn-default plus" type="button">+</button></span>
 					   </div>
 					</div>
 				  </div> 
 			    </div>
-			    <div class="col-sm-4 site">
+			    <div class="col-sm-4">
 			      <p><strong>伯爵婚纱</strong></p>
 			      <img src="img/c002.jpg" alt="Random Name" width="312" height="172">
 			      <p style="margin-top: 15px;font-size: 16px;"><span class="glyphicon glyphicon-usd" style="margin-right: 8px;"></span>189</p>
@@ -93,14 +82,14 @@
 			      	<div class="col-sm-3" style="line-height:32px;text-align:center;font-size:15px;">预定门票</div>
 					<div class="col-sm-6">
 					   <div class="input-group">
-					     <span class="input-group-btn"><button class="btn btn-default" type="button">-</button></span>
-					     <input type="text" class="form-control" placeholder="0" readonly="readonly">
-					     <span class="input-group-btn"><button class="btn btn-default" type="button">+</button></span>
+					     <span class="input-group-btn"><button class="btn btn-default minus" type="button">-</button></span>
+					     <input type="text" class="form-control" placeholder="0" value="1" readonly="readonly">
+					     <span class="input-group-btn"><button class="btn btn-default plus" type="button">+</button></span>
 					   </div>
 					</div>
 				  </div>
 			    </div>
-			    <div class="col-sm-4 site">
+			    <div class="col-sm-4">
 			      <p><strong>钟爱一生</strong></p>
 			      <img src="img/c003.jpg" alt="Random Name" width="312" height="172">
 			      <p style="margin-top: 15px;font-size: 16px;"><span class="glyphicon glyphicon-usd" style="margin-right: 8px;"></span>189</p>
@@ -110,9 +99,9 @@
 			      	<div class="col-sm-3" style="line-height:32px;text-align:center;font-size:15px;">预定门票</div>
 					<div class="col-sm-6">
 					   <div class="input-group">
-					     <span class="input-group-btn"><button class="btn btn-default" type="button">-</button></span>
-					     <input type="text" class="form-control" placeholder="0" readonly="readonly">
-					     <span class="input-group-btn"><button class="btn btn-default" type="button">+</button></span>
+					     <span class="input-group-btn"><button class="btn btn-default minus" type="button">-</button></span>
+					     <input type="text" class="form-control" placeholder="0" value="1" readonly="readonly">
+					     <span class="input-group-btn"><button class="btn btn-default plus" type="button">+</button></span>
 					   </div>
 					</div>
 				  </div>
@@ -120,7 +109,7 @@
 			  </div>
 			</div>
 			
-			<div class="jumbotron" style="padding: 15px 20px;">
+			<div class="jumbotron" style="padding: 15px 20px;" id="hotel">
 				<div class="panel-group">
 				    <div class="panel panel-default" style="position: relative;">
 				      <div class="panel-heading">如家酒店</div>
@@ -139,9 +128,9 @@
 				      	<div class="col-sm-5" style="line-height:32px;text-align:center;font-size:15px;">预定房间</div>
 						<div class="col-sm-7">
 						   <div class="input-group">
-						     <span class="input-group-btn"><button class="btn btn-default" type="button">-</button></span>
+						     <span class="input-group-btn"><button class="btn btn-default minus" type="button">-</button></span>
 						     <input type="text" class="form-control" placeholder="0" readonly="readonly">
-						     <span class="input-group-btn"><button class="btn btn-default" type="button">+</button></span>
+						     <span class="input-group-btn"><button class="btn btn-default plus" type="button">+</button></span>
 						   </div>
 						</div>
 					  </div>
@@ -163,9 +152,9 @@
 				      	<div class="col-sm-5" style="line-height:32px;text-align:center;font-size:15px;">预定房间</div>
 						<div class="col-sm-7">
 						   <div class="input-group">
-						     <span class="input-group-btn"><button class="btn btn-default" type="button">-</button></span>
+						     <span class="input-group-btn"><button class="btn btn-default minus" type="button">-</button></span>
 						     <input type="text" class="form-control" placeholder="0" readonly="readonly">
-						     <span class="input-group-btn"><button class="btn btn-default" type="button">+</button></span>
+						     <span class="input-group-btn"><button class="btn btn-default plus" type="button">+</button></span>
 						   </div>
 						</div>
 					  </div>
@@ -175,7 +164,7 @@
 		</div>
 		
 		<div class="container" style="padding: 20px;text-align: right;">
-			<a href="order.html" target="_blank"><button type="button" class="btn btn-primary btn-block" style="height: 48px;line-height: 36px;">填写客户信息 </button></a>
+			<a href="order.html"><button type="button" class="btn btn-primary btn-block" style="height: 48px;line-height: 36px;">填写客户信息 </button></a>
 		</div>
 		
 		<footer class="container-fluid bg-4 text-center">
@@ -185,6 +174,29 @@
 </html>
 <script>
 	$(function(){
+		$("#site .minus").click(function(){
+			var obj =$(this).parents(".input-group").find("input");
+			if(obj.val()>0){
+				obj.val(obj.val()*1-1);
+			}
+        });
+		$("#site .plus").click(function(){
+			var obj =$(this).parents(".input-group").find("input");
+			obj.val(obj.val()*1+1);
+        });
+		$("#hotel .minus").click(function(){
+			var obj =$(this).parents(".input-group").find("input");
+			if(obj.val()>0){
+				obj.val(obj.val()*1-1);
+			}
+        });
+		$("#hotel .plus").click(function(){
+			var obj =$(this).parents(".input-group").find("input");
+			if(obj.val()*1==0){
+				$("#hotel .input-group").find("input").val(0);
+			}
+			obj.val(obj.val()*1+1);
+        });
 		$('[type="checkbox"]').bootstrapSwitch({  
 	        onText:"选中",  
 	        offText:"取消",  
