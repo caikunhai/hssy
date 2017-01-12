@@ -21,37 +21,24 @@
 		<form id="ff" class="easyui-form" method="post" data-options="novalidate:true">
 			<div style="margin-bottom:20px">
 				<select class="easyui-combobox" id="city" label="所在城市" style="width: 240px;" data-options="editable:false,panelHeight:'auto'"></select>
-			</div>
-			<div style="margin-bottom:20px">
-				<input class="easyui-textbox" id="name" data-options="label:'住宿名称:',required:true" style="width: 240px;">
-			</div>
-			<div style="margin-bottom:20px">
-				<input class="easyui-textbox" id="description" data-options="label:'住宿介绍:',required:true" style="width: 240px;">
-			</div>
-			<div style="margin-bottom:20px">
-				<input class="easyui-textbox" id="address" data-options="label:'详细地址:',required:true" style="width: 240px;">
-			</div>
-			<div style="margin-bottom:20px">
-				<input class="easyui-textbox" id="price" data-options="label:'住宿价格:',required:true" style="width: 240px;">
-			</div>
-			<div style="margin-bottom:20px">
-				<input class="easyui-textbox" id="star" data-options="label:'信誉评级:',required:true" style="width: 240px;">
-			</div>
-			<div style="margin-bottom:20px">
-				<select class="easyui-combobox" id="type" label="住宿类型" style="width: 240px;" data-options="editable:false,panelHeight:'auto'">
-					<option value="0">免费</option>
-					<option value="1">收费</option>
-				</select>
-			</div>
-			<div style="margin-bottom:20px">
+				<span class="left80"></span>
 				<select class="easyui-combobox" id="state" label="住宿状态" style="width: 240px;" data-options="editable:false,panelHeight:'auto'">
 					<option value="0">启用</option>
 					<option value="1">禁用</option>
 				</select>
 			</div>
 			<div style="margin-bottom:20px">
-				<input class="easyui-textbox" id="remark" data-options="label:'备注信息:',required:true" style="width: 240px;">
+				<input class="easyui-textbox" id="name" data-options="label:'住宿名称:',required:true" style="width: 240px;">
+				<span class="left80"></span>
+				<input class="easyui-textbox" id="price" data-options="label:'住宿价格:',required:true" style="width: 240px;">
 			</div>
+			<div style="margin-bottom:20px">
+				<input class="easyui-textbox" id="address" data-options="label:'详细地址:',required:true" style="width: 566px;">
+			</div>
+			<div style="margin-bottom:20px">
+				<input class="easyui-textbox" id="description" data-options="label:'住宿介绍:',required:true,multiline:true" style="width: 566px;height:56px;">
+			</div>
+			
 			<div style="margin-bottom:20px">
 				<label style="margin-left:3px;line-height: 100px;height:100px;">LOGO</label>
 				<span style="margin-left:42px;"></span>
@@ -96,7 +83,6 @@
 		
 		
 		var id =getQueryParam("id");
-		console.log('====id========='+id);
 		if(id!=''){
 			bns.hotel_get(id,init_html);
 		}
@@ -127,18 +113,8 @@
 			if(price!=''){
 				obj.price =price;
 			}
-			var star = $("#star").textbox('getValue');
-			if(star!=''){
-				obj.star =star;
-			}
-			obj.type =$('#type').combobox('getValue');
 			obj.state =$('#state').combobox('getValue');
-			var remark = $("#remark").textbox('getValue');
-			if(remark!=''){
-				obj.remark =remark;
-			}
 			obj.logo=$("input[name=logo]").val();
-			console.log('============='+JSON.stringify(obj));
 			bns.hotel_save(JSON.stringify(obj),common_html);
 		});
 		
@@ -147,14 +123,12 @@
 	function init_html(data){
 		var xhrObj = JSON.parse(data);
 		$("#city").combobox('setValue',xhrObj.city);
+		$("#city").combobox('disable');
 		$("#name").textbox('setValue',xhrObj.name);
 		$("#description").textbox('setValue',xhrObj.description);
 		$("#price").textbox('setValue',xhrObj.price);
 		$("#address").textbox('setValue',xhrObj.address);
-		$("#star").textbox('setValue',xhrObj.star);
-		$('#type').combobox('setValue',xhrObj.type);
 		$("#state").combobox('setValue',xhrObj.state);
-		$("#remark").textbox('setValue',xhrObj.remark);
 		$("input[name=logo]").val(xhrObj.logo);
 		if(xhrObj.logo!=''&&xhrObj.logo!=null){
 			var img_src=core.qiniu+xhrObj.logo+'?imageView2/1/w/120/h/100';

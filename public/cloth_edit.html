@@ -14,20 +14,25 @@
 <body>
 	<div class="easyui-panel" style="width:100%;padding:30px 60px;">
 		<div style="margin-bottom:20px">
-			<input class="easyui-textbox" id="name" data-options="label:'服饰风格:'" style="width: 240px;">
+			<input class="easyui-textbox" id="name" data-options="label:'套餐名称:'" style="width: 565px;">
+		</div>
+		<div style="margin-bottom:20px">
+			<input class="easyui-textbox" id="remark" data-options="label:'套餐介绍:',required:true,multiline:true" style="width: 565px;">
 		</div>
 		<div style="margin-bottom:20px">
 			<input class="easyui-textbox" id="unit" data-options="label:'包含套数:',required:true" style="width: 240px;">
-		</div>
-		<div style="margin-bottom:20px">
+			<span class="left80"></span>
 			<input class="easyui-textbox" id="num" data-options="label:'包含件数:',required:true" style="width: 240px;">
 		</div>
 		<div style="margin-bottom:20px">
-			<input class="easyui-textbox" id="price" data-options="label:'市场价:',required:true" style="width: 240px;">
+			<input class="easyui-textbox" id="additional" data-options="label:'递增件数:',required:true" style="width: 240px;">
+			<span class="left80"></span>
+			<input class="easyui-textbox" id="price" data-options="label:'递增价格:',required:true" style="width: 240px;">
 		</div>
 		<div style="margin-bottom:20px">
-			<select class="easyui-combobox" id="state" label="服饰状态" style="width: 240px;" data-options="editable:false,panelHeight:'auto'">
-				<option value="-1">---选择状态--</option>
+			<input class="easyui-textbox" id="money" data-options="label:'基础价格:',required:true" style="width: 240px;">
+			<span class="left80"></span>
+			<select class="easyui-combobox" id="state" label="套餐状态" style="width: 240px;" data-options="editable:false,panelHeight:'auto'">
 				<option value="0">启用</option>
 				<option value="1">禁用</option>
 			</select>
@@ -38,14 +43,19 @@
 	</div>
 	<script>
 	$(function(){
-		bns.cloth_get(getQueryParam("id"),get_html);
+		var id =getQueryParam("id");
+		if(id!=''){
+			bns.business_get(id,get_html);
+		}
 		
 		$("a").click(function() {
 			if($(this).text()!='提交保存'){
 				return;
 			}
 			var obj = new Object();
-			obj.id =getQueryParam("id");
+			if(id!=''){
+				obj.id =id;
+			}
 			var name = $("#name").textbox('getValue');
 			if(name!=''){
 				obj.name =name;
@@ -66,20 +76,33 @@
 			if(state!=-1){
 				obj.state =state;
 			}
-			console.log('============='+JSON.stringify(obj));
-			bns.cloth_save(JSON.stringify(obj),common_html);
+			var additional = $("#additional").textbox('getValue');
+			if(additional!=''){
+				obj.additional =additional;
+			}
+			var money = $("#money").textbox('getValue');
+			if(money!=''){
+				obj.money =money;
+			}
+			var remark = $("#remark").textbox('getValue');
+			if(remark!=''){
+				obj.remark =remark;
+			}
+			bns.business_save(JSON.stringify(obj),common_html);
 		});
 		
 	});
 	
 	function get_html(data){
 		var xhrObj = JSON.parse(data);
-		console.log(JSON.stringify(xhrObj));
 		$("#name").textbox('setValue',xhrObj.name);
 		$("#unit").textbox('setValue',xhrObj.unit);
 		$("#num").textbox('setValue',xhrObj.num);
 		$("#price").textbox('setValue',xhrObj.price);
 		$("#state").combobox('setValue',xhrObj.state);
+		$("#additional").textbox('setValue',xhrObj.additional);
+		$("#remark").textbox('setValue',xhrObj.remark);
+		$("#money").textbox('setValue',xhrObj.money);
 	}
 	</script>
 </body>

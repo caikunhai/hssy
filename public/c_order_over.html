@@ -44,7 +44,7 @@
 		var xhrObj = JSON.parse(data);
 		var rows = [];
 		for(var i=0;i<xhrObj.length;i++){
-			var operation_html ='<a href=javascript:newOpen("查看详情","order_view.html?identity=host&&progress=over&&id='+xhrObj[i].id+'&&cameraman='+xhrObj[i].cameraman+'&&dresser='+xhrObj[i].dresser+'");>查看详情</a>';
+			var operation_html ='<a href="order_view.html?identity=host&&progress=over&&id='+xhrObj[i].id+'&&cameraman='+xhrObj[i].cameraman+'&&dresser='+xhrObj[i].dresser+'">查看详情</a>';
 			rows.push({
 				takeTime:time.formatterDate2(xhrObj[i].takeTime),
 				code:xhrObj[i].code,

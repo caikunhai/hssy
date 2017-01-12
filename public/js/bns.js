@@ -104,37 +104,29 @@ var bns = {};
 	    bns.ajax_private(params, callback);
 	};
 	
-	//服饰查询（客商）
-	bns.cloth_list = function (callback) {
+	//套餐查询（客商）
+	bns.business_list = function (callback) {
 	    var params =new Object();
-	    params.url=core.host + '/cloth/list';
+	    params.url=core.host + '/business/list';
 	    params.method='GET';
 	    params.data=null;
 	    bns.ajax_private(params, callback);
 	};
 	
-	//服饰详情
-	bns.cloth_get = function (id,callback) {
+	//套餐详情
+	bns.business_get = function (id,callback) {
 	    var params =new Object();
-	    params.url=core.host + '/cloth/get?id='+id;
+	    params.url=core.host + '/business/get?id='+id;
 	    params.method='GET';
 	    params.data=null;
 	    bns.ajax_private(params, callback);
 	};
 	
-	//服饰搜索
-	bns.cloth_search = function (company,callback) {
-	    var params =new Object();
-	    params.url=core.host + '/cloth/search?company='+company;
-	    params.method='GET';
-	    params.data=null;
-	    bns.ajax_private(params, callback);
-	};
 	
-	//服饰保存
-	bns.cloth_save = function (data,callback) {
+	//套餐保存
+	bns.business_save = function (data,callback) {
 	    var params =new Object();
-	    params.url=core.host + '/cloth/save';
+	    params.url=core.host + '/business/save';
 	    params.method='POST';
 	    params.data=data;
 	    bns.ajax_private(params, callback);
@@ -430,9 +422,9 @@ var bns = {};
 	};
 	
 	//保存执行人
-	bns.save_zxr = function (id,doUser,callback) {
+	bns.save_zxr = function (id,cameraman,dresser,callback) {
 	    var params =new Object();
-	    params.url=core.host + '/order/zxr?id='+id+'&&doUser='+doUser;
+	    params.url=core.host + '/order/zxr?id='+id+'&&cameraman='+cameraman+"&&dresser="+dresser;
 	    params.method='GET';
 	    params.data=null;
 	    bns.ajax_private(params, callback);

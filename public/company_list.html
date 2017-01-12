@@ -14,10 +14,6 @@
     <script type="text/javascript" src="js/util.date.js"></script>
 </head>
 <body>
-	<div style="height:auto;border: 1px solid #95B8E7;margin-bottom: 10px;">
-		<a href="javascript:$('#w').window('open');" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">新增账户</a>
-	</div>
-
 	<table style="width:100%" id="dg" data-options="
                 rownumbers:true,
                 singleSelect:true,
@@ -31,99 +27,22 @@
 				<th field="frMobile" width="100">法人电话</th>
 				<th field="ywMobile" width="100">业务电话</th>
 				<th field="history" width="80">历史订单</th>
-				<th field="state" width="80">使用状态</th>
 				<th field="rank" width="100">机构类型</th>
 				<th field="operation" width="150">操作</th>
 			</tr>
 		</thead>
 	</table>
 	
-	<div id="w" class="easyui-window" title="新增机构" collapsible="false" minimizable="false" closed="true"
-        maximizable="false"  style="width: 300px; height: 380px; padding: 5px;background: #fafafa;">
-        <div class="easyui-layout" fit="true">
-            <div region="center" border="false" style="padding: 10px; background: #fff; border: 1px solid #ccc;">
-            	<div style="margin-bottom:20px">
-            		<select class="easyui-combobox" id="city" label="所在城市" style="width: 240px;" data-options="editable:false,panelHeight:'auto'"></select>
-				</div>
-                <div style="margin-bottom:20px">
-					<input class="easyui-textbox" id="name" data-options="label:'机构名称:'" style="width: 240px;">
-				</div>
-				<div style="margin-bottom:20px">
-					<input class="easyui-textbox" id="address" data-options="label:'机构地址:'" style="width: 240px;">
-				</div>
-				<div style="margin-bottom:20px">
-					<input class="easyui-textbox" id="frName" data-options="label:'机构法人:'" style="width: 240px;">
-				</div>
-				<div style="margin-bottom:20px">
-					<input class="easyui-textbox" id="frMobile" data-options="label:'法人电话:'" style="width: 240px;">
-				</div>
-				<div style="margin-bottom:20px">
-					<input class="easyui-textbox" id="gos" data-options="label:'业务范畴:'" style="width: 240px;">
-				</div>
-				
-            </div>
-            <div region="south" border="false" style="text-align: center; height: 36px;padding-top: 10px;">
-                <a class="easyui-linkbutton" href="javascript:void(0);">确定</a> 
-                <a class="easyui-linkbutton" href="javascript:$('#w').window('close');">取消</a>
-            </div>
-        </div>
-    </div> 
-	
 <script>
 	var rows = [];
 	$(function(){
 		bns.company_list(list_html);
-		
-		//保存新机构数据
-		$("#w").find("a").click(function() {
-			if($(this).text()=='确定'){
-				var obj=new Object();
-				var city=$('#city').combobox('getText');
-				if(city=='请选择'){
-					msgShow("数据验证","请选择城市！","warning");
-					return;
-				}
-				var name = $("#name").textbox('getValue');
-				var address = $("#address").textbox('getValue');
-				var frName = $("#frName").textbox('getValue');
-				var frMobile = $("#frMobile").textbox('getValue');
-				var gos = $("#gos").textbox('getValue');
-				if(name==''){
-					msgShow("数据验证","机构名称不能为空！","warning");
-				}
-				if(address==''){
-					msgShow("数据验证","机构地址不能为空！","warning");
-				}
-				if(frName==''){
-					msgShow("数据验证","机构法人不能为空！","warning");
-				}
-				if(frMobile==''){
-					msgShow("数据验证","法人电话不能为空！","warning");
-				}
-				obj.city =city;
-				obj.name =name;
-				obj.address =address;
-				obj.frName =frName;
-				obj.frMobile =frMobile;
-				obj.gos =gos;
-				bns.company_save(JSON.stringify(obj),refresh_href);
-			}
-		});
-		
-		
 	});
 	
 	//公司列表数据
 	function list_html(data){
 		var xhrObj = JSON.parse(data);
 		for(var i=0;i<xhrObj.length;i++){
-			var operation_html='';
-			var url ='company_edit.html?id='+xhrObj[i].id;
-			operation_html+='<a href=javascript:newOpen("机构详情","'+url+'")>机构详情</a>';
-			if(xhrObj[i].rank==1){
-				var url2 ='apply_view.html?company='+xhrObj[i].id;
-				operation_html+='&nbsp;<a href=javascript:newOpen("申请资料","'+url2+'")>申请资料</a>';
-			}
 			rows.push({
 				city: xhrObj[i].city,
 				name:xhrObj[i].name,
@@ -131,14 +50,11 @@
 				ywMobile:xhrObj[i].ywMobile,
 				num:xhrObj[i].num,
 				history:xhrObj[i].history,
-				state:xhrObj[i].state_,
 				rank:xhrObj[i].rank_,
-				operation:operation_html
+				operation:'<a href="company_edit.html?id='+xhrObj[i].id+'")>机构详情</a>'
 	        });
 		}
-        //console.log(JSON.stringify(rows));
         $('#dg').datagrid({loadFilter:pagerFilter}).datagrid('loadData', rows);
-        list_city(0);
 	}
 </script>
 </body>

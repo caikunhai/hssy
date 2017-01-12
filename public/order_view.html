@@ -12,7 +12,7 @@
     <script type="text/javascript" src="js/bns.js"></script>
 </head>
 <body>
-	<div class="easyui-panel"  style="width:800px;padding:20px 60px;border:1px solid #fff;">
+	<div class="easyui-panel"  style="width:100%;padding:30px 60px;">
 		<p style="margin-bottom:10px">
 			<input class="easyui-textbox" id="customer" data-options="label:'客户姓名:'" style="width: 230px;" readonly="readonly">
 			<span class="left80"></span>
@@ -24,13 +24,13 @@
 			<input class="easyui-textbox" id="people" data-options="label:'同行人数:'" style="width: 230px;" readonly="readonly">
 		</p>
 		<p>
-			<input class="easyui-textbox" data-options="label:'服饰风格:'" style="width: 546px;" id="cloth" readonly="readonly">
+			<input class="easyui-textbox" data-options="label:'服饰风格:',multiline:true" style="width: 546px;height:56px;" id="cloth" readonly="readonly">
 		</p>
 		<p>
-			<input class="easyui-textbox" data-options="label:'订购景点:'" style="width: 546px;" id="site" readonly="readonly">
+			<input class="easyui-textbox" data-options="label:'订购景点:',multiline:true" style="width: 546px;height:56px;" id="site" readonly="readonly">
 		</p>
 		<p>
-			<input class="easyui-textbox" data-options="label:'订购住宿:'" style="width: 546px;" id="hotel" readonly="readonly">
+			<input class="easyui-textbox" data-options="label:'订购住宿:',multiline:true" style="width: 546px;height:56px;" id="hotel" readonly="readonly">
 		</p>
 		<p>
 			<input class="easyui-textbox" data-options="label:'是否接送:'" style="width: 230px;" id="pickup" readonly="readonly">
@@ -43,7 +43,6 @@
 			<input class="easyui-textbox" data-options="label:'备注信息:'" style="width: 230px;" id="remark">
 		</p>
 		<div style="text-align:center;padding:20px 0">
-			<!-- <input type="button" value="关闭" class="inputBtn" onclick="javascript:top.jQuery('#tabs').tabs('close','查看详情');" id="btn"> -->
 			<input type="button" value="提交更新" class="inputBtn" id="zxr" style="display:none;" />
 			<input type="button" value="下载照片" class="inputBtn" id="imgs" style="display:none;" />
 			<input type="button" value="完成交易" class="inputBtn" id="ok" style="display:none;" />
@@ -58,16 +57,18 @@
 		$("#zxr").click(function() {
 			var zxr_html=function(data){
 				var xhrObj = JSON.parse(data);
-				alert(xhrObj.message);
+				msgShow("系统提示",xhrObj.message,"info");
 			}
-			bns.save_zxr(id,$("#doUser").textbox('getValue'),zxr_html);
+			var cameraman =$("#cameraman").textbox('getValue');
+			var dresser =$("#dresser").textbox('getValue');
+			bns.save_zxr(id,cameraman,dresser,zxr_html);
 		});
 		
 		//完成交易
 		$("#ok").click(function() {
 			var ok_html=function(data){
 				var xhrObj = JSON.parse(data);
-				alert(xhrObj.message);
+				msgShow("系统提示",xhrObj.message,"info");
 			}
 			bns.order_over(id,ok_html);
 		});
