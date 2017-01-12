@@ -3,6 +3,7 @@ import static play.data.Form.form;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,7 @@ import bean.HotelForm;
 import com.thoughtworks.xstream.XStream;
 
 import entities.BnsHotel;
+import entities.BnsHotelImg;
 
 @Controller
 public class HotelController extends play.mvc.Controller {
@@ -101,8 +103,39 @@ public class HotelController extends play.mvc.Controller {
 		return ok(Json.toJson(hotelService.get(id)));
 	}
 	
-	public static List<BnsHotel> search(String company){
-		return hotelService.search(company);
+	@Security.Authenticated(Secured.class)
+	public static Result saveImg(String filename,String hotel){
+		BnsHotelImg obj =new BnsHotelImg();
+		obj.setId(CryptTool.getUUID());
+		obj.setFilename(filename);
+		obj.setHotel(hotel);
+		obj.setCreatedTime(new Timestamp(System.currentTimeMillis()));
+		hotelService.saveImg(obj);
+		return ok(Json.toJson(obj));
+	}
+	
+	@Security.Authenticated(Secured.class)
+	public static Result delImg(String id){
+		hotelService.delImg(id);
+		return ok();
+	}
+	
+	
+	public static List<Object> search(String company){
+		List<Object> vo =new ArrayList<Object>();
+		List<BnsHotel> list= hotelService.search(company);
+		for(BnsHotel obj:list){
+			Map<String,Object> map =new HashMap<String,Object>();
+			map.put("id", obj.getId());
+			map.put("name", obj.getName());
+			map.put("address", obj.getAddress());
+			map.put("description", obj.getDescription());
+			map.put("price", obj.getPrice());
+			map.put("imgs", hotelService.listHotelImg(obj.getId()));
+			map.put("createdTime", obj.getCreatedTime());
+			vo.add(map);
+		}
+		return vo;
 	}
 
 }
