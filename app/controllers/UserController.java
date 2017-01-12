@@ -144,7 +144,8 @@ public class UserController extends play.mvc.Controller {
 		}
 		vo.put("code", 1);
 		vo.put("message", menus);
-		return ok(Json.toJson(menus));
+		vo.put("role", obj.getCompany()==null||"".equals(obj.getCompany())?1:0);
+		return ok(Json.toJson(vo));
 	}
 	
 	

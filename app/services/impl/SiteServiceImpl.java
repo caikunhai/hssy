@@ -24,7 +24,10 @@ public class SiteServiceImpl  implements SiteService {
 	@Override
 	public BnsSite get(String id) {
 		// TODO Auto-generated method stub
-		return siteRepository.findOne(id);
+		if(siteRepository.exists(id)){
+			return siteRepository.findOne(id);
+		}
+		return new BnsSite();
 	}
 
 	@Override

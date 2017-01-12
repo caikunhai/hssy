@@ -84,9 +84,6 @@ public class SiteController extends play.mvc.Controller {
 			if(data.getState()!=null){
 				obj.setState(data.getState());
 			}
-			if(data.getType()!=null){
-				obj.setType(data.getType());
-			}
 			if(data.getMoney()!=null){
 				obj.setMoney(data.getMoney());
 			}

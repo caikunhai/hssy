@@ -86,11 +86,19 @@ public class ServController extends play.mvc.Controller {
 			if(data.getAdditional()!=null){
 				obj.setAdditional(data.getAdditional());
 			}
+			if(data.getRemark()!=null){
+				obj.setRemark(data.getRemark());
+			}
 		}
 		servService.save(obj);
 		vo.put("code", 1);
 		vo.put("message", "保存成功");
 		return ok(Json.toJson(vo));
+	}
+	
+	@Security.Authenticated(Secured.class)
+	public static Result get(String id){
+		return ok(Json.toJson(servService.get(id)));
 	}
 	
 
