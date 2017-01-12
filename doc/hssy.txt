@@ -274,3 +274,30 @@ CREATE TABLE bns_rule(
   created_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (id)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
+-- -------------------------------------------------
+-- Table structure for bns_works (机构作品)
+-- -------------------------------------------------
+CREATE TABLE bns_works(
+  id varchar(64) NULL COMMENT '主键',
+  company varchar(64) DEFAULT NULL COMMENT '机构ID',
+  filename varchar(100) DEFAULT NULL COMMENT '附件名称',
+  created_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (id)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+-- -------------------------------------------------
+-- Table structure for bns_hotel_img (住宿照片)
+-- -------------------------------------------------
+CREATE TABLE bns_hotel_img(
+  id varchar(64) NULL COMMENT '主键',
+  hotel varchar(64) DEFAULT NULL COMMENT '住宿ID',
+  filename varchar(100) DEFAULT NULL COMMENT '附件名称',
+  created_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (id)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
+
+
