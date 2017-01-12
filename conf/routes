@@ -21,8 +21,13 @@ POST    /site/save			       controllers.SiteController.save()
 GET     /hotel/list			       controllers.HotelController.list()
 GET     /hotel/get			       controllers.HotelController.hotel(id:String)
 POST    /hotel/save			       controllers.HotelController.save()
-GET     /hotel/saveImg			   controllers.HotelController.hotel(filename:String,hotel:String)
-GET     /hotel/delImg			   controllers.HotelController.hotel(id:String)
+GET     /hotel/saveImg			   controllers.HotelController.saveImg(filename:String,hotel:String)
+GET     /hotel/delImg			   controllers.HotelController.delImg(id:String)
+#business
+GET     /business/list			   controllers.ServController.list()
+POST    /business/save			   controllers.ServController.save()
+GET     /business/get			   controllers.ServController.get(id:String)
+
 #User
 GET     /user/menu		  		   controllers.UserController.menu()
 POST    /user/login				   controllers.UserController.login()
