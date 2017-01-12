@@ -28,8 +28,6 @@
 				<th field="name" width="100px">住宿名称</th>
 				<th field="description" width="120px">住宿简介</th>
 				<th field="address" width="120px">详细地址</th>
-				<th field="star" width="60px">信誉评级</th>
-				<th field="type" width="60px">住宿类型</th>
 				<th field="price" width="60px">住宿价格</th>
 				<th field="state" width="60px">使用状态</th>
 				<th field="remark" width="80px">备注信息</th>
@@ -50,17 +48,16 @@
 		var rows = [];
 		for(var i=0;i<xhrObj.length;i++){
 			var url ='hotel_edit.html?id='+xhrObj[i].id;
+			var img ='hotel_img.html?id='+xhrObj[i].id;
 			rows.push({
 				name:xhrObj[i].name,
 				description:xhrObj[i].description,
 				address:xhrObj[i].address,
-				star:xhrObj[i].star,
-				type:xhrObj[i].type==0?'免费':'收费',
 				price:xhrObj[i].price,
 				state:xhrObj[i].state==0?'启用':'禁用',
 				remark:xhrObj[i].remark,
 				createdTime:time.formatterDateTime2(xhrObj[i].createdTime),
-				operation:'&nbsp;<a href=javascript:newOpen("住宿编辑","'+url+'")>编辑</a>'
+				operation:'&nbsp;<a href=javascript:newOpen("住宿编辑","'+url+'")>编辑</a>&nbsp;<a href=javascript:newOpen("住宿照片","'+img+'")>住宿照片</a>'
 	        });
 		}
         $('#dg').datagrid({loadFilter:pagerFilter}).datagrid('loadData', rows);
