@@ -82,10 +82,6 @@ public class SysController extends play.mvc.Controller {
 		return ok(Json.toJson(obj));
 	}
 	
-	@Security.Authenticated(Secured.class)
-	public static Result listFile(String company){
-		return ok(Json.toJson(systemService.listFile(company)));
-	}
 	
 	@Security.Authenticated(Secured.class)
 	public static Result delFile(Long id){

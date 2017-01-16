@@ -27,7 +27,7 @@ import entities.BnsService;
 @Controller
 public class ServController extends play.mvc.Controller {
 	
-	private static ServService servService;
+	public static ServService servService;
 
 	@Autowired
 	@Qualifier("servService")

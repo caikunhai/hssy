@@ -37,7 +37,7 @@ public class Application extends play.mvc.Controller {
 	}
 
 	public static Result index(){
-		return redirect("login.html");
+		return redirect("index.html");
 	}
 	
 	public static Result getFile(String path) {

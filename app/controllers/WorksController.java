@@ -1,6 +1,5 @@
 package controllers;
 import java.sql.Timestamp;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,7 +15,7 @@ import utils.CryptTool;
 @Controller
 public class WorksController extends play.mvc.Controller {
 	
-	private static WorkService workService;
+	public static WorkService workService;
 	
 	@Autowired
 	@Qualifier("workService")
@@ -45,12 +44,7 @@ public class WorksController extends play.mvc.Controller {
 	
 	@Security.Authenticated(Secured.class)
 	public static Result list(String company){
-		return ok(Json.toJson(search(company)));
+		return ok(Json.toJson(workService.listByCompany(company)));
 	}
 	
-	public static List<BnsWorks> search(String company){
-		return workService.listByCompany(company);
-	}
-	
-
 }

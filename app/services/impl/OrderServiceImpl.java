@@ -5,11 +5,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import repositories.BnsOrderChildRepository;
-import repositories.BnsOrderRepository;
-import services.OrderService;
 import entities.BnsOrder;
 import entities.BnsOrderChild;
+import entities.BnsOrderTemp;
+import repositories.BnsOrderChildRepository;
+import repositories.BnsOrderRepository;
+import repositories.BnsOrderTempRepository;
+import services.OrderService;
 
 @Service("orderService")
 public class OrderServiceImpl implements OrderService {
@@ -20,6 +22,8 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private BnsOrderChildRepository orderChildRepository;
 	
+	@Autowired
+	private BnsOrderTempRepository orderTempRepository;
 	
 	@Override
 	public BnsOrder saveOrder(BnsOrder arg0) {
@@ -62,6 +66,30 @@ public class OrderServiceImpl implements OrderService {
 	public BnsOrderChild saveOrderChildren(BnsOrderChild children) {
 		// TODO 自动生成的方法存根
 		return orderChildRepository.save(children);
+	}
+
+	@Override
+	public BnsOrderTemp saveOrderTemp(BnsOrderTemp temp) {
+		// TODO Auto-generated method stub
+		return orderTempRepository.save(temp);
+	}
+
+	@Override
+	public BnsOrderTemp getOrderTemp(String id) {
+		// TODO Auto-generated method stub
+		return orderTempRepository.findOne(id);
+	}
+
+	@Override
+	public void delOrderTemp(String id) {
+		// TODO Auto-generated method stub
+		orderTempRepository.delete(id);
+	}
+
+	@Override
+	public List<BnsOrder> findByCompanyAndTime(String company, String time) {
+		// TODO Auto-generated method stub
+		return orderRepository.findByCompanyAndTime(company, time);
 	}
 
 }

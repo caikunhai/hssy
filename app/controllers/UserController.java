@@ -2,6 +2,7 @@ package controllers;
 
 import static play.data.Form.form;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -24,6 +26,7 @@ import utils.CryptTool;
 import utils.MD5Util;
 import bean.LoginForm;
 import bean.PasswordForm;
+import bean.RegisterForm;
 import bean.UserForm;
 
 import com.thoughtworks.xstream.XStream;
@@ -259,6 +262,43 @@ public class UserController extends play.mvc.Controller {
 	@Security.Authenticated(Secured.class)
 	public static Result get(String id){
 		return ok(Json.toJson(userService.get(id)));
+	}
+	
+	public static Result register() throws IllegalAccessException, InvocationTargetException{
+		Map<String,Object> vo =new HashMap<String,Object>();
+		vo.put("code", 0);
+		Form<RegisterForm> form = form(RegisterForm.class).bindFromRequest();
+		if (form.hasErrors()) {
+			Logger.error("用户注册", form.toString());
+			return status(403,Json.toJson(form.toString()));
+		}
+		RegisterForm data =form.get();
+		XStream xstream = new XStream();
+		xstream.alias("request", RegisterForm.class);
+		Logger.info("用户注册", xstream.toXML(data));
+		BnsCompany company=new BnsCompany();
+		BeanUtils.copyProperties(company, data);
+		company.setId(CryptTool.getUUID());
+		company.setHistory(0);
+		company.setNum(0);
+		company.setState(0);
+		company.setRank(0);
+		company.setCreatedTime(new Timestamp(System.currentTimeMillis()));
+		CompanyController.companyService.save(company);
+		BnsUser obj =new BnsUser();
+		obj.setId(CryptTool.getUUID());
+		obj.setCompany(company.getId());
+		obj.setPassword(MD5Util.encode(data.getPassword()));
+		obj.setSecret(MD5Util.encode(data.getPassword()));
+		obj.setUsername(data.getUsername());
+		obj.setState(0);
+		obj.setRole(ComRole.company.ordinal());
+		obj.setCreatedTime(new Timestamp(System.currentTimeMillis()));
+		userService.saveSysUser(obj);
+		vo.put("code", 1);
+		vo.put("message", "注册成功");
+		vo.put("token", obj.getToken());
+		return ok(Json.toJson(vo));
 	}
 
 	

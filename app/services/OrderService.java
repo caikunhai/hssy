@@ -4,6 +4,7 @@ import java.util.List;
 
 import entities.BnsOrder;
 import entities.BnsOrderChild;
+import entities.BnsOrderTemp;
 
 public interface OrderService {
 	
@@ -20,5 +21,13 @@ public interface OrderService {
 	public List<BnsOrder> listByHostToken(String token);
 
 	public List<BnsOrder> listByServerToken(String token);
+	
+	public BnsOrderTemp saveOrderTemp(BnsOrderTemp temp);
+	
+	public BnsOrderTemp getOrderTemp(String id);
+	
+	public void delOrderTemp(String id);
+
+	public List<BnsOrder> findByCompanyAndTime(String company, String time);
 
 }

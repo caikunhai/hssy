@@ -120,6 +120,11 @@ public class HotelController extends play.mvc.Controller {
 		return ok();
 	}
 	
+	@Security.Authenticated(Secured.class)
+	public static Result hotelImg(String hotel){
+		return ok(Json.toJson(hotelService.listHotelImg(hotel)));
+	}
+	
 	
 	public static List<Object> search(String company){
 		List<Object> vo =new ArrayList<Object>();

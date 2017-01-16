@@ -4,12 +4,14 @@ import static play.data.Form.form;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -23,12 +25,15 @@ import system.log.Logger;
 import utils.BnsUtils;
 import utils.CryptTool;
 import bean.OrderAddForm;
+import bean.TempForm;
 
 import com.thoughtworks.xstream.XStream;
 
 import entities.BnsCompany;
 import entities.BnsOrder;
 import entities.BnsOrderChild;
+import entities.BnsOrderTemp;
+import entities.BnsService;
 import entities.BnsWallet;
 import enumeration.OrderStatus;
 import external.alipay.alipaydirect.util.AlipaydirectBean;
@@ -46,6 +51,66 @@ public class OrderController extends play.mvc.Controller {
 	}
 	
 	@Security.Authenticated(Secured.class)
+	public static Result temp() throws IllegalAccessException, InvocationTargetException, IOException{
+		Map<String,Object> vo =new HashMap<String,Object>();
+		vo.put("code", 0);
+		Form<TempForm> form = form(TempForm.class).bindFromRequest();
+		if (form.hasErrors()) {
+			Logger.error("保存临时订单", form.toString());
+			return status(403,Json.toJson(form.toString()));
+		}
+		TempForm data =form.get();
+		XStream xstream = new XStream();
+		xstream.alias("request", TempForm.class);
+		Logger.info("保存临时订单", xstream.toXML(data));
+		BnsOrderTemp temp =new BnsOrderTemp();
+		BeanUtils.copyProperties(temp, data);
+		temp.setId(CryptTool.getUUID());
+		temp.setToken(request().getHeader("token"));
+		temp.setCreatedTime(new Timestamp(System.currentTimeMillis()));
+		xstream.alias("temp", BnsOrderTemp.class);
+		Logger.info("temp", xstream.toXML(temp));
+		orderService.saveOrderTemp(temp);
+		vo.put("code", 1);
+		vo.put("message",temp.getId());
+		return ok(Json.toJson(vo));
+	}
+	
+	@Security.Authenticated(Secured.class)
+	public static Result view(String id){
+		Map<String,Object> vo =new HashMap<String,Object>();
+		vo.put("code", 0);
+		BnsOrderTemp temp =orderService.getOrderTemp(id);
+		if(temp==null){
+			vo.put("message", "查无此数据");
+			return ok(Json.toJson(vo));
+		}
+		BnsCompany company =CompanyController.companyService.get(temp.getCompany());
+		BnsService business =ServController.servService.get(temp.getBusiness());
+		vo.put("city", company.getCity());
+		vo.put("company", company.getName());
+		vo.put("company_", company.getId());
+		vo.put("business", business.getRemark());
+		vo.put("site", temp.getSite());
+		vo.put("hotel", temp.getHotel());
+		vo.put("code", 1);
+		vo.put("message", "success");
+		return ok(Json.toJson(vo));
+	}
+	
+	@Security.Authenticated(Secured.class)
+	public static Result check(String company,String time){
+		Map<String,Object> vo =new HashMap<String,Object>();
+		vo.put("code", 0);
+		BnsCompany obj =CompanyController.companyService.get(company);
+		List<BnsOrder> list =orderService.findByCompanyAndTime(company,time);
+		System.out.println("========"+list.size());
+		vo.put("code", 1);
+		vo.put("message", obj.getNum()>list.size()?true:false);
+		return ok(Json.toJson(vo));
+	}
+	
+	@Security.Authenticated(Secured.class)
 	public static Result save() throws IllegalAccessException, InvocationTargetException, IOException{
 		String token = request().getHeader("token");
 		Map<String,Object> vo =new HashMap<String,Object>();
@@ -59,18 +124,33 @@ public class OrderController extends play.mvc.Controller {
 		XStream xstream = new XStream();
 		xstream.alias("request", OrderAddForm.class);
 		Logger.info("保存订单", xstream.toXML(data));
+		BnsOrderTemp temp =orderService.getOrderTemp(data.getId());
+		if(temp==null){
+			vo.put("message", "数据验证失败");
+			return ok(Json.toJson(vo));
+		}
+		BnsCompany company =CompanyController.companyService.get(temp.getCompany());
+		BnsService business =ServController.servService.get(temp.getBusiness());
 		BnsOrder order =new BnsOrder();
-		order.setId(CryptTool.getUUID());
+		order.setId(data.getId());
 		order.setCode(CryptTool.getCode("C"));
-		order.setCity(data.getCity());
+		order.setCity(company.getCity());
 		order.setTakeTime(Timestamp.valueOf(data.getTakeTime()));
 		BnsCompany creator =CompanyController.getByToken(token);
 		order.setCreatedUser(creator.getId());
 		order.setCreatedUserName(creator.getName());
-		BnsCompany accept =CompanyController.Obj(data.getAcceptUser());
-		order.setAcceptUser(data.getAcceptUser());
-		order.setAcceptUserName(accept.getName());
-		order.setMoney(data.getMoney());
+		order.setAcceptUser(company.getId());
+		order.setAcceptUserName(company.getName());
+		BigDecimal money =new BigDecimal(0);
+		//加住宿费用
+		money=money.add(temp.getHotelMoney());
+		//景点费用
+		money=money.add(temp.getSiteMoney());
+		//套餐基本费用
+		money=money.add(business.getMoney());
+		//附加套餐费用
+		BigDecimal fujia =business.getPrice().multiply(new BigDecimal(data.getNum()));
+		order.setMoney(money.add(fujia));
 		order.setState(OrderStatus.Wait_Pay.ordinal());
 		order.setCreatedTime(new Timestamp(System.currentTimeMillis()));
 		xstream.alias("order", BnsOrder.class);
@@ -83,17 +163,25 @@ public class OrderController extends play.mvc.Controller {
 		children.setIdcard(data.getIdcard());
 		children.setMobile(data.getMobile());
 		children.setPeople(data.getPeople());
-		children.setCloth(data.getCloth());
-		children.setSite(data.getSite());
-		children.setHotel(data.getHotel());
+		StringBuffer tc=new StringBuffer();
+		tc.append("服装套数："+(business.getUnit()+data.getNum()));
+		tc.append(",底片数量："+(business.getNum()+data.getNum()*business.getAdditional()));
+		children.setCloth(tc.toString());
+		children.setSite(temp.getSite());
+		children.setHotel(temp.getHotel());
 		children.setPickup(data.getPickup());
 		children.setRemark(data.getRemark());
 		children.setCreatedTime(new Timestamp(System.currentTimeMillis()));
 		orderService.saveOrderChildren(children);
 		vo.put("code", 1);
-		vo.put("id", order.getId());
 		vo.put("orderCode", order.getCode());
 		vo.put("money",order.getMoney());
+		vo.put("tc", children.getCloth());
+		vo.put("tcMoney", business.getMoney().add(fujia));
+		vo.put("site", children.getSite());
+		vo.put("siteMoney", temp.getSiteMoney());
+		vo.put("hotel", children.getHotel());
+		vo.put("hotelMoney", temp.getHotelMoney());
 		return ok(Json.toJson(vo));
 	}
 	
@@ -127,6 +215,8 @@ public class OrderController extends play.mvc.Controller {
 		}
 		vo.put("code", 1);
 		orderService.saveOrder(order);
+		//删除临时表对应记录
+		orderService.delOrderTemp(id);
 		return ok(Json.toJson(vo));
 	}
 	

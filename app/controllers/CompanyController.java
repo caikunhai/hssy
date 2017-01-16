@@ -145,7 +145,6 @@ public class CompanyController extends play.mvc.Controller {
 		return ok(Json.toJson(companyService.findService()));
 	}
 	
-	@Security.Authenticated(Secured.class)
 	public static Result search(String city){
 		List<Object> vo = new ArrayList<Object>();
 		List<BnsCompany> list =companyService.listByCity(city);
@@ -163,18 +162,17 @@ public class CompanyController extends play.mvc.Controller {
 			List<BnsService> temp =servService.listByCompany(obj.getId());
 			map.put("serv", temp);
 			if(temp.size()>0){
+				map.put("work", WorksController.workService.listByCompany(obj.getId()));
 				vo.add(map);
 			}
 		}
 		return ok(Json.toJson(vo));
 	}
 	
-	@Security.Authenticated(Secured.class)
-	public static Result change(String id){
+	public static Result hotelSite(String company){
 		Map<String,Object> map =new HashMap<String,Object>();
-		map.put("work", WorksController.search(id));
-		map.put("hotel", HotelController.search(id));
-		map.put("site", SiteController.search(id));
+		map.put("hotel", HotelController.search(company));
+		map.put("site", SiteController.search(company));
 		return ok(Json.toJson(map));
 	}
 	

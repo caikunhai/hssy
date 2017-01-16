@@ -7,26 +7,16 @@ import java.util.Date;
 
 public class OrderAddForm {
 	
-	private String city;
+	private String id;
 	private String takeTime;
 	private String customer;
 	private String idcard;
 	private String mobile;
 	private Integer people;
-	private String cloth;
-	private String site;
-	private String hotel;
+	private Integer num;
 	private Integer pickup;
-	private String acceptUser;
 	private String remark;
-	private BigDecimal money;
 	
-	public String getCity() {
-		return city;
-	}
-	public void setCity(String city) {
-		this.city = city;
-	}
 	public String getCustomer() {
 		return customer;
 	}
@@ -45,29 +35,17 @@ public class OrderAddForm {
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
-	public Integer getPeople() {
-		return people;
+	public String getId() {
+		return id;
 	}
-	public void setPeople(Integer people) {
-		this.people = people;
+	public void setId(String id) {
+		this.id = id;
 	}
-	public String getCloth() {
-		return cloth;
+	public String getTakeTime() {
+		return takeTime+" 00:00:00";
 	}
-	public void setCloth(String cloth) {
-		this.cloth = cloth;
-	}
-	public String getSite() {
-		return site;
-	}
-	public void setSite(String site) {
-		this.site = site;
-	}
-	public String getHotel() {
-		return hotel;
-	}
-	public void setHotel(String hotel) {
-		this.hotel = hotel;
+	public void setTakeTime(String takeTime) {
+		this.takeTime = takeTime;
 	}
 	public Integer getPickup() {
 		return pickup;
@@ -75,29 +53,23 @@ public class OrderAddForm {
 	public void setPickup(Integer pickup) {
 		this.pickup = pickup;
 	}
-	public String getAcceptUser() {
-		return acceptUser;
-	}
-	public void setAcceptUser(String acceptUser) {
-		this.acceptUser = acceptUser;
-	}
 	public String getRemark() {
 		return remark;
 	}
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
-	public BigDecimal getMoney() {
-		return money;
+	public Integer getNum() {
+		return num;
 	}
-	public void setMoney(BigDecimal money) {
-		this.money = money;
+	public void setNum(Integer num) {
+		this.num = num;
 	}
-	public String getTakeTime() {
-		return takeTime+" 00:00:00";
+	public Integer getPeople() {
+		return people;
 	}
-	public void setTakeTime(String takeTime) {
-		this.takeTime = takeTime;
+	public void setPeople(Integer people) {
+		this.people = people;
 	}
 	
 }
