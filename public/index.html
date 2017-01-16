@@ -74,7 +74,7 @@
             	描述：摄影机构栏目
             -->
             <div class="jumbotron" style="padding: 15px 20px;">
-				<div class="panel-group">
+				<div class="panel-group" id="data">
 				    <div class="panel panel-default">
 				      <div class="panel-heading">珍爱网</div>
 				      <div class="panel-body">
@@ -128,7 +128,7 @@
 				      		<p style="font-size: 16px;"><span class="glyphicon glyphicon-map-marker" style="margin-right: 8px;"></span>厦门市环岛路XXXX</p>
 				      		<p style="font-size: 16px;"><span class="glyphicon glyphicon-align-left" style="margin-right: 8px;"></span>联系电每个人都懂憬过自己拍摄婚纱照时的模样，而专业的摄影能完美地留下那些瞬间。</p>
 				      		<div class="list-group">
-								<a href="next.html" class="list-group-item" target="_blank"><span class="badge"><i class="glyphicon glyphicon-usd"></i>12</span>而专业的摄影能完美地留下那些瞬间而专业的摄影能完美地留下那些瞬间</a>
+								<a href="next.html" class="list-group-item" target="_blank"><span class="badge"><i class="glyphicon glyphicon-usd"></i>12</span>专业的摄影能完美地留下那些瞬间而专业的摄影能完美地留下那些瞬间</a>
 							</div>
 				      	</span>
 				      </div>
@@ -143,7 +143,6 @@
 				    </div>
 				</div>
 			</div>
-			
 		</div>
 		
 		<footer class="container-fluid bg-4 text-center">
@@ -154,24 +153,48 @@
 <script>
 	$(function(){
         //顶部菜单栏
-        var token =window.localStorage.getItem("token");
-        var nav_html='';
-        if(token!=null&&token!=''){
-        	nav_html+='<li><a href="center.html">商户中心</a></li>';
-        	nav_html+='<li><a href="login.html">申请代拍</a></li>';
-        	nav_html+='<li><a href="JavaScript:loginOut();">安全退出</a></li>';
-        }else{
-        	nav_html+='<li><a href="login.html">登录</a></li>';
-        	nav_html+='<li><a href="register.html">注册</a></li>';
-        	nav_html+='<li><a href="login.html">商户中心</a></li>';
-        	nav_html+='<li><a href="login.html">申请代拍</a></li>';
-        }
-        $("#topnav").empty().append(nav_html);
+        nav_html();
+        bns.company_search("厦门",data_html);
+        $("#area button").click(function(){
+        	bns.company_search($(this).text(),data_html);
+        });
         
 	});
-	//安全退出
-	function loginOut(){
-		window.localStorage.clear();
-        window.parent.location.href="login.html";
+	
+	//数据列表
+	function data_html(data){
+		var xhrObj = JSON.parse(data);
+		var html='';
+		for(var i=0;i<xhrObj.length;i++){
+			var business =xhrObj[i].serv;
+			var work =xhrObj[i].work;
+			var logo_src=core.qiniu+xhrObj[i].logo;
+			html+='<div class="panel panel-default">';
+			html+='<div class="panel-heading">'+xhrObj[i].name+'</div>';
+			html+='<div class="panel-body">';
+			html+='<span class="col-sm-3"><img src="'+logo_src+'" class="img-rounded" width="100%" height="186px"></span>';
+			html+='<span class="col-sm-9">';
+			html+='<p style="font-size: 16px;margin-top:15px;"><span class="glyphicon glyphicon-phone-alt" style="margin-right: 8px;"></span>'+xhrObj[i].mobile+'</p>';
+			html+='<p style="font-size: 16px;"><span class="glyphicon glyphicon-map-marker" style="margin-right: 8px;"></span>'+xhrObj[i].address+'</p>';
+			html+='<p style="font-size: 16px;"><span class="glyphicon glyphicon-align-left" style="margin-right: 8px;"></span>'+xhrObj[i].gos+'</p>';
+			html+='<div class="list-group">';
+			for(var j=0;j<business.length;j++){
+				var url ="next.html?c="+xhrObj[i].id+"&&s="+business[j].id;
+				html+='<a href="'+url+'" class="list-group-item" target="_blank"><span class="badge"><i class="glyphicon glyphicon-usd"></i> '+business[j].money+'</span>'+business[j].remark+'</a>';
+			}
+			html+='</div>';
+			html+='</span>';
+			html+='</div>';
+			html+='<div class="panel-body">';
+			for(var k=0;k<work.length;k++){
+				var img_src=core.qiniu+work[k].filename;
+				html+='<img src="'+img_src+'" class="col-sm-2">';
+			}
+			html+='</div>';
+			html+='</div>';
+		}
+		$("#data").empty().append(html);
 	}
+	
+	
 </script>

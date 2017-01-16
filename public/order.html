@@ -45,98 +45,296 @@
 			
 			<div class="panel panel-default" style="position: relative;">
 			   <div class="panel-heading">订单内容</div>
-			   <div class="panel-body">
+			   <div class="panel-body" id="view">
 				<p class="tc">拍摄城市：厦门</p>
 				<p class="tc">服务机构：厦门珍爱网</p>
 				<p class="tc">预约套餐：XXXXX</p>
-				<p class="tc">预约景点：鼓浪屿x3&方特王国x3</p>
+				<p class="tc">预约景点：鼓浪屿x3，方特王国x3</p>
 				<p class="tc">预约住宿：如家酒店x3</p>
 			   </div>
-			   <div style="position: absolute;right: 240px;top:100px;" >
-			   		<a href="javascript:history.go(-1);">
-			   		<button type="button" class="btn btn-default btn-lg">
+			   <div style="position: absolute;right: 120px;top:100px;" >
+			   		<button type="button" class="btn btn-default btn-lg" onclick="javascript:history.go(-1);">
 			          <span class="glyphicon glyphicon-repeat"></span> 返回重选
-			        </button></a>
+			        </button>
+			        <button type="button" class="btn btn-default btn-lg" id="btn">
+			          <span class="glyphicon glyphicon-ok"></span> 提交保存
+			        </button>
 			   </div>
 			</div>
 		</div>
 		<div class="container">
 			  <form class="form-horizontal">
-			    <div class="form-group">
-			      <label class="control-label col-sm-2" for="email">拍摄日期:</label>
-				  <div class="input-group date form_date col-sm-4" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-                    <input class="form-control" size="16" type="text" value="" readonly>
+			    <div class="form-group" >
+			      <label class="control-label col-sm-2" for="takeTime">拍摄日期:</label>
+				  <div class="input-group date form_date col-sm-4" style="padding-left: 16px;" data-date="" data-date-format="yyyy-MM-dd" data-link-field="dtp_input2" data-link-format="yyyy-MM-dd">
+                    <input class="form-control col-sm-2" size="16" type="text" value="" readonly>
 					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                   </div>
-				  <input type="hidden" id="dtp_input2" value="" /><br/>
+                  <div class="col-sm-6" id="takeTime_" style="margin-top: -20px;float: right;color: red;"></div>
+				  <input type="hidden" id="dtp_input2" value="" />
 				  
 			    </div>
 			    <div class="form-group">
 			      <label class="control-label col-sm-2" for="customer">客户姓名:</label>
 			      <div class="col-sm-4">          
-			        <input type="password" class="form-control" id="customer" placeholder="输入客户姓名">
+			        <input type="text" class="form-control" id="customer" placeholder="输入客户姓名" onchange="javascript:$('#customer_').empty();">
 			      </div>
+			      <div class="col-sm-4" id="customer_" style="color: red;"></div>
 			    </div>
 			    <div class="form-group">
 			      <label class="control-label col-sm-2" for="idcard">身份证号:</label>
 			      <div class="col-sm-4">          
-			        <input type="password" class="form-control" id="idcard" placeholder="输入身份证号">
+			        <input type="text" class="form-control" id="idcard" placeholder="输入身份证号" onchange="javascript:$('#idcard_').empty();">
 			      </div>
+			      <div class="col-sm-4" id="idcard_" style="color: red;"></div>
 			    </div>
 			    <div class="form-group">
 			      <label class="control-label col-sm-2" for="mobile">联系电话:</label>
 			      <div class="col-sm-4">          
-			        <input type="password" class="form-control" id="mobile" placeholder="输入联系电话">
+			        <input type="text" class="form-control" id="mobile" placeholder="输入联系电话" onchange="javascript:$('#mobile_').empty();">
 			      </div>
+			      <div class="col-sm-4" id="mobile_" style="color: red;"></div>
 			    </div>
 			    <div class="form-group">
 			      <label class="control-label col-sm-2" for="people">同行人数:</label>
 			      <div class="col-sm-4">          
-			        <input type="password" class="form-control" id="people" placeholder="输入同行人数">
+			        <input type="text" class="form-control" id="people" placeholder="输入同行人数" onchange="javascript:$('#people_').empty();">
 			      </div>
+			      <div class="col-sm-4" id="people_" style="color: red;"></div>
 			    </div>
 			    <div class="form-group">
 			      <label class="control-label col-sm-2" for="remark">备注信息:</label>
 			      <div class="col-sm-4">          
-			        <input type="password" class="form-control" id="remark" placeholder="输入备注信息">
+			        <input type="text" class="form-control" id="remark" placeholder="输入备注信息">
 			      </div>
+			    </div>
+			    <div class="form-group">
+			      <label class="control-label col-sm-2" for="people">加拍套数:</label>
+			        <div class="input-group col-sm-3" style="padding-left: 15px;">
+						<span class="input-group-btn"><button class="btn btn-default minus" type="button">-</button></span>
+						<input type="text" class="form-control" placeholder="0" readonly="readonly" width="120px" id="num">
+						<span class="input-group-btn"><button class="btn btn-default plus" type="button">+</button></span>
+					</div>
 			    </div>
 			    <div class="form-group">
 			      <label class="control-label col-sm-2" for="pickup">是否接送:</label>
 			      <div class="col-sm-4 checkbox">          
-				      <input type="checkbox">
+				      <input type="checkbox" id="pickup" value="0">
 			      </div>
 			    </div>
 			  </form>
 		</div>
+		<input type="hidden" name="company">
+		<input type="hidden" name="time" value="0">
 		
-		<div class="container" style="padding: 20px;text-align: right;">
-			<button type="button" class="btn btn-primary btn-block" style="height: 48px;line-height: 36px;">提交订单 </button>
-		</div>
+		
+		<!-- 核对信息 -->
+	  <div class="modal fade" id="modal" role="dialog">
+	    <div class="modal-dialog">
+	      <!-- Modal content-->
+	      <div class="modal-content">
+	        <div class="modal-header">
+	          <button type="button" class="close" data-dismiss="modal">&times;</button>
+	          <h4 class="modal-title">订单支付</h4>
+	        </div>
+	        <div class="modal-body">
+	          <p>订单编号：<span id="code"></span></p>
+	          <p>预约套餐：<span id="tc"></span></p>
+	          <p>套餐费用：<span id="tc_"></span></p>
+	          <p>预约景点：<span id="site"></span></p>
+	          <p>景点费用：<span id="site_"></span></p>
+	          <p>预约住宿：<span id="hotel"></span></p>
+	          <p>住宿费用：<span id="hotel_"></span></p>
+	          <p>应付金额：<span id="money"></span></p>
+	          <p>支付方式：<label><input type="checkbox" name="type" value="余额"> 余额</label>&nbsp;&nbsp;<label><input type="checkbox" value="支付宝" checked name="type"> 支付宝</label></p>
+	        </div>
+	        <div class="modal-footer">
+	          <button type="button" class="btn btn-default" id="ok">立即支付</button>
+	          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+	        </div>
+	      </div>
+	      
+	    </div>
+	  </div>
+		
 	</body>
 </html>
 <script>
 	$(function(){
-		$('[type="checkbox"]').bootstrapSwitch({  
+		//顶部菜单栏
+        nav_html();
+		$.fn.datetimepicker.dates['zh'] = {
+			days:       ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六","星期日"],
+			daysShort:  ["日", "一", "二", "三", "四", "五", "六","日"],
+			daysMin:    ["日", "一", "二", "三", "四", "五", "六","日"],
+			months:     ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11","12"],
+			monthsShort:  ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"],
+			meridiem:    ["上午", "下午"],
+			//suffix:      ["st", "nd", "rd", "th"],
+			today:       "今天"
+		};
+		$('.form_date').datetimepicker({
+			language:  'zh',
+			weekStart: 1,
+			todayBtn:  0,
+			autoclose: 1,
+			todayHighlight: true,
+			startView: 3,
+			minView: 2,
+			forceParse: 0
+		});
+		$('#pickup').bootstrapSwitch({  
 	        onText:"是",  
 	        offText:"否",  
 	        onSwitchChange:function(event,state){  
 	            if(state==true){  
-	                $(this).val("1");  
+	                $(this).val("0");  
 	            }else{  
-	                $(this).val("2");  
+	                $(this).val("1");  
 	            }  
 	        }
 	    });
-		 $('.form_date').datetimepicker({
-		        //language:  'fr',
-		        weekStart: 1,
-		        todayBtn:  1,
-				autoclose: 1,
-				todayHighlight: 1,
-				startView: 2,
-				forceParse: 0,
-		        showMeridian: 1
-		    });
+	    
+	    $(".form_date").change(function(){
+	    	var company=$("input[name=company]").val();
+	    	var val =$("#dtp_input2").val();
+	    	bns.order_check(company,val,function(data){
+	    		var xhrObj = JSON.parse(data);
+	    		var remark ='';
+	    		if(xhrObj.code==0){
+	    			remark ='日期验证异常,请稍后再试';
+	    		}
+	    		if(xhrObj.code==1&&xhrObj.message==true){
+	    			remark='';
+	    			$("input[name=time]").val(1);
+	    		}
+	    		if(xhrObj.code==1&&xhrObj.message==false){
+	    			remark='当天接单已满，请更换日期';
+	    		}
+	    		$("#takeTime_").empty().append(remark);
+	    	});
+	    });
+	    
+	    //加拍服饰调整
+	    $(".minus").click(function(){
+			var obj =$(this).parents(".input-group").find("input");
+			if(obj.val()>0){
+				obj.val(obj.val()*1-1);
+			}
+        });
+        //加拍服饰调整
+		$(".plus").click(function(){
+			var obj =$(this).parents(".input-group").find("input");
+			obj.val(obj.val()*1+1);
+        });
+	    
+	    //初始化数据
+	    bns.get_temp(getQueryParam("t"),view_html);
+	    
+	    //提交订单
+	    $("#btn").click(function(){
+	    	var id=getQueryParam("t");
+	    	var takeTime=$("#dtp_input2").val();
+	    	var customer=$("#customer").val();
+	    	var idcard=$("#idcard").val();
+	    	var mobile=$("#mobile").val();
+	    	var people=$("#people").val();
+	    	var remark =$("#remark").val();
+	    	var num =$("#num").val();
+	    	var pickup=$("#pickup").val();
+	    	if(takeTime==''){
+	    		$("#takeTime_").empty().append('日期不能为空');
+	    		return;
+	    	}
+	    	if(customer==''){
+	    		$("#customer_").empty().append('客户姓名不能为空');
+	    		return;
+	    	}
+	    	if(idcard==''){
+	    		$("#idcard_").empty().append('身份证号不能为空');
+	    		return;
+	    	}
+	    	if(mobile==''){
+	    		$("#mobile_").empty().append('联系电话不能为空');
+	    		return;
+	    	}
+	    	if(people==''){
+	    		$("#people_").empty().append('同行人数不能为空');
+	    		return;
+	    	}
+	    	var obj=new Object();
+	    	obj.id=id;
+	    	obj.takeTime=takeTime;
+	    	obj.customer=customer;
+	    	obj.idcard=idcard;
+	    	obj.mobile=mobile;
+	    	obj.people=people;
+	    	obj.remark=remark;
+	    	obj.num=num;
+	    	obj.pickup=pickup;
+	    	bns.order_save(JSON.stringify(obj),save_callback);
+	    });
+	    
+	    //订单支付
+	    $("#ok").click(function(){
+	    	var id=getQueryParam("t");
+	    	var type=$("input[name=type]:checked").val();
+	    	bns.order_pay(id,type,pay_callback);
+	    });
+	    
 	});
+	
+	//临时订单回调
+	function view_html(data){
+		var xhrObj = JSON.parse(data);
+		if(xhrObj.code==0){
+			window.location.href="index.html";
+		}
+		var data_html='<p class="tc">拍摄城市：'+xhrObj.city+'</p>';
+		data_html+='<p class="tc">服务机构：'+xhrObj.company+'</p>';
+		data_html+='<p class="tc">预约套餐：'+xhrObj.business+'</p>';
+		data_html+='<p class="tc">预约景点：'+xhrObj.site+'</p>';
+		data_html+='<p class="tc">预约住宿：'+xhrObj.hotel+'</p>';
+		$("#view").empty().append(data_html);
+		$("input[name=company]").val(xhrObj.company_);
+	}
+	
+	//保存后回调
+	function save_callback(data){
+		var xhrObj = JSON.parse(data);
+		if(xhrObj.code==1){
+			$("#code").empty().append(xhrObj.orderCode);
+			$("#tc").empty().append(xhrObj.tc);
+			$("#tc_").empty().append(xhrObj.tcMoney);
+			$("#site").empty().append(xhrObj.site);
+			$("#site_").empty().append(xhrObj.siteMoney);
+			$("#hotel").empty().append(xhrObj.hotel);
+			$("#hotel_").empty().append(xhrObj.hotelMoney);
+			$("#money").empty().append(xhrObj.money);
+			$("#modal").modal(); 
+		}
+	}
+	
+	//支付后回调
+	function pay_callback(data){
+		$("#modal").modal("hide"); 
+		var xhrObj = JSON.parse(data);
+		if(xhrObj.code==0){
+			alert(xhrObj.message);
+			return;
+		}
+		if(xhrObj.type=='支付宝'){
+			$("body").append(xhrObj.message);
+		}
+		if(xhrObj.type=='余额'){
+			alert("订单支付成功");
+		}
+	}
+	
 </script>
+				
+				
+				
+
+
+

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- 新 Bootstrap 核心 CSS 文件 -->
+		<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+		<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+		<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+		<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+		<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src='js/core.js'> </script>
+		<script type="text/javascript" src='js/bns.js'> </script>
+		<script type="text/javascript" src='js/area.js'> </script>
+		<title>婚纱摄影互助平台</title>
+		<style type="text/css">
+			.container,.row{padding: 0;}
+		</style>
+	</head>
+	<body>
+		<!-- Navbar -->
+		<nav class="navbar navbar-default">
+			<div class="container">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="javascript:;">婚纱摄影互助平台</a>
+				</div>
+				<div class="navbar-header navbar-right">
+			      <ul class="nav navbar-nav" id="topnav"></ul>
+				</div>
+			</div>
+		</nav>
+		
+		<div class="container" style="margin-top: -15px;">
+			<img src="img/top.jpg" width="100%"/>
+		</div>
+		
+		<div class="container" style="margin-top: 30px;">
+			<form class="form-horizontal">
+				<div class="form-group">
+			      <label class="control-label col-sm-2" for="city">所在城市:</label>
+			      <div class="col-sm-4">
+					<select class="selectpicker" style="width: 100%;border-radius: 4px;height: 32px;">
+					  <option>1</option>
+					</select>
+				  </div>
+			      <div class="col-sm-4" id="city_" style="color: red;"></div>
+			    </div>
+			    <div class="form-group">
+			      <label class="control-label col-sm-2" for="name">机构名称:</label>
+			      <div class="col-sm-4">          
+			        <input type="text" class="form-control" id="name" placeholder="机构名称" onchange="javascript:$('#name_').empty();">
+			      </div>
+			      <div class="col-sm-4" id="name_" style="color: red;"></div>
+			    </div>
+			    <div class="form-group">
+			      <label class="control-label col-sm-2" for="address">机构地址:</label>
+			      <div class="col-sm-4">          
+			        <input type="text" class="form-control" id="address" placeholder="机构地址" onchange="javascript:$('#address_').empty();">
+			      </div>
+			      <div class="col-sm-4" id="address_" style="color: red;"></div>
+			    </div>
+			    <div class="form-group">
+			      <label class="control-label col-sm-2" for="frName">机构法人:</label>
+			      <div class="col-sm-4">          
+			        <input type="text" class="form-control" id="frName" placeholder="法人姓名" onchange="javascript:$('#frName_').empty();">
+			      </div>
+			      <div class="col-sm-4" id="frName_" style="color: red;"></div>
+			    </div>
+			    <div class="form-group">
+			      <label class="control-label col-sm-2" for="frMobile">法人电话:</label>
+			      <div class="col-sm-4">          
+			        <input type="text" class="form-control" id="frMobile" placeholder="法人电话" onchange="javascript:$('#frMobile_').empty();">
+			      </div>
+			      <div class="col-sm-4" id="frMobile_" style="color: red;"></div>
+			    </div>
+			    <div class="form-group">
+			      <label class="control-label col-sm-2" for="linkman">联系人:</label>
+			      <div class="col-sm-4">          
+			        <input type="text" class="form-control" id="linkman" placeholder="联系人" onchange="javascript:$('#linkman_').empty();">
+			      </div>
+			      <div class="col-sm-4" id="linkman_" style="color: red;"></div>
+			    </div>
+			    <div class="form-group">
+			      <label class="control-label col-sm-2" for="mobile">联系电话:</label>
+			      <div class="col-sm-4">          
+			        <input type="text" class="form-control" id="mobile" placeholder="联系电话" onchange="javascript:$('#mobile_').empty();">
+			      </div>
+			      <div class="col-sm-4" id="mobile_" style="color: red;"></div>
+			    </div>
+			    <div class="form-group">
+			      <label class="control-label col-sm-2" for="username">登录账号:</label>
+			      <div class="col-sm-4">          
+			        <input type="text" class="form-control" id="username" placeholder="登录账号">
+			      </div>
+			      <div class="col-sm-4" id="username_" style="color: red;"></div>
+			    </div>
+			    <div class="form-group">
+			      <label class="control-label col-sm-2" for="password">登录密码:</label>
+			      <div class="col-sm-4">          
+			        <input type="password" class="form-control" id="password" placeholder="登录密码">
+			      </div>
+			      <div class="col-sm-4" id="password_" style="color: red;"></div>
+			    </div>
+			    <div class="form-group">
+			      <label class="control-label col-sm-2" for="pasw">再次输入密码:</label>
+			      <div class="col-sm-4">          
+			        <input type="password" class="form-control" id="pasw" placeholder="再次输入密码">
+			      </div>
+			      <div class="col-sm-4" id="pasw_" style="color: red;"></div>
+			    </div>
+			  </form><br/>
+			  <button type="button" class="btn btn-primary btn-lg btn-block" id="btn">提交注册</button>
+		</div>
+		<br/><br/><br/><br/>
+	</body>
+</html>
+<script>
+	$(function(){
+        //顶部菜单栏
+        nav_html();
+        var area =area_data(0);
+        var select_html='';
+        for(var i=0;i<area.length;i++){
+        	select_html+='<option value='+area[i]+'>'+area[i]+'</option>';
+        }
+        $(".selectpicker").empty().append(select_html);
+        $("#btn").click(function(){
+        	var city =$(".selectpicker").val();
+        	var name=$("#name").val();
+        	var address=$("#address").val();
+        	var frName=$("#frName").val();
+        	var frMobile=$("#frMobile").val();
+        	var linkman=$("#linkman").val();
+        	var mobile=$("#mobile").val();
+        	var username=$("#username").val();
+        	var password=$("#password").val();
+        	var pasw=$("#pasw").val();
+        	if(name==''){
+        		$("#name_").empty().append('机构名称不能为空');
+        	}
+        	var obj =Object();
+        	obj.city =city;
+        	obj.name=name;
+        	obj.address=address;
+        	obj.frName=frName;
+        	obj.frMobile=frMobile;
+        	obj.linkman=linkman;
+        	obj.mobile=mobile;
+        	obj.username=username;
+        	obj.password=password;
+        	bns.register(JSON.stringify(obj),register_callback);
+        });
+        
+	});
+	
+	
+	//数据列表
+	function register_callback(data){
+		var xhrObj = JSON.parse(data);
+		alert(xhrObj.message);
+		if(xhrObj.code==1){
+			window.location.href='login.html';
+		}
+	}
+	
+</script>

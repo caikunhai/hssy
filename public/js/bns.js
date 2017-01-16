@@ -14,7 +14,7 @@ var bns = {};
 				callback(xhr.responseText);
 			}
 		};
-	};	
+	};
 
 	//需要token执行AJAX请求
 	bns.ajax_private = function (params, callback) {
@@ -68,6 +68,15 @@ var bns = {};
 	    bns.ajax_private(params, callback);
 	};
 	
+	//住宿保存
+	bns.hotel_save = function (data,callback) {
+	    var params =new Object();
+	    params.url=core.host + '/hotel/save';
+	    params.method='POST';
+	    params.data=data;
+	    bns.ajax_private(params, callback);
+	};
+	
 	//住宿查询（客商）
 	bns.hotel_list = function (callback) {
 	    var params =new Object();
@@ -95,12 +104,30 @@ var bns = {};
 	    bns.ajax_private(params, callback);
 	};
 	
-	//住宿保存
-	bns.hotel_save = function (data,callback) {
+	//住宿照片
+	bns.list_hotel_image = function (hotel,callback) {
 	    var params =new Object();
-	    params.url=core.host + '/hotel/save';
-	    params.method='POST';
-	    params.data=data;
+	    params.url=core.host + '/hotel/image?hotel='+hotel;
+	    params.method='GET';
+	    params.data=null;
+	    bns.ajax_private(params, callback);
+	};
+	
+	//保存住宿照片
+	bns.save_hotel_image = function (hotel,filename,callback) {
+	    var params =new Object();
+	    params.url=core.host + '/hotel/saveImg?hotel='+hotel+'&&filename='+filename;
+	    params.method='GET';
+	    params.data=null;
+	    bns.ajax_private(params, callback);
+	};
+	
+	//删除住宿照片
+	bns.del_hotel_image = function (id,callback) {
+	    var params =new Object();
+	    params.url=core.host + '/hotel/delImg?id='+id;
+	    params.method='GET';
+	    params.data=null;
 	    bns.ajax_private(params, callback);
 	};
 	
@@ -228,7 +255,7 @@ var bns = {};
 	    params.url=encodeURI(core.host + '/company/search?city='+city);
 	    params.method='GET';
 	    params.data=null;
-	    bns.ajax_private(params, callback);
+	    bns.ajax_public(params, callback);
 	};
 	
 	//公司详情
@@ -321,6 +348,24 @@ var bns = {};
 	    bns.ajax_private(params, callback);
 	};
 	
+	//保存临时订单
+	bns.temp_save = function (data,callback) {
+	    var params =new Object();
+	    params.url=core.host + '/temp/save';
+	    params.method='POST';
+	    params.data=data;
+	    bns.ajax_private(params, callback);
+	};
+	
+	//获取临时订单
+	bns.get_temp = function (id,callback) {
+	    var params =new Object();
+	    params.url=core.host + '/temp/get?id='+id;
+	    params.method='GET';
+	    params.data=null;
+	    bns.ajax_private(params, callback);
+	};
+	
 	
 	//保存订单
 	bns.order_save = function (data,callback) {
@@ -328,6 +373,15 @@ var bns = {};
 	    params.url=core.host + '/order/save';
 	    params.method='POST';
 	    params.data=data;
+	    bns.ajax_private(params, callback);
+	};
+	
+	//保存订单
+	bns.order_check = function (company,time,callback) {
+	    var params =new Object();
+	    params.url=core.host + '/order/check?company='+company+'&&time='+time;
+	    params.method='GET';
+	    params.data=null;
 	    bns.ajax_private(params, callback);
 	};
 	
@@ -509,5 +563,23 @@ var bns = {};
 	    params.method='GET';
 	    params.data=null;
 	    bns.ajax_private(params, callback);
+	};
+	
+	//查询机构下面住宿和景点
+	bns.list_hotel_site = function (company,callback) {
+	    var params =new Object();
+	    params.url=core.host + '/company/hotelSite?company='+company;
+	    params.method='GET';
+	    params.data=null;
+	    bns.ajax_public(params, callback);
+	};
+	
+	//查询机构下面住宿和景点
+	bns.register = function (data,callback) {
+	    var params =new Object();
+	    params.url=core.host + '/user/register';
+	    params.method='POST';
+	    params.data=data;
+	    bns.ajax_public(params, callback);
 	};
 	

@@ -25,15 +25,14 @@
                 <thead>
 		<thead>
 			<tr>
-				<th field="name" width="120">套餐名称</th>
-				<th field="unit" width="80">包含套数</th>
-				<th field="num" width="80">包含件数</th>
-				<th field="additional" width="80">递增件数</th>
-				<th field="price" width="80">递增价格</th>
-				<th field="money" width="80">基础价格</th>
-				<th field="state" width="80">服饰状态</th>
-				<th field="remark">套餐介绍</th>
-				<th field="operation">操作</th>
+				<th field="name" width="100">套餐名称</th>
+				<th field="unit" width="70">包含套数</th>
+				<th field="num" width="70">包含件数</th>
+				<th field="additional" width="70">递增件数</th>
+				<th field="price" width="70">递增价格</th>
+				<th field="money" width="70">基础价格</th>
+				<th field="remark" width="560">套餐介绍</th>
+				<th field="operation" width="80">操作</th>
 			</tr>
 		</thead>
 	</table>
@@ -90,7 +89,6 @@
 				additional:xhrObj[i].additional,
 				price:xhrObj[i].price,
 				money:xhrObj[i].money,
-				state:xhrObj[i].state==0?'启用':'禁用',
 				remark:xhrObj[i].remark,
 				operation:'<a href="cloth_edit.html?id='+xhrObj[i].id+'">编辑</a>'
 	        });

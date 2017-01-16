@@ -139,3 +139,24 @@ function randomCode(){
 	return str+timestamp;
 }
 
+//安全退出
+function loginOut(){
+	window.localStorage.clear();
+    window.parent.location.href="login.html";
+}
+
+function nav_html(){
+	var token =window.localStorage.getItem("token");
+    var nav_html='';
+    if(token!=null&&token!=''){
+        nav_html+='<li><a href="center.html">商户中心</a></li>';
+        nav_html+='<li><a href="login.html">申请代拍</a></li>';
+        nav_html+='<li><a href="JavaScript:loginOut();">安全退出</a></li>';
+    }else{
+        nav_html+='<li><a href="login.html">登录</a></li>';
+        nav_html+='<li><a href="register.html">注册</a></li>';
+        nav_html+='<li><a href="login.html">商户中心</a></li>';
+        nav_html+='<li><a href="apply.html">申请代拍</a></li>';
+    }
+    $("#topnav").empty().append(nav_html);
+}

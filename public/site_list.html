@@ -25,11 +25,10 @@
                 <thead>
 		<thead>
 			<tr>
-				<th field="name">景点名称</th>
-				<th field="money" width="60px">景点门票</th>
-				<th field="state" width="60px">使用状态</th>
-				<th field="description">景点简介</th>
-				<th field="remark">备注信息</th>
+				<th field="name" width="160">景点名称</th>
+				<th field="money" width="80px">景点门票</th>
+				<th field="state" width="80px">使用状态</th>
+				<th field="description" width="600px">景点简介</th>
 				<th field="operation" width="100px">操作</th>
 			</tr>
 		</thead>
@@ -50,7 +49,6 @@
 				money:xhrObj[i].money,
 				state:xhrObj[i].state==0?'启用':'禁用',
 				description:xhrObj[i].description,
-				remark:xhrObj[i].remark,
 				num:xhrObj[i].num,
 				operation:'<a href="site_edit.html?id='+xhrObj[i].id+'">编辑</a>'
 	        });

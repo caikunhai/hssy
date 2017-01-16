@@ -26,11 +26,11 @@
 		<thead>
 			<tr>
 				<th field="name" width="150px">住宿名称</th>
-				<th field="address" width="150px">详细地址</th>
-				<th field="price" width="60px">住宿价格</th>
-				<th field="state" width="60px">使用状态</th>
-				<th field="description">住宿简介</th>
-				<th field="operation" width="160px">操作</th>
+				<th field="address" width="180px">详细地址</th>
+				<th field="price" width="80px">住宿价格</th>
+				<th field="state" width="80px">使用状态</th>
+				<th field="description" width="500px">住宿简介</th>
+				<th field="operation" width="100px">操作</th>
 			</tr>
 		</thead>
 	</table>
@@ -51,7 +51,7 @@
 				price:xhrObj[i].price,
 				state:xhrObj[i].state==0?'启用':'禁用',
 				description:xhrObj[i].description,
-				operation:'<a href="hotel_edit.html?id='+xhrObj[i].id+'">编辑</a>&nbsp;<a href="hotel_img.html?id='+xhrObj[i].id+'")>住宿照片</a>'
+				operation:'<a href="hotel_edit.html?id='+xhrObj[i].id+'">编辑</a>&nbsp;<a href="hotel_img.html?hotel='+xhrObj[i].id+'")>住宿照片</a>'
 	        });
 		}
         $('#dg').datagrid({loadFilter:pagerFilter}).datagrid('loadData', rows);

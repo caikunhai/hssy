@@ -12,7 +12,7 @@
 		<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
 		<script type="text/javascript" src='js/core.js'> </script>
-		<script type="text/javascript" src='js/bns.js'> </script>
+		<script type="text/javascript" src='js/bns.js?t=1'> </script>
 		<title>婚纱摄影互助平台</title>
 		<style type="text/css">
 			.container,.row{padding: 0;}
@@ -53,8 +53,8 @@
 			  </div>
 			</nav>
 			
-			<div class="jumbotron" style="padding: 15px 20px;" id="site">
-				<div class="row">
+			<div class="jumbotron" style="padding: 15px 20px;">
+				<div class="row" id="site">
 			    <div class="col-sm-4">
 			      <p><strong>珍珠湾</strong></p>
 			      <img src="img/c001.jpg" alt="Random Name" width="312" height="172">
@@ -109,8 +109,8 @@
 			  </div>
 			</div>
 			
-			<div class="jumbotron" style="padding: 15px 20px;" id="hotel">
-				<div class="panel-group">
+			<div class="jumbotron" style="padding: 15px 20px;">
+				<div class="panel-group" id="hotel">
 				    <div class="panel panel-default" style="position: relative;">
 				      <div class="panel-heading">如家酒店</div>
 				      <div class="panel-body">
@@ -164,26 +164,147 @@
 		</div>
 		
 		<div class="container" style="padding: 20px;text-align: right;">
-			<a href="order.html"><button type="button" class="btn btn-primary btn-block" style="height: 48px;line-height: 36px;">填写客户信息 </button></a>
+			<button type="button" class="btn btn-primary btn-block" id="btn" tyle="height: 48px;line-height: 36px;">确定选择 </button>
 		</div>
 		
 		<footer class="container-fluid bg-4 text-center">
 		  <p style="height: 48px;line-height: 48px;">版权所有，盗版必究</p> 
 		</footer>
+		
+		<!-- 核对信息 -->
+	  <div class="modal fade" id="modal" role="dialog">
+	    <div class="modal-dialog">
+	      <!-- Modal content-->
+	      <div class="modal-content">
+	        <div class="modal-header">
+	          <button type="button" class="close" data-dismiss="modal">&times;</button>
+	          <h4 class="modal-title">核对信息</h4>
+	        </div>
+	        <div class="modal-body">
+	          <p>Some text in the modal.</p>
+	        </div>
+	        <div class="modal-footer">
+	          <button type="button" class="btn btn-default" id="ok">下单</button>
+	          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+	        </div>
+	      </div>
+	      
+	    </div>
+	  </div>
+		
 	</body>
 </html>
 <script>
 	$(function(){
-		$("#site .minus").click(function(){
-			var obj =$(this).parents(".input-group").find("input");
-			if(obj.val()>0){
-				obj.val(obj.val()*1-1);
+		var company =getQueryParam("c");
+		//初始化数据
+		bns.list_hotel_site(company,list_html);
+        //顶部菜单栏
+        nav_html();
+        
+        //弹出模态窗口
+        $("#btn").click(function(){
+        	var token =window.localStorage.getItem("token");
+        	if(token==null||token==''){
+        		window.parent.location.href="login.html";
+        		return;
+        	}
+        	var modal_data_html='';
+        	var site_true='';
+        	var site_money=0;
+        	var flag=false;
+        	$("#site input").each(function(){
+        		if($(this).val()!=0){
+        			site_true+=$(this).attr("site")+'x'+$(this).val()+'，';
+        			site_money+=$(this).attr("price")*1*$(this).val();
+        			flag =true;
+        		}
+        	});
+        	site_true=site_true.substring(0,site_true.length-1);
+        	modal_data_html+='<p title='+site_true+'>选择景点：'+site_true+'</p>';
+        	modal_data_html+='<p title='+site_money+'>景点费用：'+site_money+'元</p>';
+        	$("#hotel input").each(function(){
+        		if($(this).val()!=0){
+        			var hotel_true=$(this).attr("hotel")+'x'+$(this).val();
+        			var hotel_money=$(this).attr("price")*1*$(this).val();
+        			modal_data_html+='<p title='+hotel_true+'>选择住宿：'+hotel_true+'</p>';
+        			modal_data_html+='<p title='+hotel_money+'>住宿费用：'+hotel_money+'元</p>';
+        		}
+        	});
+        	$(".modal-body").empty().append(modal_data_html);
+        	if(flag){
+        		$("#modal").modal(); 
+        	}else{
+        		alert('请选择拍摄景点');
+        		return;
+        	}
+        	 
+        });
+        
+        $("#ok").click(function(){
+        	var obj =new Object();
+        	obj.company=company;
+        	obj.business=getQueryParam("s");
+        	obj.site=$(".modal-body").find("p").eq(0).attr("title");
+        	obj.siteMoney=$(".modal-body").find("p").eq(1).attr("title");
+        	var hotel_true =$(".modal-body").find("p").eq(2).attr("title");
+        	var hotel_money =$(".modal-body").find("p").eq(3).attr("title");
+        	obj.hotel=hotel_true==undefined?'':hotel_true;
+        	obj.hotelMoney=hotel_money==undefined?'0':hotel_money;
+        	bns.temp_save(JSON.stringify(obj),temp_callback);
+        });
+        
+	});
+	
+	//保存临时订单后回调
+	function temp_callback(data){
+		var xhrObj = JSON.parse(data);
+		if(xhrObj.code==1){
+			window.location.href="order.html?t="+xhrObj.message;
+		}
+	}
+	
+	
+	
+	//请求回调页面数据
+	function list_html(data){
+		var xhrObj = JSON.parse(data);
+		hotel_html(xhrObj.hotel);
+		site_html(xhrObj.site);
+	}
+	
+	//住宿数据列表
+	function hotel_html(list){
+		var data_html='';
+		for(var i=0;i<list.length;i++){
+			var imgs =list[i].imgs;
+			data_html+='<div class="panel panel-default" style="position: relative;">';
+			data_html+='<div class="panel-heading">'+list[i].name+'</div>';
+			data_html+='<div class="panel-body">';
+			data_html+='<p style="margin-top: 15px;font-size: 16px;"><span class="glyphicon glyphicon-usd" style="margin-right: 8px;"></span>'+list[i].price+'元</p>';
+			data_html+='<p style="margin-top: 0px;font-size: 16px;"><span class="glyphicon glyphicon-map-marker" style="margin-right: 8px;"></span>'+list[i].address+'</p>';
+			data_html+='<p style="margin-top: 0px;font-size: 14px;">'+list[i].description+'</p>';
+			data_html+='</div>';
+			data_html+='<div class="panel-body">';
+			for(var j=0;j<imgs.length;j++){
+				var img_src=core.qiniu+imgs[i].filename;
+				data_html+='<img src="'+img_src+'"  width="255" height="180" class="img-rounded">';
 			}
-        });
-		$("#site .plus").click(function(){
-			var obj =$(this).parents(".input-group").find("input");
-			obj.val(obj.val()*1+1);
-        });
+			data_html+='</div>';
+			data_html+='<div class="row" style="position: absolute;right: 20px;top:70px;width:240px;" >';
+			data_html+='<div class="col-sm-5" style="line-height:32px;text-align:center;font-size:15px;">预定房间</div>';
+			data_html+='<div class="col-sm-7">';
+			data_html+='<div class="input-group">';
+			data_html+='<span class="input-group-btn"><button class="btn btn-default minus" type="button">-</button></span>';
+			data_html+='<input type="text" class="form-control" placeholder="0" readonly="readonly" hotel='+list[i].name+' price='+list[i].price+'>';
+			data_html+='<span class="input-group-btn"><button class="btn btn-default plus" type="button">+</button></span>';
+			data_html+='</div>';
+			data_html+='</div>';
+			data_html+='</div>';
+			data_html+='</div>';
+		}
+		
+		$("#hotel").empty().append(data_html);
 		$("#hotel .minus").click(function(){
 			var obj =$(this).parents(".input-group").find("input");
 			if(obj.val()>0){
@@ -197,59 +318,56 @@
 			}
 			obj.val(obj.val()*1+1);
         });
-		$('[type="checkbox"]').bootstrapSwitch({  
-	        onText:"选中",  
-	        offText:"取消",  
-	        onSwitchChange:function(event,state){  
-	            if(state==true){  
-	                $(this).val("1");  
-	            }else{  
-	                $(this).val("2");  
-	            }  
-	        }
-	    });
-    	$("#area button").click(function(){
-        	$("#area button").removeClass("areaOn");
-        	$(this).addClass("areaOn");
+		
+	}
+	
+	//景点数据列表
+	function site_html(list){
+		var data_html='';
+		for(var i=0;i<list.length;i++){
+			var img_src=core.qiniu+list[i].logo;
+			data_html+='<div class="col-sm-4">';
+			data_html+='<p><strong>'+list[i].name+'</strong></p>';
+			data_html+='<img src="'+img_src+'" alt="Random Name" width="312" height="172">';
+			data_html+='<p style="margin-top: 15px;font-size: 16px;"><span class="glyphicon glyphicon-usd" style="margin-right: 8px;"></span>'+list[i].money+'元</p>';
+			data_html+='<p style="margin-top: 0px;font-size: 16px;"><span class="glyphicon glyphicon-map-marker" style="margin-right: 8px;"></span>'+list[i].address+'</p>';
+			data_html+='<p style="margin-top: 0px;font-size: 14px;">'+list[i].description+'</p>';
+			data_html+='<div class="row">';
+			data_html+='<div class="col-sm-6" style="line-height:32px;font-size:15px;">预定门票（张）</div>';
+			data_html+='<div class="col-sm-5">';
+			data_html+='<div class="input-group">';
+			data_html+='<span class="input-group-btn"><button class="btn btn-default minus" type="button">-</button></span>';
+			data_html+='<input type="text" class="form-control" placeholder="0" value="0" readonly="readonly" site='+list[i].name+' price='+list[i].money+'>';
+			data_html+='<span class="input-group-btn"><button class="btn btn-default plus" type="button">+</button></span>';
+			data_html+='</div>';
+			data_html+='</div>';
+			data_html+='</div>';
+			data_html+='</div>';
+		}
+		$("#site").empty().append(data_html);
+		$("#site .minus").click(function(){
+			var obj =$(this).parents(".input-group").find("input");
+			if(obj.val()>0){
+				obj.val(obj.val()*1-1);
+			}
         });
-		//景点遮罩层
-		var a=new sHover("sHoverItem","sIntro");
-		 a.set({
-		 	slideSpeed:5,
-		 	opacityChange:true,
-		 	opacity:80
-		 });
-        //顶部菜单栏
-        var token =window.localStorage.getItem("token");
-        var nav_html='';
-        if(token!=null&&token!=''){
-        	nav_html+='<li><a href="center.html">商户中心</a></li>';
-        	nav_html+='<li><a href="login.html">申请代拍</a></li>';
-        	nav_html+='<li><a href="JavaScript:loginOut();">安全退出</a></li>';
-        }else{
-        	nav_html+='<li><a href="login.html">登录</a></li>';
-        	nav_html+='<li><a href="register.html">注册</a></li>';
-        	nav_html+='<li><a href="login.html">商户中心</a></li>';
-        	nav_html+='<li><a href="login.html">申请代拍</a></li>';
-        }
-        $("#topnav").empty().append(nav_html);
-        
-        $(".A_Demo").PicCarousel({
-    		"width":1000,		//幻灯片的宽度
-    		"height":300,		//幻灯片的高度
-    		"posterWidth":520,	//幻灯片第一帧的宽度
-    		"posterHeight":300, //幻灯片第一张的高度
-    		"scale":0.9,		//记录显示比例关系
-    		"speed":1500,		//记录幻灯片滚动速度
-    		"autoPlay":true,	//是否开启自动播放
-    		"delay":1000,		//自动播放间隔
-    		"verticalAlign":"top"	//图片对齐位置
-    	});
-        
-	});
-	//安全退出
-	function loginOut(){
-		window.localStorage.clear();
-        window.parent.location.href="login.html";
+		$("#site .plus").click(function(){
+			var obj =$(this).parents(".input-group").find("input");
+			obj.val(obj.val()*1+1);
+        });
 	}
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
