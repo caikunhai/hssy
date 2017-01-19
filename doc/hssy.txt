@@ -184,6 +184,23 @@ CREATE TABLE bns_order_child(
   PRIMARY KEY(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+-- ----------------------------------------------------------
+-- Table structure for bns_order_temp (订单临时表)
+-- ----------------------------------------------------------
+CREATE TABLE bns_order_temp(
+  id varchar(64) NULL COMMENT '主键',
+  token varchar(100) DEFAULT NULL COMMENT '请求token',
+  company varchar(64) DEFAULT NULL COMMENT '选择机构',
+  business varchar(64) DEFAULT NULL COMMENT '选择套餐',
+  site varchar(255) DEFAULT NULL COMMENT '选择景点',
+  site_money decimal(6,2) DEFAULT 0 COMMENT '景点费用',
+  hotel varchar(255) DEFAULT NULL COMMENT '选择住宿',
+  hotel_money decimal(6,2) DEFAULT 0 COMMENT '住宿费用',
+  created_time timestamp DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 -- ----------------------------------------------------------
 -- Table structure for bns_order_img (订单附件表)
 -- ----------------------------------------------------------
