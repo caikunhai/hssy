@@ -216,7 +216,8 @@
         	$("#site input").each(function(){
         		if($(this).val()!=0){
         			site_true+=$(this).attr("site")+'x'+$(this).val()+'，';
-        			site_money+=$(this).attr("price")*1*$(this).val();
+        			//site_money+=$(this).attr("price")*1*$(this).val();
+        			site_money+=$(this).attr("price")*1;
         			flag =true;
         		}
         	});
@@ -226,7 +227,8 @@
         	$("#hotel input").each(function(){
         		if($(this).val()!=0){
         			var hotel_true=$(this).attr("hotel")+'x'+$(this).val();
-        			var hotel_money=$(this).attr("price")*1*$(this).val();
+        			//var hotel_money=$(this).attr("price")*1*$(this).val();
+        			var hotel_money=$(this).attr("price")*1;
         			modal_data_html+='<p title='+hotel_true+'>选择住宿：'+hotel_true+'</p>';
         			modal_data_html+='<p title='+hotel_money+'>住宿费用：'+hotel_money+'元</p>';
         		}
