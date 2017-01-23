@@ -48,6 +48,7 @@ GET     /company/hotelSite		   controllers.CompanyController.hotelSite(company:S
 #Apply
 POST    /apply/save				   controllers.ApplyController.save()
 GET     /apply/get				   controllers.ApplyController.get(company:String)
+GET     /apply/list				   controllers.ApplyController.list()
 #Cash
 POST    /cash/save				   controllers.CashController.save()
 GET     /cash/list				   controllers.CashController.list()
