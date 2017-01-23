@@ -102,6 +102,8 @@ public class ApplyController extends play.mvc.Controller {
 		return ok(Json.toJson(vo));
 	}
 	
-	
+	public static Result list() {
+		return ok(Json.toJson(applyService.list()));
+	}
 
 }

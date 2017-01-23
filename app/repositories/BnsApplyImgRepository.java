@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.transaction.annotation.Transactional;
 
 import entities.BnsApplyImg;
 
@@ -15,8 +14,7 @@ public interface BnsApplyImgRepository extends CrudRepository<BnsApplyImg, Strin
 	public List<BnsApplyImg> listImgs(String apply);
 
 	@Modifying
-	@Transactional
-	@Query("DELETE from bns_apply_img WHERE apply=?")
+	@Query(value="DELETE from bns_apply_img WHERE apply=?",nativeQuery=true)
 	public void remove(String apply);
 
 }
