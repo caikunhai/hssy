@@ -592,28 +592,20 @@ var bns = {};
 	    bns.ajax_private(params, callback);
 	};
 	
-	//查询申请资料
+	//保存申请资料
 	bns.apply_save = function (data,callback) {
 	    var params =new Object();
 	    params.url=core.host + '/apply/save';
 	    params.method='POST';
 	    params.data=data;
-	    bns.ajax_public(params, callback);
+	    bns.ajax_private(params, callback);
 	};
 	
-	//保存申请照片
-	bns.apply_Img_save = function (filename,callback) {
-	    var params =new Object();
-	    params.url=core.host + '/apply/saveImg?filename='+filename;
-	    params.method='GET';
-	    params.data=null;
-	    bns.ajax_public(params, callback);
-	};
 	
-	//删除申请照片
-	bns.apply_Img_del = function (id,callback) {
+	//查询照片列表
+	bns.apply_list = function (callback) {
 	    var params =new Object();
-	    params.url=core.host + '/apply/delImg?id='+id;
+	    params.url=core.host + '/apply/list';
 	    params.method='GET';
 	    params.data=null;
 	    bns.ajax_public(params, callback);
