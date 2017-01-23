@@ -45,6 +45,9 @@ GET     /company/search			   controllers.CompanyController.search(city:String)
 GET     /company/get			   controllers.CompanyController.get(id:String)
 GET     /company/info			   controllers.CompanyController.info()
 GET     /company/hotelSite		   controllers.CompanyController.hotelSite(company:String)
+#Apply
+POST    /apply/save				   controllers.ApplyController.save()
+GET     /apply/get				   controllers.ApplyController.get(company:String)
 #Cash
 POST    /cash/save				   controllers.CashController.save()
 GET     /cash/list				   controllers.CashController.list()
