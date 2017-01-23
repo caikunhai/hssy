@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import entities.BnsCompany;
-import entities.BnsWorks;
 import repositories.BnsCompanyRepository;
-import repositories.BnsWorksRepository;
 import services.CompanyService;
 
 @Service("companyService")
