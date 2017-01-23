@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>上传文件</title>
+    <title>婚纱摄影互助平台</title>
     <link href="favicon.ico" rel="shortcut icon">
     <link rel="stylesheet" href="qiniu/bower_components/bootstrap/bootstrap.css">
     <link rel="stylesheet" href="qiniu/styles/main.css">
@@ -12,8 +12,40 @@
     <![endif]-->
 </head>
 <body>
-    <div class="container" >
-		<div class="row" style="margin-top: 80px;">
+	<nav class="navbar navbar-default">
+		<div class="container">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="javascript:;">婚纱摄影互助平台</a>
+			</div>
+			<div class="navbar-header navbar-right">
+			    <ul class="nav navbar-nav" id="topnav"></ul>
+			</div>
+		</div>
+	</nav>
+	<div class="container">
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="name">机构名称:</label>
+			<div class="col-sm-4"><input type="text" class="form-control" id="name" placeholder="机构名称" ></div>
+			<label class="control-label col-sm-2" for="address">机构地址:</label>
+			<div class="col-sm-4"><input type="text" class="form-control" id="address" placeholder="机构地址" ></div>
+		</div><br/><br/>
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="frName">机构法人:</label>
+			<div class="col-sm-4"><input type="text" class="form-control" id="frName" placeholder="法人姓名"></div>
+			<label class="control-label col-sm-2" for="frMobile">法人电话:</label>
+			<div class="col-sm-4"><input type="text" class="form-control" id="frMobile" placeholder="法人电话"></div>
+		</div><br/><br/>
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="gos">经营范围:</label>
+			<div class="col-sm-10">          
+				<input type="text" class="form-control" id="gos" placeholder="经营范围">
+			</div>
+		</div>
+	</div>
+	
+    <div class="container" style="margin-top:15px;">
+    	<div class="well">上传证件包含：营业执照、法人身份证正反面</div>
+		<div class="row" style="margin-top: 10px;">
            <div class="col-md-12">
 			 <div id="container">
 				<a class="btn btn-default btn-lg" id="pickfiles" href="javascript:;" >
@@ -49,6 +81,7 @@
             </div>
 		</div>
     </div>
+    <input type="hidden" name="id">
 <script type="text/javascript" src="qiniu/bower_components/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="qiniu/bower_components/bootstrap/bootstrap.min.js"></script>
 <script type="text/javascript" src="qiniu/bower_components/plupload/js/moxie.js"></script>
@@ -61,6 +94,10 @@
 <script type="text/javascript" src="js/bns.js"></script>
 <script>
 $(function() {
+	//顶部菜单栏
+    nav_html();
+    var company =getQueryParam("company");
+	bns.apply_get(company,apply_html);
     var uploader = Qiniu.uploader({
         runtimes: 'html5,flash,html4',
         browse_button: 'pickfiles',
@@ -78,7 +115,7 @@ $(function() {
         log_level: 5,
         init: {
         	'Key': function(up, file) {
-        		return 'apply'+randomCode()+".jpg";
+        		return randomCode()+".jpg";
         	},
             'UploadProgress': function(up, file) {
                 var progress = new FileProgress(file, 'fsUploadProgress');
@@ -94,10 +131,41 @@ $(function() {
     bns.apply_info(getQueryParam("company"),apply_html);
 });
 
+
+function apply_html(data){
+	var xhrObj = JSON.parse(data);
+	if(xhrObj.code==0){
+		return;
+	}
+	var obj =xhrObj.obj;
+	var imgs=xhrObj.imgs;
+	$("input[name=id]").val(obj.id);
+	$("#name").val(obj.name);
+	$("#address").val(obj.address);
+	$("#frName").val(obj.frName);
+	$("#frMobile").val(obj.frMobile);
+	$("#gos").val(obj.gos);
+	var html='';
+	for(var i=0;i<imgs.length;i++){
+		html+=li_html(imgs[i]);
+	}
+	$("#success").empty().append(html);
+	$("#success a").click(function(){
+    	var id =$(this).attr("data");
+    	$(this).parents("li").remove();
+    	bns.apply_Img_del(id,function(){});
+    });
+}
+
 function tjsq(){
 	var obj = new Object();
 	obj.id =getQueryParam("company");
-	obj.rank=1;
+	obj.name=$("#name").val();
+	obj.address=$("#address").val();
+	obj.frName=$("#frName").val();
+	obj.frMobile=$("#frMobile").val();
+	obj.gos=$("#gos").val();
+	
 	bns.company_save(JSON.stringify(obj),tj_html);
 }
 
@@ -124,29 +192,15 @@ function save_html(data){
 
 function li_html(obj){
 	var html='';
-	html+='<li style="width:130px;height:100px;position:relative;float:left;margin-left:5px;">';
+	html+='<li style="width:130px;height:100px;position:relative;float:left;margin-left:5px;" img='+obj.filename+'>';
 	html+='<img src="'+core.qiniu+obj.filename+'?imageView2/1/w/120/h/100" style="position:relative;">';
-	html+='<a href="javascript:;" style="position:absolute;right:10px;top:0;" data="'+obj.id+'">';
+	html+='<a href="javascript:;" style="position:absolute;right:10px;top:0;">';
 	html+='<span class="glyphicon glyphicon-remove" style="font-size:20px;color:red;"></span>';
 	html+='</a>';
 	html+='</li>';
 	return html;
 }
 
-
-function apply_html(data){
-	var html='';
-	var xhrObj = JSON.parse(data);
-	for(var i=0;i<xhrObj.length;i++){
-		html+=li_html(xhrObj[i]);
-	}
-	$("#success").empty().append(html);
-	$("#success a").click(function(){
-    	var id =$(this).attr("data");
-    	$(this).parents("li").remove();
-    	bns.apply_del(id,function(){});
-    });
-}
 
 </script>
 </body>
